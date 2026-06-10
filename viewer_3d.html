@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Ateliers Ferroviaires — Visualisation 3D</title>
+<style>
+body { margin: 0; padding: 20px; background: #0D1B2A; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+#canvas { display: block; background: linear-gradient(to bottom, #1a3a52 0%, #0D1B2A 100%); }
+#info {
+  position: absolute; top: 20px; left: 20px;
+  color: white; font-size: 13px; line-height: 1.6;
+}
+#info h1 { font-size: 20px; margin: 0 0 10px 0; color: #C8352A; }
+#hint {
+  position: absolute; bottom: 20px; left: 20px;
+  color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div id="info">
+  <h1>LES ATELIERS FERROVIAIRES</h1>
+  <p>Nîmes — Bâtiments d'activités</p>
+  <p style="font-size: 11px; color: rgba(255,255,255,0.5);">9 726 m² — 3 bâtiments — ≈ 7m hauteur libre</p>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<div id="hint">
+  ↔ GLISSER POUR FAIRE PIVOTER — ↕ SCROLL POUR ZOOMER
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let rotX = 0.35;
+let rotY = 0.45;
+let zoom = 1.0;
+
+let dragging = false;
+let lastX = 0;
+let lastY = 0;
+
+// Simple 3D point class
+class Point3D {
+  constructor(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+
+  rotateX(angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const y = this.y * cos - this.z * sin;
+    const z = this.y * sin + this.z * cos;
+    return new Point3D(this.x, y, z);
+  }
+
+  rotateY(angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const x = this.x * cos + this.z * sin;
+    const z = -this.x * sin + this.z * cos;
+    return new Point3D(x, this.y, z);
+  }
+
+  project() {
+    const scale = 300 / (8 + this.z * 0.1) * zoom;
+    const x = canvas.width / 2 + this.x * scale;
+    const y = canvas.height / 2 - this.y * scale;
+    return { x, y, z: this.z, scale };
+  }
+}
+
+// Create vertices for a box
+function createBox(x, y, z, w, h, d) {
+  return [
+    // Front face
+    new Point3D(x, y, z), new Point3D(x + w, y, z),
+    new Point3D(x + w, y + h, z), new Point3D(x, y + h, z),
+    // Back face
+    new Point3D(x, y, z + d), new Point3D(x + w, y, z + d),
+    new Point3D(x + w, y + h, z + d), new Point3D(x, y + h, z + d),
+  ];
+}
+
+// Define faces (groups of 4 vertices per face)
+function createFaces(box) {
+  return [
+    [box[0], box[1], box[2], box[3]], // front
+    [box[4], box[5], box[6], box[7]], // back
+    [box[0], box[1], box[5], box[4]], // bottom
+    [box[2], box[3], box[7], box[6]], // top
+    [box[0], box[3], box[7], box[4]], // left
+    [box[1], box[2], box[6], box[5]], // right
+  ];
+}
+
+// Building geometry (in meters, scale 1:50)
+const buildings = [];
+
+// Bâtiment A: 56m × 49m × ~10m
+const boxA = createBox(-5.6, -3, -4.9, 5.6, 3.2, 4.9);
+buildings.push({ faces: createFaces(boxA), colors: ['#8B8B8B', '#7A7A7A', '#999', '#AAAAAA', '#777', '#888'] });
+
+// Bâtiment B: 58m × 51m × ~10m
+const boxB = createBox(-2.9, -3, 1, 5.8, 3.3, 5.1);
+buildings.push({ faces: createFaces(boxB), colors: ['#8B8B8B', '#7A7A7A', '#999', '#AAAAAA', '#777', '#888'] });
+
+// Bâtiment C: 60m × 50m × ~10m
+const boxC = createBox(3.2, -3.4, 0.9, 6, 3.4, 5);
+buildings.push({ faces: createFaces(boxC), colors: ['#8B8B8B', '#7A7A7A', '#999', '#AAAAAA', '#777', '#888'] });
+
+// Red accent for offices (smaller boxes on front)
+const redBoxA = createBox(-5.6, -3, -4.9 + 4.9 - 1, 1.4, 3.2, 1);
+buildings.push({ faces: createFaces(redBoxA), colors: ['#C8352A', '#A0291F', '#D85035', '#B8311E', '#992819', '#C0352B'] });
+
+const redBoxB = createBox(-2.9, -3, 1 + 5.1 - 1, 1.6, 3.3, 1);
+buildings.push({ faces: createFaces(redBoxB), colors: ['#C8352A', '#A0291F', '#D85035', '#B8311E', '#992819', '#C0352B'] });
+
+const redBoxC = createBox(3.2, -3.4, 0.9 + 5 - 1, 1.8, 3.4, 1);
+buildings.push({ faces: createFaces(redBoxC), colors: ['#C8352A', '#A0291F', '#D85035', '#B8311E', '#992819', '#C0352B'] });
+
+// Ground plane
+const groundFaces = [
+  [
+    new Point3D(-20, 0, -15),
+    new Point3D(20, 0, -15),
+    new Point3D(20, 0, 15),
+    new Point3D(-20, 0, 15)
+  ]
+];
+buildings.push({ faces: groundFaces, colors: ['#1a3a2a'] });
+
+// Vegetation (simple boxes)
+for (let i = -18; i < 18; i += 3) {
+  const h = 0.3 + Math.sin(i) * 0.1;
+  const vbox = createBox(i, -h, -14, 0.8, h, 0.8);
+  buildings.push({ faces: createFaces(vbox), colors: ['#1a5a2a', '#0d3a1a', '#2a7a3a', '#1a4a2a', '#0a2a0a', '#1a6a2a'] });
+}
+
+function render() {
+  ctx.fillStyle = '#0D1B2A';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Sky gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, '#1a3a52');
+  grad.addColorStop(1, '#0D1B2A');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Transform and project all faces
+  const projectedFaces = [];
+
+  buildings.forEach((building) => {
+    building.faces.forEach((face, faceIdx) => {
+      const transformed = face.map(pt => {
+        let p = new Point3D(pt.x, pt.y, pt.z);
+        p = p.rotateX(rotX);
+        p = p.rotateY(rotY);
+        return p;
+      });
+
+      const projected = transformed.map(p => p.project());
+
+      // Calculate face normal for lighting
+      const v1 = [
+        transformed[1].x - transformed[0].x,
+        transformed[1].y - transformed[0].y,
+        transformed[1].z - transformed[0].z
+      ];
+      const v2 = [
+        transformed[3].x - transformed[0].x,
+        transformed[3].y - transformed[0].y,
+        transformed[3].z - transformed[0].z
+      ];
+      const normal = [
+        v1[1] * v2[2] - v1[2] * v2[1],
+        v1[2] * v2[0] - v1[0] * v2[2],
+        v1[0] * v2[1] - v1[1] * v2[0]
+      ];
+
+      const avgZ = (transformed[0].z + transformed[1].z + transformed[2].z + transformed[3].z) / 4;
+
+      projectedFaces.push({
+        points: projected,
+        color: building.colors[faceIdx] || '#888',
+        z: avgZ,
+        normal: normal
+      });
+    });
+  });
+
+  // Sort by depth
+  projectedFaces.sort((a, b) => a.z - b.z);
+
+  // Draw faces
+  projectedFaces.forEach(face => {
+    ctx.fillStyle = face.color;
+    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+    ctx.lineWidth = 0.5;
+
+    ctx.beginPath();
+    ctx.moveTo(face.points[0].x, face.points[0].y);
+    for (let i = 1; i < face.points.length; i++) {
+      ctx.lineTo(face.points[i].x, face.points[i].y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  });
+
+  // Draw labels
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.font = 'bold 14px Arial';
+  ctx.textAlign = 'center';
+
+  const labelPoints = [
+    { p: new Point3D(-2.8, 0, -2.4), text: 'BAT. A' },
+    { p: new Point3D(0, 0, 3.5), text: 'BAT. B' },
+    { p: new Point3D(6.2, 0, 3.4), text: 'BAT. C' }
+  ];
+
+  labelPoints.forEach(label => {
+    let p = label.p;
+    p = p.rotateX(rotX);
+    p = p.rotateY(rotY);
+    const proj = p.project();
+    ctx.fillText(label.text, proj.x, proj.y);
+  });
+
+  requestAnimationFrame(render);
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  dragging = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  rotY += (e.clientX - lastX) * 0.008;
+  rotX -= (e.clientY - lastY) * 0.008;
+  rotX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, rotX));
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+window.addEventListener('mouseup', () => {
+  dragging = false;
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  zoom = Math.max(0.3, Math.min(3, zoom + e.deltaY * -0.001));
+});
+
+// Touch support
+canvas.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    dragging = true;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  }
+}, false);
+
+window.addEventListener('touchmove', (e) => {
+  if (!dragging || e.touches.length !== 1) return;
+  rotY += (e.touches[0].clientX - lastX) * 0.008;
+  rotX -= (e.touches[0].clientY - lastY) * 0.008;
+  rotX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, rotX));
+  lastX = e.touches[0].clientX;
+  lastY = e.touches[0].clientY;
+}, false);
+
+window.addEventListener('touchend', () => {
+  dragging = false;
+}, false);
+
+// Responsive canvas
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+render();
+</script>
+</body>
+</html>
