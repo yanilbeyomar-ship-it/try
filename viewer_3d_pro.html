@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Ateliers Ferroviaires — Viewer 3D Professionnel</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: linear-gradient(135deg, #0a1420 0%, #1a2835 100%);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  color: white;
+}
+#canvas-wrapper {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(180deg, #1a3a52 0%, #0a1420 100%);
+}
+#canvas { display: block; width: 100%; height: 100%; }
+#panel {
+  width: 320px;
+  background: rgba(13, 27, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(200, 53, 42, 0.2);
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+#panel h1 {
+  font-size: 16px; font-weight: 800; letter-spacing: 2px;
+  color: #C8352A; margin-bottom: 4px;
+}
+#panel .subtitle {
+  font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.section {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.section:last-child { border: none; }
+.section h3 {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: #C8352A;
+  margin-bottom: 12px;
+}
+.section p {
+  font-size: 11px; line-height: 1.7;
+  color: rgba(255,255,255,0.65);
+}
+.color-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.color-item {
+  display: flex; align-items: center; gap: 8px;
+}
+.color-box {
+  width: 20px; height: 20px; border-radius: 2px; flex-shrink: 0;
+}
+.color-label {
+  font-size: 10px; color: rgba(255,255,255,0.7);
+  line-height: 1.4;
+}
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.stat-card {
+  background: rgba(200, 53, 42, 0.1); border: 1px solid rgba(200, 53, 42, 0.2);
+  padding: 12px; border-radius: 2px;
+}
+.stat-val {
+  font-size: 13px; font-weight: 800; color: white;
+}
+.stat-lbl {
+  font-size: 9px; color: rgba(255,255,255,0.5);
+  margin-top: 4px; letter-spacing: 0.5px;
+}
+.controls {
+  background: rgba(0,0,0,0.3); padding: 12px;
+  border: 1px solid rgba(200,53,42,0.2); margin-bottom: 20px;
+}
+.controls h4 {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: #C8352A; margin-bottom: 8px;
+}
+.control-line {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; color: rgba(255,255,255,0.6);
+  margin-bottom: 6px;
+}
+.control-key {
+  background: rgba(200,53,42,0.25); padding: 2px 6px;
+  border-radius: 2px; font-family: monospace; font-size: 9px;
+  color: #C8352A; font-weight: 600;
+}
+#buildings-list {
+  background: rgba(0,0,0,0.2); padding: 12px;
+  border-radius: 2px;
+}
+.building-item {
+  margin-bottom: 10px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.building-item:last-child { border: none; margin: 0; padding: 0; }
+.bat-name {
+  font-size: 11px; font-weight: 700; color: white;
+}
+.bat-info {
+  font-size: 9px; color: rgba(255,255,255,0.5);
+  margin-top: 3px;
+}
+</style>
+</head>
+<body>
+
+<div id="canvas-wrapper">
+  <canvas id="canvas"></canvas>
+</div>
+
+<div id="panel">
+  <h1>LES ATELIERS</h1>
+  <p class="subtitle">Ferroviaires — Nîmes</p>
+
+  <div class="controls">
+    <h4>Contrôles</h4>
+    <div class="control-line">
+      <span class="control-key">◀ ▶</span> Rotation
+    </div>
+    <div class="control-line">
+      <span class="control-key">▲ ▼</span> Inclinaison
+    </div>
+    <div class="control-line">
+      <span class="control-key">+</span> <span class="control-key">−</span> Zoom
+    </div>
+    <div class="control-line" style="margin-top: 8px; font-size: 9px;">
+      Souris: drag pour pivoter
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Bâtiments</h3>
+    <div id="buildings-list">
+      <div class="building-item">
+        <div class="bat-name">BÂTIMENT A</div>
+        <div class="bat-info">56 × 49 m | 3 104 m² SDP</div>
+      </div>
+      <div class="building-item">
+        <div class="bat-name">BÂTIMENT B</div>
+        <div class="bat-info">58 × 51 m | 3 271 m² SDP</div>
+      </div>
+      <div class="building-item">
+        <div class="bat-name">BÂTIMENT C</div>
+        <div class="bat-info">60 × 50 m | 3 351 m² SDP</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Palette</h3>
+    <div class="color-grid">
+      <div class="color-item">
+        <div class="color-box" style="background: #8B8B8B;"></div>
+        <div class="color-label">Activité<br>RAL 9007</div>
+      </div>
+      <div class="color-item">
+        <div class="color-box" style="background: #C8352A;"></div>
+        <div class="color-label">Bureaux<br>RAL 3003</div>
+      </div>
+      <div class="color-item">
+        <div class="color-box" style="background: #2a4a6a;"></div>
+        <div class="color-label">Panneaux<br>Solaires</div>
+      </div>
+      <div class="color-item">
+        <div class="color-box" style="background: #3A3A3C;"></div>
+        <div class="color-label">Portes &<br>Quais</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Surfaces</h3>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-val">9 726</div>
+        <div class="stat-lbl">m² total SDP</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">9 109</div>
+        <div class="stat-lbl">m² activité</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">617</div>
+        <div class="stat-lbl">m² bureaux</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">7</div>
+        <div class="stat-lbl">m hauteur libre</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <p style="font-size: 9px; color: rgba(255,255,255,0.4); line-height: 1.6;">
+      Visualisation 3D isométrique précise basée sur les plans architecturaux Stone Architectes. Proportions exactes et détails constructifs.
+    </p>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d', { alpha: true });
+
+function resizeCanvas() {
+  const wrapper = document.getElementById('canvas-wrapper');
+  canvas.width = wrapper.clientWidth;
+  canvas.height = wrapper.clientHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// ════════════════════════════════════════════
+// ISOMETRIC PROJECTION SYSTEM
+// ════════════════════════════════════════════
+
+const ISO = {
+  // Isometric angle constants
+  angleX: Math.PI / 6,  // 30 degrees
+  angleY: Math.PI / 4,  // 45 degrees
+
+  // Convert 3D point to isometric 2D
+  project(x, y, z, scale) {
+    // Rotate around X axis
+    const y1 = y * Math.cos(this.angleX) - z * Math.sin(this.angleX);
+    const z1 = y * Math.sin(this.angleX) + z * Math.cos(this.angleX);
+
+    // Rotate around Y axis
+    const x2 = x * Math.cos(this.angleY) + z1 * Math.sin(this.angleY);
+    const z2 = -x * Math.sin(this.angleY) + z1 * Math.cos(this.angleY);
+
+    // Perspective scale
+    const perspScale = scale / (8 + z2 * 0.02);
+
+    return {
+      x: x2 * perspScale,
+      y: y1 * perspScale,
+      z: z2
+    };
+  }
+};
+
+// ════════════════════════════════════════════
+// GEOMETRY DEFINITION — EXACT DIMENSIONS
+// ════════════════════════════════════════════
+
+class Face {
+  constructor(vertices, color, name = '') {
+    this.vertices = vertices;  // Array of [x, y, z]
+    this.color = color;
+    this.name = name;
+  }
+
+  project(scale) {
+    const projected = this.vertices.map(v => {
+      const p = ISO.project(v[0], v[1], v[2], scale);
+      return p;
+    });
+    const avgZ = projected.reduce((a, p) => a + p.z, 0) / projected.length;
+    return { points: projected, color: this.color, z: avgZ };
+  }
+}
+
+const faces = [];
+
+// ── BUILDING A: 56m × 49m (scale 1:50 → 1.12 × 0.98)
+const A_W = 1.12, A_D = 0.98, A_H = 0.64;
+const A_X = -0.7, A_Y = -0.4, A_Z = -0.7;
+
+// Main body - front face (grey)
+faces.push(new Face([
+  [A_X, A_Y, A_Z], [A_X + A_W, A_Y, A_Z],
+  [A_X + A_W, A_Y + A_H, A_Z], [A_X, A_Y + A_H, A_Z]
+], '#8B8B8B', 'A-front'));
+
+// Main body - top face (solar panels)
+faces.push(new Face([
+  [A_X, A_Y + A_H, A_Z], [A_X + A_W, A_Y + A_H, A_Z],
+  [A_X + A_W, A_Y + A_H, A_Z + A_D], [A_X, A_Y + A_H, A_Z + A_D]
+], '#1a5a6a', 'A-roof'));
+
+// Main body - back face
+faces.push(new Face([
+  [A_X + A_W, A_Y, A_Z + A_D], [A_X, A_Y, A_Z + A_D],
+  [A_X, A_Y + A_H, A_Z + A_D], [A_X + A_W, A_Y + A_H, A_Z + A_D]
+], '#6A6A6A', 'A-back'));
+
+// Main body - left side
+faces.push(new Face([
+  [A_X, A_Y, A_Z], [A_X, A_Y, A_Z + A_D],
+  [A_X, A_Y + A_H, A_Z + A_D], [A_X, A_Y + A_H, A_Z]
+], '#5A5A5A', 'A-left'));
+
+// Main body - right side
+faces.push(new Face([
+  [A_X + A_W, A_Y, A_Z + A_D], [A_X + A_W, A_Y, A_Z],
+  [A_X + A_W, A_Y + A_H, A_Z], [A_X + A_W, A_Y + A_H, A_Z + A_D]
+], '#9A9A9A', 'A-right'));
+
+// Red office module (front-right)
+const AR_W = 0.28, AR_D = 0.2, AR_H = 0.64;
+const AR_X = A_X + A_W - AR_W, AR_Y = A_Y, AR_Z = A_Z + A_D - AR_D;
+
+faces.push(new Face([
+  [AR_X, AR_Y, AR_Z], [AR_X + AR_W, AR_Y, AR_Z],
+  [AR_X + AR_W, AR_Y + AR_H, AR_Z], [AR_X, AR_Y + AR_H, AR_Z]
+], '#C8352A', 'A-office-front'));
+
+faces.push(new Face([
+  [AR_X, AR_Y + AR_H, AR_Z], [AR_X + AR_W, AR_Y + AR_H, AR_Z],
+  [AR_X + AR_W, AR_Y + AR_H, AR_Z + AR_D], [AR_X, AR_Y + AR_H, AR_Z + AR_D]
+], '#2a4a6a', 'A-office-roof'));
+
+faces.push(new Face([
+  [AR_X, AR_Y, AR_Z + AR_D], [AR_X + AR_W, AR_Y, AR_Z + AR_D],
+  [AR_X + AR_W, AR_Y + AR_H, AR_Z + AR_D], [AR_X, AR_Y + AR_H, AR_Z + AR_D]
+], '#8A291F', 'A-office-back'));
+
+// ── BUILDING B: 58m × 51m (1.16 × 1.02)
+const B_W = 1.16, B_D = 1.02, B_H = 0.66;
+const B_X = -0.2, B_Y = -0.42, B_Z = 0.2;
+
+faces.push(new Face([
+  [B_X, B_Y, B_Z], [B_X + B_W, B_Y, B_Z],
+  [B_X + B_W, B_Y + B_H, B_Z], [B_X, B_Y + B_H, B_Z]
+], '#8B8B8B', 'B-front'));
+
+faces.push(new Face([
+  [B_X, B_Y + B_H, B_Z], [B_X + B_W, B_Y + B_H, B_Z],
+  [B_X + B_W, B_Y + B_H, B_Z + B_D], [B_X, B_Y + B_H, B_Z + B_D]
+], '#1a5a6a', 'B-roof'));
+
+faces.push(new Face([
+  [B_X + B_W, B_Y, B_Z + B_D], [B_X, B_Y, B_Z + B_D],
+  [B_X, B_Y + B_H, B_Z + B_D], [B_X + B_W, B_Y + B_H, B_Z + B_D]
+], '#6A6A6A', 'B-back'));
+
+faces.push(new Face([
+  [B_X, B_Y, B_Z], [B_X, B_Y, B_Z + B_D],
+  [B_X, B_Y + B_H, B_Z + B_D], [B_X, B_Y + B_H, B_Z]
+], '#5A5A5A', 'B-left'));
+
+faces.push(new Face([
+  [B_X + B_W, B_Y, B_Z + B_D], [B_X + B_W, B_Y, B_Z],
+  [B_X + B_W, B_Y + B_H, B_Z], [B_X + B_W, B_Y + B_H, B_Z + B_D]
+], '#9A9A9A', 'B-right'));
+
+const BR_W = 0.32, BR_D = 0.2, BR_H = 0.66;
+const BR_X = B_X + B_W - BR_W, BR_Y = B_Y, BR_Z = B_Z + B_D - BR_D;
+
+faces.push(new Face([
+  [BR_X, BR_Y, BR_Z], [BR_X + BR_W, BR_Y, BR_Z],
+  [BR_X + BR_W, BR_Y + BR_H, BR_Z], [BR_X, BR_Y + BR_H, BR_Z]
+], '#C8352A', 'B-office-front'));
+
+faces.push(new Face([
+  [BR_X, BR_Y + BR_H, BR_Z], [BR_X + BR_W, BR_Y + BR_H, BR_Z],
+  [BR_X + BR_W, BR_Y + BR_H, BR_Z + BR_D], [BR_X, BR_Y + BR_H, BR_Z + BR_D]
+], '#2a4a6a', 'B-office-roof'));
+
+// ── BUILDING C: 60m × 50m (1.2 × 1.0)
+const C_W = 1.2, C_D = 1.0, C_H = 0.68;
+const C_X = 0.65, C_Y = -0.44, C_Z = 0.15;
+
+faces.push(new Face([
+  [C_X, C_Y, C_Z], [C_X + C_W, C_Y, C_Z],
+  [C_X + C_W, C_Y + C_H, C_Z], [C_X, C_Y + C_H, C_Z]
+], '#8B8B8B', 'C-front'));
+
+faces.push(new Face([
+  [C_X, C_Y + C_H, C_Z], [C_X + C_W, C_Y + C_H, C_Z],
+  [C_X + C_W, C_Y + C_H, C_Z + C_D], [C_X, C_Y + C_H, C_Z + C_D]
+], '#1a5a6a', 'C-roof'));
+
+faces.push(new Face([
+  [C_X + C_W, C_Y, C_Z + C_D], [C_X, C_Y, C_Z + C_D],
+  [C_X, C_Y + C_H, C_Z + C_D], [C_X + C_W, C_Y + C_H, C_Z + C_D]
+], '#6A6A6A', 'C-back'));
+
+faces.push(new Face([
+  [C_X, C_Y, C_Z], [C_X, C_Y, C_Z + C_D],
+  [C_X, C_Y + C_H, C_Z + C_D], [C_X, C_Y + C_H, C_Z]
+], '#5A5A5A', 'C-left'));
+
+faces.push(new Face([
+  [C_X + C_W, C_Y, C_Z + C_D], [C_X + C_W, C_Y, C_Z],
+  [C_X + C_W, C_Y + C_H, C_Z], [C_X + C_W, C_Y + C_H, C_Z + C_D]
+], '#9A9A9A', 'C-right'));
+
+const CR_W = 0.36, CR_D = 0.2, CR_H = 0.68;
+const CR_X = C_X + C_W - CR_W, CR_Y = C_Y, CR_Z = C_Z + C_D - CR_D;
+
+faces.push(new Face([
+  [CR_X, CR_Y, CR_Z], [CR_X + CR_W, CR_Y, CR_Z],
+  [CR_X + CR_W, CR_Y + CR_H, CR_Z], [CR_X, CR_Y + CR_H, CR_Z]
+], '#C8352A', 'C-office-front'));
+
+faces.push(new Face([
+  [CR_X, CR_Y + CR_H, CR_Z], [CR_X + CR_W, CR_Y + CR_H, CR_Z],
+  [CR_X + CR_W, CR_Y + CR_H, CR_Z + CR_D], [CR_X, CR_Y + CR_H, CR_Z + CR_D]
+], '#2a4a6a', 'C-office-roof'));
+
+// ── GROUND & SCENERY
+faces.push(new Face([
+  [-3, 0, -2], [3, 0, -2],
+  [3, 0, 2], [-3, 0, 2]
+], '#3a5a6a', 'ground'));
+
+// Vegetation
+for (let i = -2.8; i < 2.8; i += 0.6) {
+  const hv = 0.15 + Math.sin(i * 2) * 0.08;
+  faces.push(new Face([
+    [i, -hv, -1.8], [i + 0.4, -hv, -1.8],
+    [i + 0.4, 0, -1.8], [i, 0, -1.8]
+  ], '#1a5a2a'));
+}
+
+// ════════════════════════════════════════════
+// RENDER LOOP
+// ════════════════════════════════════════════
+
+let camX = 0, camY = 0.3, camZ = 0.2;
+let scale = 350;
+
+function render() {
+  // Clear
+  ctx.fillStyle = '#0a1420';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Sky gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, '#1a3a52');
+  grad.addColorStop(1, '#0a1420');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Project & sort
+  const rendered = faces.map(f => f.project(scale)).sort((a, b) => a.z - b.z);
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+
+  // Draw faces
+  rendered.forEach(r => {
+    ctx.fillStyle = r.color;
+    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+    ctx.lineWidth = 0.5;
+
+    ctx.beginPath();
+    ctx.moveTo(cx + r.points[0].x, cy + r.points[0].y);
+    for (let i = 1; i < r.points.length; i++) {
+      ctx.lineTo(cx + r.points[i].x, cy + r.points[i].y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  });
+
+  // Labels
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = 'bold 12px Arial';
+  ctx.textAlign = 'center';
+
+  const labels = [
+    { x: A_X + A_W / 2, y: -0.2, z: A_Z + A_D / 2, text: 'BAT. A' },
+    { x: B_X + B_W / 2, y: -0.2, z: B_Z + B_D / 2, text: 'BAT. B' },
+    { x: C_X + C_W / 2, y: -0.2, z: C_Z + C_D / 2, text: 'BAT. C' }
+  ];
+
+  labels.forEach(l => {
+    const p = ISO.project(l.x, l.y, l.z, scale);
+    ctx.fillText(l.text, cx + p.x, cy + p.y);
+  });
+
+  requestAnimationFrame(render);
+}
+
+// Keyboard controls
+window.addEventListener('keydown', (e) => {
+  const step = 20;
+  if (e.key === 'ArrowLeft') scale = Math.max(200, scale - step);
+  if (e.key === 'ArrowRight') scale = Math.min(600, scale + step);
+  if (e.key === '+' || e.key === '=') scale = Math.min(600, scale + step);
+  if (e.key === '-') scale = Math.max(200, scale - step);
+  if (e.key === 'ArrowUp') camY = Math.min(0.8, camY + 0.05);
+  if (e.key === 'ArrowDown') camY = Math.max(-0.5, camY - 0.05);
+});
+
+// Mouse wheel zoom
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  scale = Math.max(200, Math.min(600, scale - e.deltaY * 0.3));
+});
+
+render();
+</script>
+</body>
+</html>
