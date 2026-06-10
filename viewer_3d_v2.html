@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualisation 3D — Les Ateliers Ferroviaires</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 100vw; height: 100vh;
+  background: linear-gradient(135deg, #0a1520 0%, #152835 100%);
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  overflow: hidden;
+}
+#canvas {
+  display: block; width: 100%; height: 100%;
+}
+#controls {
+  position: absolute; top: 20px; left: 20px;
+  background: rgba(13, 27, 42, 0.85); backdrop-filter: blur(8px);
+  border: 1px solid rgba(200, 53, 42, 0.3);
+  padding: 20px;
+  border-radius: 4px;
+  max-width: 340px;
+  z-index: 10;
+}
+#controls h1 {
+  font-size: 18px; margin-bottom: 8px; color: #C8352A;
+  letter-spacing: 1px;
+}
+#controls p {
+  font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.7);
+  margin-bottom: 12px;
+}
+.legend {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 8px;
+}
+.legend-color { width: 16px; height: 16px; border-radius: 2px; flex-shrink: 0; }
+#hint {
+  position: absolute; bottom: 20px; left: 20px;
+  background: rgba(13, 27, 42, 0.85); backdrop-filter: blur(8px);
+  border: 1px solid rgba(200, 53, 42, 0.3);
+  padding: 16px 20px;
+  border-radius: 4px;
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.6);
+}
+.hint-line { display: flex; align-items: center; gap: 8px; }
+.hint-key { background: rgba(200,53,42,0.2); padding: 2px 6px; border-radius: 2px; font-family: monospace; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <h1>LES ATELIERS</h1>
+  <p>Visualisation 3D précise du projet architectural</p>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-color" style="background: #8B8B8B;"></div>
+      <span>Activité gris RAL 9007</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #C8352A;"></div>
+      <span>Bureaux rouge RAL 3003</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #3A3A3C;"></div>
+      <span>Portes/Quais sombre</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #1a5a2a;"></div>
+      <span>Végétation locale</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #2a4a6a;"></div>
+      <span>Panneaux solaires</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #4a6a8a;"></div>
+      <span>Sol/Parking</span>
+    </div>
+  </div>
+</div>
+
+<div id="hint">
+  <div class="hint-line">↔ <span class="hint-key">SOURIS</span> Pivoter horizontalement</div>
+  <div class="hint-line">↕ <span class="hint-key">SOURIS</span> Incliner (voir dessus/dessous)</div>
+  <div class="hint-line">↑↓ <span class="hint-key">MOLETTE</span> Zoomer / Dézoomer</div>
+  <div class="hint-line">📱 <span class="hint-key">TACTILE</span> Drag to rotate</div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Colors RAL precise
+const COLORS = {
+  activityGrey: '#8B8B8B',     // RAL 9007
+  officeRed: '#C8352A',         // RAL 3003
+  darkDoor: '#3A3A3C',
+  skylight: '#2a4a6a',
+  solar: '#1a4a5a',
+  vegetation: '#1a5a2a',
+  road: '#4a6a8a',
+  ground: '#3a5a6a'
+};
+
+let rotX = 0.25;  // Start view from above
+let rotY = 0.45;
+let zoom = 0.85;
+
+let dragging = false;
+let lastX = 0;
+let lastY = 0;
+
+class V3 {
+  constructor(x, y, z) { this.x = x; this.y = y; this.z = z; }
+  rotX(a) {
+    const c = Math.cos(a), s = Math.sin(a);
+    return new V3(this.x, this.y * c - this.z * s, this.y * s + this.z * c);
+  }
+  rotY(a) {
+    const c = Math.cos(a), s = Math.sin(a);
+    return new V3(this.x * c + this.z * s, this.y, -this.x * s + this.z * c);
+  }
+  project() {
+    const s = 250 / (5 + this.z * 0.08) * zoom;
+    return {
+      x: canvas.width / 2 + this.x * s,
+      y: canvas.height / 2 - this.y * s,
+      z: this.z,
+      s: s
+    };
+  }
+}
+
+// Polygon class
+class Poly {
+  constructor(verts, color, label) {
+    this.verts = verts;
+    this.color = color;
+    this.label = label;
+  }
+  transform(rx, ry) {
+    return this.verts.map(v => v.rotX(rx).rotY(ry));
+  }
+  avgZ(tverts) {
+    return tverts.reduce((a, v) => a + v.z, 0) / tverts.length;
+  }
+}
+
+// Geometry helpers
+function quad(x, y, z, w, h, d, side, color) {
+  const verts = [
+    new V3(x, y, z), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x, y + h, z)
+  ];
+  if (side === 'top') return new Poly([
+    new V3(x, y + h, z), new V3(x + w, y + h, z),
+    new V3(x + w, y + h, z + d), new V3(x, y + h, z + d)
+  ], color);
+  if (side === 'front') return verts.map(v => v).concat([]).reverse().slice(0,4);
+}
+
+// Building A: 56m × 49m — scale 1/50
+function buildingA() {
+  const polys = [];
+
+  // Main body (grey activity)
+  const x = -5.6, y = -3, z = -4.9, w = 5.6, h = 3.2, d = 4.9;
+
+  // Front
+  polys.push(new Poly([
+    new V3(x, y, z), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x, y + h, z)
+  ], COLORS.activityGrey));
+
+  // Back
+  polys.push(new Poly([
+    new V3(x + w, y, z + d), new V3(x, y, z + d),
+    new V3(x, y + h, z + d), new V3(x + w, y + h, z + d)
+  ], '#7A7A7A'));
+
+  // Top (roof with solar panels)
+  polys.push(new Poly([
+    new V3(x, y + h, z), new V3(x + w, y + h, z),
+    new V3(x + w, y + h, z + d), new V3(x, y + h, z + d)
+  ], COLORS.solar));
+
+  // Left side
+  polys.push(new Poly([
+    new V3(x, y, z), new V3(x, y, z + d),
+    new V3(x, y + h, z + d), new V3(x, y + h, z)
+  ], '#6A6A6A'));
+
+  // Right side
+  polys.push(new Poly([
+    new V3(x + w, y, z + d), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x + w, y + h, z + d)
+  ], '#909090'));
+
+  // Windows on front (dark strips)
+  const numWin = 5;
+  const ww = w / (numWin + 1);
+  for (let i = 1; i <= numWin; i++) {
+    polys.push(new Poly([
+      new V3(x + i * ww - 0.4, y + 0.4, z - 0.01),
+      new V3(x + i * ww + 0.4, y + 0.4, z - 0.01),
+      new V3(x + i * ww + 0.4, y + 2.4, z - 0.01),
+      new V3(x + i * ww - 0.4, y + 2.4, z - 0.01)
+    ], '#2a2a2a'));
+  }
+
+  // Loading dock doors
+  polys.push(new Poly([
+    new V3(x + 0.5, y, z + d - 0.01),
+    new V3(x + 1.8, y, z + d - 0.01),
+    new V3(x + 1.8, y + 1.4, z + d - 0.01),
+    new V3(x + 0.5, y + 1.4, z + d - 0.01)
+  ], COLORS.darkDoor));
+
+  polys.push(new Poly([
+    new V3(x + 3.5, y, z + d - 0.01),
+    new V3(x + 4.8, y, z + d - 0.01),
+    new V3(x + 4.8, y + 1.4, z + d - 0.01),
+    new V3(x + 3.5, y + 1.4, z + d - 0.01)
+  ], COLORS.darkDoor));
+
+  // Red office section (front right)
+  const ox = x + w - 1.4, oy = -3, oz = z + d - 1, ow = 1.4, oh = 3.2, od = 1;
+  polys.push(new Poly([
+    new V3(ox, oy, oz), new V3(ox + ow, oy, oz),
+    new V3(ox + ow, oy + oh, oz), new V3(ox, oy + oh, oz)
+  ], COLORS.officeRed));
+
+  polys.push(new Poly([
+    new V3(ox, oy, oz + od), new V3(ox + ow, oy, oz + od),
+    new V3(ox + ow, oy + oh, oz + od), new V3(ox, oy + oh, oz + od)
+  ], '#A0291F'));
+
+  polys.push(new Poly([
+    new V3(ox, oy, oz), new V3(ox, oy, oz + od),
+    new V3(ox, oy + oh, oz + od), new V3(ox, oy + oh, oz)
+  ], '#B8311E'));
+
+  polys.push(new Poly([
+    new V3(ox + ow, oy, oz + od), new V3(ox + ow, oy, oz),
+    new V3(ox + ow, oy + oh, oz), new V3(ox + ow, oy + oh, oz + od)
+  ], '#D85035'));
+
+  polys.push(new Poly([
+    new V3(ox, oy + oh, oz), new V3(ox + ow, oy + oh, oz),
+    new V3(ox + ow, oy + oh, oz + od), new V3(ox, oy + oh, oz + od)
+  ], COLORS.skylight));
+
+  return polys;
+}
+
+function buildingB() {
+  const polys = [];
+  const x = -2.9, y = -3, z = 1, w = 5.8, h = 3.3, d = 5.1;
+
+  polys.push(new Poly([
+    new V3(x, y, z), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x, y + h, z)
+  ], COLORS.activityGrey));
+
+  polys.push(new Poly([
+    new V3(x + w, y, z + d), new V3(x, y, z + d),
+    new V3(x, y + h, z + d), new V3(x + w, y + h, z + d)
+  ], '#7A7A7A'));
+
+  polys.push(new Poly([
+    new V3(x, y + h, z), new V3(x + w, y + h, z),
+    new V3(x + w, y + h, z + d), new V3(x, y + h, z + d)
+  ], COLORS.solar));
+
+  polys.push(new Poly([
+    new V3(x, y, z), new V3(x, y, z + d),
+    new V3(x, y + h, z + d), new V3(x, y + h, z)
+  ], '#6A6A6A'));
+
+  polys.push(new Poly([
+    new V3(x + w, y, z + d), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x + w, y + h, z + d)
+  ], '#909090'));
+
+  const numWin = 6;
+  const ww = w / (numWin + 1);
+  for (let i = 1; i <= numWin; i++) {
+    polys.push(new Poly([
+      new V3(x + i * ww - 0.4, y + 0.4, z - 0.01),
+      new V3(x + i * ww + 0.4, y + 0.4, z - 0.01),
+      new V3(x + i * ww + 0.4, y + 2.5, z - 0.01),
+      new V3(x + i * ww - 0.4, y + 2.5, z - 0.01)
+    ], '#2a2a2a'));
+  }
+
+  polys.push(new Poly([
+    new V3(x + 0.6, y, z + d - 0.01),
+    new V3(x + 2.0, y, z + d - 0.01),
+    new V3(x + 2.0, y + 1.5, z + d - 0.01),
+    new V3(x + 0.6, y + 1.5, z + d - 0.01)
+  ], COLORS.darkDoor));
+
+  polys.push(new Poly([
+    new V3(x + 3.8, y, z + d - 0.01),
+    new V3(x + 5.2, y, z + d - 0.01),
+    new V3(x + 5.2, y + 1.5, z + d - 0.01),
+    new V3(x + 3.8, y + 1.5, z + d - 0.01)
+  ], COLORS.darkDoor));
+
+  const ox2 = x + w - 1.6, oy2 = -3, oz2 = z + d - 1, ow2 = 1.6, oh2 = 3.3, od2 = 1;
+  polys.push(new Poly([
+    new V3(ox2, oy2, oz2), new V3(ox2 + ow2, oy2, oz2),
+    new V3(ox2 + ow2, oy2 + oh2, oz2), new V3(ox2, oy2 + oh2, oz2)
+  ], COLORS.officeRed));
+
+  polys.push(new Poly([
+    new V3(ox2, oy2 + oh2, oz2), new V3(ox2 + ow2, oy2 + oh2, oz2),
+    new V3(ox2 + ow2, oy2 + oh2, oz2 + od2), new V3(ox2, oy2 + oh2, oz2 + od2)
+  ], COLORS.skylight));
+
+  return polys;
+}
+
+function buildingC() {
+  const polys = [];
+  const x = 3.2, y = -3.4, z = 0.9, w = 6, h = 3.4, d = 5;
+
+  polys.push(new Poly([
+    new V3(x, y, z), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x, y + h, z)
+  ], COLORS.activityGrey));
+
+  polys.push(new Poly([
+    new V3(x + w, y, z + d), new V3(x, y, z + d),
+    new V3(x, y + h, z + d), new V3(x + w, y + h, z + d)
+  ], '#7A7A7A'));
+
+  polys.push(new Poly([
+    new V3(x, y + h, z), new V3(x + w, y + h, z),
+    new V3(x + w, y + h, z + d), new V3(x, y + h, z + d)
+  ], COLORS.solar));
+
+  polys.push(new Poly([
+    new V3(x, y, z), new V3(x, y, z + d),
+    new V3(x, y + h, z + d), new V3(x, y + h, z)
+  ], '#6A6A6A'));
+
+  polys.push(new Poly([
+    new V3(x + w, y, z + d), new V3(x + w, y, z),
+    new V3(x + w, y + h, z), new V3(x + w, y + h, z + d)
+  ], '#909090'));
+
+  const numWin = 6;
+  const ww = w / (numWin + 1);
+  for (let i = 1; i <= numWin; i++) {
+    polys.push(new Poly([
+      new V3(x + i * ww - 0.4, y + 0.4, z - 0.01),
+      new V3(x + i * ww + 0.4, y + 0.4, z - 0.01),
+      new V3(x + i * ww + 0.4, y + 2.6, z - 0.01),
+      new V3(x + i * ww - 0.4, y + 2.6, z - 0.01)
+    ], '#2a2a2a'));
+  }
+
+  polys.push(new Poly([
+    new V3(x + 0.7, y, z + d - 0.01),
+    new V3(x + 2.2, y, z + d - 0.01),
+    new V3(x + 2.2, y + 1.5, z + d - 0.01),
+    new V3(x + 0.7, y + 1.5, z + d - 0.01)
+  ], COLORS.darkDoor));
+
+  polys.push(new Poly([
+    new V3(x + 4.0, y, z + d - 0.01),
+    new V3(x + 5.5, y, z + d - 0.01),
+    new V3(x + 5.5, y + 1.5, z + d - 0.01),
+    new V3(x + 4.0, y + 1.5, z + d - 0.01)
+  ], COLORS.darkDoor));
+
+  return polys;
+}
+
+// Ground, parking, vegetation
+function scenery() {
+  const polys = [];
+
+  // Ground
+  polys.push(new Poly([
+    new V3(-20, 0, -15), new V3(20, 0, -15),
+    new V3(20, 0, 15), new V3(-20, 0, 15)
+  ], COLORS.ground));
+
+  // Parking stripes
+  for (let i = -18; i < 18; i += 2.4) {
+    polys.push(new Poly([
+      new V3(i, 0.01, -2), new V3(i + 0.1, 0.01, -2),
+      new V3(i + 0.1, 0.01, 2), new V3(i, 0.01, 2)
+    ], '#666'));
+  }
+
+  // Vegetation (trees)
+  for (let i = -18; i < 18; i += 3) {
+    const hv = 0.4 + Math.sin(i * 0.7) * 0.15;
+    polys.push(new Poly([
+      new V3(i, -hv, -14), new V3(i + 0.6, -hv, -14),
+      new V3(i + 0.6, 0, -14), new V3(i, 0, -14)
+    ], COLORS.vegetation));
+
+    polys.push(new Poly([
+      new V3(i, -hv, -14), new V3(i, -hv, -13.4),
+      new V3(i, 0, -13.4), new V3(i, 0, -14)
+    ], '#0a4a1a'));
+  }
+
+  return polys;
+}
+
+// Merge all geometry
+const allPolys = [
+  ...scenery(),
+  ...buildingA(),
+  ...buildingB(),
+  ...buildingC()
+];
+
+function render() {
+  // Sky gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, '#1a3a52');
+  grad.addColorStop(1, '#0a1520');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Transform & project
+  const rendered = [];
+  allPolys.forEach(poly => {
+    const transformed = poly.transform(rotX, rotY);
+    const avgZ = poly.avgZ(transformed);
+    const projected = transformed.map(v => v.project());
+    rendered.push({ poly, projected, avgZ });
+  });
+
+  // Sort by depth
+  rendered.sort((a, b) => a.avgZ - b.avgZ);
+
+  // Draw
+  rendered.forEach(item => {
+    ctx.fillStyle = item.poly.color;
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 0.3;
+
+    ctx.beginPath();
+    ctx.moveTo(item.projected[0].x, item.projected[0].y);
+    for (let i = 1; i < item.projected.length; i++) {
+      ctx.lineTo(item.projected[i].x, item.projected[i].y);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  });
+
+  // Labels
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = 'bold 13px Arial';
+  ctx.textAlign = 'center';
+
+  const labels = [
+    { p: new V3(-2.8, 0, -2), t: 'BAT. A' },
+    { p: new V3(0, 0, 3.5), t: 'BAT. B' },
+    { p: new V3(6.2, 0, 3), t: 'BAT. C' }
+  ];
+
+  labels.forEach(l => {
+    const proj = l.p.rotX(rotX).rotY(rotY).project();
+    ctx.fillText(l.t, proj.x, proj.y);
+  });
+
+  requestAnimationFrame(render);
+}
+
+// Mouse controls
+canvas.addEventListener('mousedown', (e) => {
+  dragging = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  rotY += (e.clientX - lastX) * 0.007;
+  rotX -= (e.clientY - lastY) * 0.007;
+  rotX = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.8, rotX));
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+window.addEventListener('mouseup', () => dragging = false);
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  zoom = Math.max(0.4, Math.min(2.5, zoom + e.deltaY * -0.0008));
+});
+
+// Touch
+canvas.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    dragging = true;
+    lastX = e.touches[0].clientX;
+    lastY = e.touches[0].clientY;
+  }
+}, false);
+
+window.addEventListener('touchmove', (e) => {
+  if (!dragging || e.touches.length !== 1) return;
+  rotY += (e.touches[0].clientX - lastX) * 0.007;
+  rotX -= (e.touches[0].clientY - lastY) * 0.007;
+  rotX = Math.max(-Math.PI / 2.5, Math.min(Math.PI / 2.8, rotX));
+  lastX = e.touches[0].clientX;
+  lastY = e.touches[0].clientY;
+}, false);
+
+window.addEventListener('touchend', () => dragging = false, false);
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+render();
+</script>
+</body>
+</html>
