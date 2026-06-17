@@ -150,60 +150,61 @@ footer a { color:var(--red); text-decoration:none; }
 @media(max-width:640px) {
   nav { padding:0 16px; height:56px; }
   section { padding:48px 16px; }
-  .nlinks { display:none; }
-  .ncta { display:none; }
-  .burger { display:flex; }
-  .mob-menu { display:block; }
+  .nlinks { display:none !important; }
+  .ncta { display:none !important; }
+  .burger { display:flex !important; }
+  .mob-menu.open { display:flex !important; }
 
   /* Hero */
-  #hero { min-height:100svh; }
+  #hero { min-height:100svh; padding-top:56px; }
   .hero-c { padding:0 20px; }
-  h1 { font-size:clamp(36px,11vw,60px); letter-spacing:-1px; }
-  .hsub { font-size:11px; margin-bottom:32px; }
-  .hstats { flex-direction:column; gap:20px; align-items:center; }
+  h1 { font-size:clamp(32px,10vw,52px); letter-spacing:-1px; }
+  .hsub { font-size:11px; margin-bottom:28px; }
+  .hstats { flex-direction:column; gap:16px; align-items:center; }
   .hstat { text-align:center; padding:0; }
-  .hstat .v { font-size:28px; }
+  .hstat .v { font-size:26px; }
 
-  /* Grids */
-  .g2 { grid-template-columns:1fr; gap:32px; }
-  .g3 { grid-template-columns:1fr; gap:16px; }
-  .g4 { grid-template-columns:1fr 1fr; gap:12px; }
+  /* Force all grids to single column — important overrides inline styles */
+  .g2, .g3, .g4 { grid-template-columns:1fr !important; gap:20px !important; }
 
   /* Headings */
-  h2 { font-size:clamp(26px,7vw,38px); }
+  h2 { font-size:clamp(24px,7vw,36px); }
+  h3 { font-size:14px !important; }
 
   /* Stats row */
   .stat-row { flex-direction:column; }
-  .stat-item { padding:20px; border-right:none; border-bottom:1px solid var(--border); }
+  .stat-item { padding:20px; border-right:none !important; border-bottom:1px solid var(--border); }
   .stat-item:last-child { border-bottom:none; }
-  .stat-item .sv { font-size:28px; }
+  .stat-item .sv { font-size:26px; }
 
   /* Cards */
   .card-white { padding:16px; }
-  .c-val { font-size:24px; }
+  .c-val { font-size:22px !important; }
 
   /* Pull quote */
-  .pull-quote { font-size:14px; padding:16px 18px; }
+  .pull-quote { font-size:13px; padding:14px 16px; }
 
   /* Contact */
   #contact { padding:60px 20px; }
 
-  /* Plans grid */
-  .g4 .plan-card { min-height:0; }
-
   /* Companies */
   .companies { gap:10px; }
-  .co-chip { padding:8px 14px; font-size:10px; }
+  .co-chip { padding:8px 12px; font-size:10px; }
 
   /* Table */
+  .table-wrap { margin-top:16px; }
   table { font-size:11px; }
-  table th, table td { padding:10px 8px; }
+  table th, table td { padding:9px 6px; }
 
-  /* Map / images */
-  img { max-width:100%; height:auto; }
+  /* Images */
+  img { max-width:100% !important; height:auto !important; }
 
   /* Footer */
-  footer { padding:24px 16px; text-align:center; flex-direction:column; gap:10px; }
+  footer { padding:24px 16px; text-align:center; flex-direction:column; gap:10px; font-size:10px; }
+
+  /* Text */
+  .desc { font-size:14px; }
+  .blist li { font-size:13px; }
 
   /* Lightbox close */
   .lb-close { top:12px; right:12px; font-size:22px; }
