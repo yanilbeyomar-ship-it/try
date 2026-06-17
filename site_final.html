@@ -24,6 +24,12 @@ nav.scroll { box-shadow:0 2px 12px rgba(0,0,0,0.07); }
 .nlinks a:hover { color:var(--red); }
 .ncta { background:var(--red); color:white; border:none; cursor:pointer; padding:11px 26px; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; transition:background 0.2s; }
 .ncta:hover { background:var(--red2); }
+.burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; border:none; background:none; }
+.burger span { display:block; width:22px; height:2px; background:var(--navy); transition:all 0.3s; }
+.mob-menu { display:none; position:fixed; top:56px; left:0; right:0; background:white; box-shadow:0 4px 20px rgba(0,0,0,0.1); z-index:999; padding:20px 20px; flex-direction:column; gap:0; }
+.mob-menu a { display:block; padding:14px 0; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--navy); text-decoration:none; border-bottom:1px solid var(--border); }
+.mob-menu a:last-child { border-bottom:none; }
+.mob-menu.open { display:flex; }
 
 /* HERO */
 #hero { position:relative; height:100vh; min-height:700px; display:flex; align-items:center; justify-content:center; overflow:hidden; padding-top:70px; }
@@ -137,15 +143,70 @@ footer a { color:var(--red); text-decoration:none; }
   section { padding:60px 30px; }
   nav { padding:0 30px; }
   .g2 { grid-template-columns:1fr; gap:40px; }
-  .g3 { grid-template-columns:1fr; }
-  .g4 { grid-template-columns:1fr; }
+  .g3 { grid-template-columns:1fr 1fr; }
+  .g4 { grid-template-columns:1fr 1fr; }
   footer { flex-direction:column; gap:12px; padding:30px; }
 }
 @media(max-width:640px) {
-  nav { padding:0 16px; }
-  section { padding:50px 16px; }
+  nav { padding:0 16px; height:56px; }
+  section { padding:48px 16px; }
   .nlinks { display:none; }
-  .ncta { padding:8px 14px; font-size:9px; }
+  .ncta { display:none; }
+  .burger { display:flex; }
+  .mob-menu { display:block; }
+
+  /* Hero */
+  #hero { min-height:100svh; }
+  .hero-c { padding:0 20px; }
+  h1 { font-size:clamp(36px,11vw,60px); letter-spacing:-1px; }
+  .hsub { font-size:11px; margin-bottom:32px; }
+  .hstats { flex-direction:column; gap:20px; align-items:center; }
+  .hstat { text-align:center; padding:0; }
+  .hstat .v { font-size:28px; }
+
+  /* Grids */
+  .g2 { grid-template-columns:1fr; gap:32px; }
+  .g3 { grid-template-columns:1fr; gap:16px; }
+  .g4 { grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* Headings */
+  h2 { font-size:clamp(26px,7vw,38px); }
+
+  /* Stats row */
+  .stat-row { flex-direction:column; }
+  .stat-item { padding:20px; border-right:none; border-bottom:1px solid var(--border); }
+  .stat-item:last-child { border-bottom:none; }
+  .stat-item .sv { font-size:28px; }
+
+  /* Cards */
+  .card-white { padding:16px; }
+  .c-val { font-size:24px; }
+
+  /* Pull quote */
+  .pull-quote { font-size:14px; padding:16px 18px; }
+
+  /* Contact */
+  #contact { padding:60px 20px; }
+
+  /* Plans grid */
+  .g4 .plan-card { min-height:0; }
+
+  /* Companies */
+  .companies { gap:10px; }
+  .co-chip { padding:8px 14px; font-size:10px; }
+
+  /* Table */
+  table { font-size:11px; }
+  table th, table td { padding:10px 8px; }
+
+  /* Map / images */
+  img { max-width:100%; height:auto; }
+
+  /* Footer */
+  footer { padding:24px 16px; text-align:center; flex-direction:column; gap:10px; }
+
+  /* Lightbox close */
+  .lb-close { top:12px; right:12px; font-size:22px; }
 }
 </style>
 </head>
@@ -169,7 +230,21 @@ footer a { color:var(--red); text-decoration:none; }
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="ncta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Nous contacter</button>
+  <button class="burger" id="burger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#programme" onclick="closeMenu()">Programme</a>
+  <a href="#plans" onclick="closeMenu()">Plans</a>
+  <a href="#localisation" onclick="closeMenu()">Localisation</a>
+  <a href="#dispos" onclick="closeMenu()">Disponibilités</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+<script>
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open');}
+function closeMenu(){document.getElementById('mobMenu').classList.remove('open');}
+</script>
 
 <!-- HERO -->
 <section id="hero">
