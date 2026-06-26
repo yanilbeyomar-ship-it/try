@@ -693,9 +693,27 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox
   /* SECTIONS */
   section { padding:48px 16px !important; }
 
-  /* GRIDS — force single column on every grid */
-  .g2, .g3, .g4 { display:block !important; grid-template-columns:1fr !important; gap:20px !important; }
-  .g2 > *, .g3 > *, .g4 > * { margin-bottom:20px !important; width:100% !important; max-width:100% !important; }
+  /* GRIDS — force single column on every grid (class + inline-styled) */
+  .g2, .g3, .g4,
+  [style*="grid-template-columns"] {
+    display:block !important;
+    grid-template-columns:1fr !important;
+    gap:20px !important;
+  }
+  .g2 > *, .g3 > *, .g4 > *,
+  [style*="grid-template-columns"] > * {
+    margin-bottom:20px !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* LOCALISATION — tighten cards */
+  #localisation .card-white { padding:14px 16px !important; margin-bottom:8px !important; }
+  #localisation .c-desc { line-height:1.6 !important; }
+  #localisation h3 { margin-top:28px !important; margin-bottom:12px !important; }
+  #localisation > div:first-child h3 { margin-top:0 !important; }
+  #localisation .companies { display:flex !important; flex-wrap:wrap !important; gap:8px !important; }
+  #localisation .co-chip { font-size:12px !important; padding:6px 12px !important; }
 
   /* HERO */
   #hero { padding-top:60px !important; min-height:auto !important; }
