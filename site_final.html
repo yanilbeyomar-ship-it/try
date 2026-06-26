@@ -680,36 +680,72 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox
 </script>
 <style>
 @media screen and (max-width:768px) {
+  html, body { overflow-x:hidden !important; max-width:100vw !important; }
+  * { box-sizing:border-box !important; }
+
   /* NAV */
   ul.nlinks { display:none !important; }
   button.ncta { display:none !important; }
   button.burger { display:flex !important; }
-  nav { padding:0 16px !important; height:56px !important; }
+  nav { padding:0 14px !important; height:60px !important; }
+  .nl img { height:40px !important; }
 
   /* SECTIONS */
-  section { padding:40px 16px !important; }
+  section { padding:48px 16px !important; }
 
-  /* GRIDS — force single column */
-  div.g2 { display:block !important; }
-  div.g3 { display:grid !important; grid-template-columns:1fr !important; }
-  div.g4 { display:grid !important; grid-template-columns:1fr !important; }
+  /* GRIDS — force single column on every grid */
+  .g2, .g3, .g4 { display:block !important; grid-template-columns:1fr !important; gap:20px !important; }
+  .g2 > *, .g3 > *, .g4 > * { margin-bottom:20px !important; width:100% !important; max-width:100% !important; }
 
   /* HERO */
-  #hero { padding-top:56px !important; }
-  .hero-c { padding:0 20px !important; }
-  h1 { font-size:38px !important; letter-spacing:-1px !important; }
-  .hsub { font-size:11px !important; }
-  .hstats { flex-direction:column !important; align-items:center !important; gap:16px !important; }
+  #hero { padding-top:60px !important; min-height:auto !important; }
+  .hero-bg, .hero-ov { top:60px !important; }
+  .hero-c { padding:60px 20px 40px !important; text-align:center !important; }
+  #hero h1 { font-size:44px !important; letter-spacing:-1px !important; line-height:1 !important; }
+  .htag { font-size:10px !important; }
+  .hsub { font-size:12px !important; margin-bottom:24px !important; }
+  .hstats { flex-direction:column !important; align-items:center !important; gap:14px !important; }
+  .hstat { text-align:center !important; padding:0 !important; }
+  .hstat .v { font-size:28px !important; }
+  /* Hero logo: reposition top-center under nav, smaller */
+  #hero > img[alt="ACTI BATI"] {
+    position:absolute !important;
+    top:74px !important;
+    right:auto !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    height:60px !important;
+    width:auto !important;
+  }
+  .scroll-down { display:none !important; }
+
+  /* HEADINGS */
+  h2 { font-size:26px !important; line-height:1.15 !important; }
+  h3 { font-size:14px !important; }
 
   /* STAT ROW */
   .stat-row { flex-direction:column !important; }
-  .stat-item { border-right:none !important; border-bottom:1px solid #eee !important; }
+  .stat-item { border-right:none !important; border-bottom:1px solid #eee !important; padding:16px 0 !important; }
 
   /* IMAGES */
   img { max-width:100% !important; height:auto !important; }
 
+  /* TABLES — horizontal scroll */
+  .table-wrap { overflow-x:auto !important; -webkit-overflow-scrolling:touch !important; margin:16px -16px !important; padding:0 16px !important; }
+  table { min-width:560px !important; font-size:12px !important; }
+  table th, table td { padding:10px 8px !important; white-space:nowrap !important; }
+
+  /* CARDS — reduce excessive inline padding */
+  div[style*="padding:48px"], div[style*="padding:40px"], div[style*="padding:36px"] { padding:20px !important; }
+
+  /* CONTACT logo */
+  #contact img[alt="ACTI BATI"] { height:90px !important; }
+
   /* FOOTER */
   footer { flex-direction:column !important; padding:24px 16px !important; text-align:center !important; gap:10px !important; }
+
+  /* WATERMARK */
+  #draft-watermark { font-size:50px !important; letter-spacing:4px !important; }
 }
 </style>
 <div id="draft-watermark" style="position:fixed; inset:0; pointer-events:none; z-index:99999; display:flex; align-items:center; justify-content:center; transform:rotate(-35deg); opacity:0.03; font-size:clamp(60px,12vw,120px); font-weight:900; color:#000; letter-spacing:8px; text-transform:uppercase; white-space:nowrap; font-family:sans-serif;">PROJET</div>
