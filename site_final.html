@@ -792,15 +792,16 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox
   #localisation .co-chip { font-size:12px !important; padding:6px 12px !important; }
 
   /* HERO */
-  #hero { padding-top:60px !important; min-height:auto !important; }
+  #hero { padding-top:60px !important; min-height:600px !important; height:auto !important; }
   .hero-bg, .hero-ov { top:60px !important; }
-  .hero-c { padding:60px 20px 40px !important; text-align:center !important; }
-  #hero h1 { font-size:44px !important; letter-spacing:-1px !important; line-height:1 !important; }
-  .htag { font-size:10px !important; }
-  .hsub { font-size:12px !important; margin-bottom:24px !important; }
-  .hstats { flex-direction:column !important; align-items:center !important; gap:14px !important; }
-  .hstat { text-align:center !important; padding:0 !important; }
-  .hstat .v { font-size:28px !important; }
+  .hero-c { padding:80px 18px 48px !important; text-align:center !important; max-width:100% !important; }
+  #hero h1 { font-size:46px !important; letter-spacing:-1px !important; line-height:1 !important; margin-bottom:14px !important; }
+  .htag { font-size:9px !important; margin-bottom:18px !important; padding:7px 14px !important; }
+  .hsub { font-size:11px !important; margin-bottom:30px !important; letter-spacing:1px !important; }
+  .hstats { display:grid !important; grid-template-columns:1fr 1fr !important; gap:18px 12px !important; justify-content:center !important; max-width:340px !important; margin:0 auto !important; }
+  .hstat { text-align:center !important; padding:14px 8px !important; background:rgba(255,255,255,0.08) !important; border:1px solid rgba(255,255,255,0.15) !important; border-radius:10px !important; }
+  .hstat .v { font-size:26px !important; }
+  .hstat .l { font-size:8.5px !important; }
   /* Hero logo: reposition top-center under nav, smaller */
   #hero > img[alt="ACTI BATI"] {
     position:absolute !important;
@@ -840,6 +841,20 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox
 
   /* WATERMARK */
   #draft-watermark { font-size:50px !important; letter-spacing:4px !important; }
+
+  /* POLISH — éviter texte tronqué / débordements */
+  h1, h2, h3, p, li, td, th, .c-val, .c-desc { overflow-wrap:break-word !important; word-break:break-word !important; }
+  .c-val { font-size:30px !important; }
+  .c-val small { font-size:13px !important; }
+  .pull-quote { font-size:17px !important; line-height:1.5 !important; padding:24px 18px !important; }
+  .desc { font-size:14px !important; line-height:1.7 !important; }
+  .blist li { font-size:13.5px !important; line-height:1.5 !important; }
+  .ey, .c-ey { font-size:9px !important; }
+  .ilab, .ilab2 { font-size:11px !important; }
+  /* chapeau logo plus discret */
+  section > div:first-child > img[alt=""] { height:32px !important; }
+  /* contact: la zone logo vide ne prend pas de place */
+  #contact > div:first-child { padding:10px !important; }
 
   /* LIGHTBOX — plein écran, image maximisée, gros boutons */
   #lb-scroll { padding:8px !important; }
