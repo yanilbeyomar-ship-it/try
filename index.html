@@ -497,7 +497,11 @@ function closeMenu(){document.getElementById('mobMenu').classList.remove('open')
   <!-- Lightbox -->
   <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; overflow:auto; -webkit-overflow-scrolling:touch; padding:20px; cursor:zoom-out; touch-action:pinch-zoom;" onclick="if(event.target.id==='lightbox')closeLightbox()">
     <button onclick="closeLightbox()" style="position:fixed; top:14px; right:18px; background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); width:44px; height:44px; border-radius:50%; font-size:22px; cursor:pointer; z-index:10000; display:flex; align-items:center; justify-content:center;">×</button>
-    <button id="lb-zoom" onclick="toggleLbZoom(event)" style="position:fixed; bottom:18px; right:18px; background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); padding:10px 16px; border-radius:24px; font-size:13px; cursor:pointer; z-index:10000;">🔍 Zoom</button>
+    <div style="position:fixed; bottom:18px; right:18px; display:flex; gap:8px; z-index:10000;">
+      <button onclick="lbZoomOut(event)" style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); width:44px; height:44px; border-radius:50%; font-size:22px; font-weight:700; cursor:pointer;">−</button>
+      <button onclick="toggleLbZoom(event)" style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); padding:0 18px; height:44px; border-radius:24px; font-size:13px; cursor:pointer;">🔍 Zoom</button>
+      <button onclick="lbZoomIn(event)" style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); width:44px; height:44px; border-radius:50%; font-size:22px; font-weight:700; cursor:pointer;">+</button>
+    </div>
     <div style="min-height:100%; display:flex; align-items:center; justify-content:center;">
       <img id="lb-img" style="max-width:100%; max-height:90vh; object-fit:contain; border-radius:4px; cursor:zoom-in; transition:max-width 0.2s, max-height 0.2s;" onclick="toggleLbZoom(event)">
     </div>
@@ -685,22 +689,44 @@ document.querySelectorAll('.zoom-wrap').forEach(wrap => {
   });
 });
 
-function closeLightbox() {
-  const lb = document.getElementById('lightbox');
-  lb.style.display = 'none';
-  document.body.style.overflow = '';
+let lbScale = 1;
+function applyLbScale() {
   const img = document.getElementById('lb-img');
-  img.style.maxWidth = '100%'; img.style.maxHeight = '90vh'; img.style.cursor = 'zoom-in';
+  img.style.maxWidth = 'none';
+  img.style.maxHeight = 'none';
+  img.style.transform = 'scale(' + lbScale + ')';
+  img.style.transformOrigin = 'center center';
+  img.style.cursor = lbScale > 1 ? 'zoom-out' : 'zoom-in';
+}
+function resetLb() {
+  lbScale = 1;
+  const img = document.getElementById('lb-img');
+  img.style.transform = '';
+  img.style.maxWidth = '100%';
+  img.style.maxHeight = '90vh';
+  img.style.cursor = 'zoom-in';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+  resetLb();
 }
 function toggleLbZoom(e) {
   e.stopPropagation();
-  const img = document.getElementById('lb-img');
-  if (img.style.maxWidth === 'none') {
-    img.style.maxWidth = '100%'; img.style.maxHeight = '90vh'; img.style.cursor = 'zoom-in';
-  } else {
-    img.style.maxWidth = 'none'; img.style.maxHeight = 'none'; img.style.cursor = 'zoom-out';
-  }
+  if (lbScale === 1) { lbScale = 3; applyLbScale(); }
+  else { resetLb(); }
 }
+function lbZoomIn(e) { e.stopPropagation(); lbScale = Math.min(lbScale + 0.5, 8); applyLbScale(); }
+function lbZoomOut(e) { e.stopPropagation(); lbScale = Math.max(lbScale - 0.5, 1); if(lbScale===1){resetLb();}else{applyLbScale();} }
+// wheel zoom on desktop
+document.addEventListener('wheel', function(e){
+  const lb = document.getElementById('lightbox');
+  if (lb.style.display !== 'block') return;
+  e.preventDefault();
+  if (e.deltaY < 0) lbScale = Math.min(lbScale + 0.25, 8);
+  else lbScale = Math.max(lbScale - 0.25, 1);
+  if (lbScale === 1) resetLb(); else applyLbScale();
+}, { passive: false });
 
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
 </script>
