@@ -637,7 +637,7 @@ function closeMenu(){document.getElementById('mobMenu').classList.remove('open')
         <ul class="blist" style="margin-top:12px;">
           <li style="color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.1);">BP Invest — 7 rue Auguste, 30000 Nîmes</li>
           <li style="color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.1);">Tel. : <strong style="color:white;">06 07 82 25 43</strong></li>
-          <li style="color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.1);">Email : <strong style="color:white;">brhi@brhi.fr</strong></li>
+          <li style="color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.1);">Email : <strong style="color:white;">brhi@bhi.fr</strong></li>
           <li style="color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.1);">Contact commercial : <strong style="color:white;">Nous consulter</strong></li>
         </ul>
         <a href="#" class="ct-btn" style="margin-top:28px;">Demander une information</a>
@@ -683,34 +683,40 @@ document.querySelectorAll('.zoom-wrap').forEach(wrap => {
   wrap.addEventListener('click', () => {
     const lbImg = document.getElementById('lb-img');
     lbImg.src = img.src;
-    lbImg.style.maxWidth = '100%'; lbImg.style.maxHeight = '90vh'; lbImg.style.cursor = 'zoom-in';
+    lbScale = 1; lbTx = 0; lbTy = 0;
+    lbImg.style.transition = 'none';
+    lbImg.style.transform = '';
+    lbImg.style.maxWidth = '100%';
+    lbImg.style.maxHeight = '88vh';
+    lbImg.style.cursor = 'zoom-in';
     const lb = document.getElementById('lightbox');
     lb.style.display = 'block';
     document.body.style.overflow = 'hidden';
   });
 });
 
-let lbScale = 1;
-function applyLbScale() {
+let lbScale = 1, lbTx = 0, lbTy = 0;
+let lbDrag = null;
+function applyLb() {
   const img = document.getElementById('lb-img');
-  img.style.transition = 'transform 0.28s cubic-bezier(.2,.7,.2,1)';
+  img.style.transition = lbDrag ? 'none' : 'transform 0.2s cubic-bezier(.2,.7,.2,1)';
   img.style.maxWidth = 'none';
   img.style.maxHeight = 'none';
-  img.style.transform = 'scale(' + lbScale + ')';
+  img.style.transform = 'translate(' + lbTx + 'px,' + lbTy + 'px) scale(' + lbScale + ')';
   img.style.transformOrigin = 'center center';
-  img.style.cursor = lbScale > 1 ? 'zoom-out' : 'zoom-in';
+  img.style.cursor = lbScale > 1 ? (lbDrag ? 'grabbing' : 'grab') : 'zoom-in';
 }
 function resetLb() {
-  lbScale = 1;
+  lbScale = 1; lbTx = 0; lbTy = 0;
   const img = document.getElementById('lb-img');
-  img.style.transition = 'transform 0.28s cubic-bezier(.2,.7,.2,1)';
-  img.style.transform = 'scale(1)';
+  img.style.transition = 'transform 0.25s cubic-bezier(.2,.7,.2,1)';
+  img.style.transform = 'translate(0,0) scale(1)';
   setTimeout(() => {
     img.style.maxWidth = '100%';
-    img.style.maxHeight = '90vh';
+    img.style.maxHeight = '88vh';
     img.style.transform = '';
     img.style.cursor = 'zoom-in';
-  }, 280);
+  }, 250);
 }
 function closeLightbox() {
   document.getElementById('lightbox').style.display = 'none';
@@ -719,21 +725,54 @@ function closeLightbox() {
 }
 function toggleLbZoom(e) {
   e.stopPropagation();
-  // progressive click: +0.5 each click, wrap to 1 at max
-  if (lbScale >= 4) { resetLb(); } else { lbScale = +(lbScale + 0.5).toFixed(2); applyLbScale(); }
+  if (lbScale >= 3) { resetLb(); } else { lbScale = +(lbScale + 1).toFixed(2); applyLb(); }
 }
-function lbZoomIn(e) { e.stopPropagation(); lbScale = Math.min(+(lbScale + 0.25).toFixed(2), 8); applyLbScale(); }
-function lbZoomOut(e) { e.stopPropagation(); lbScale = Math.max(+(lbScale - 0.25).toFixed(2), 1); if(lbScale===1){resetLb();}else{applyLbScale();} }
-// wheel zoom on desktop — finer, smoother
+function lbZoomIn(e) { e.stopPropagation(); lbScale = Math.min(+(lbScale + 0.5).toFixed(2), 8); applyLb(); }
+function lbZoomOut(e) { e.stopPropagation(); lbScale = Math.max(+(lbScale - 0.5).toFixed(2), 1); if(lbScale===1){resetLb();}else{applyLb();} }
+// wheel zoom (desktop)
 document.addEventListener('wheel', function(e){
   const lb = document.getElementById('lightbox');
   if (lb.style.display !== 'block') return;
   e.preventDefault();
-  const step = 0.12;
+  const step = 0.15;
+  const prev = lbScale;
   if (e.deltaY < 0) lbScale = Math.min(+(lbScale + step).toFixed(2), 8);
   else lbScale = Math.max(+(lbScale - step).toFixed(2), 1);
-  if (lbScale === 1) resetLb(); else applyLbScale();
+  if (lbScale === 1) resetLb(); else applyLb();
 }, { passive: false });
+
+// PAN: mouse drag
+(function(){
+  const img = document.getElementById('lb-img');
+  if (!img) return;
+  let sx=0, sy=0, tx0=0, ty0=0;
+  img.addEventListener('mousedown', e => {
+    if (lbScale <= 1) return;
+    lbDrag = true; sx = e.clientX; sy = e.clientY; tx0 = lbTx; ty0 = lbTy;
+    e.preventDefault(); e.stopPropagation();
+    applyLb();
+  });
+  window.addEventListener('mousemove', e => {
+    if (!lbDrag) return;
+    lbTx = tx0 + (e.clientX - sx);
+    lbTy = ty0 + (e.clientY - sy);
+    applyLb();
+  });
+  window.addEventListener('mouseup', () => { if (lbDrag) { lbDrag = false; applyLb(); } });
+  // Touch
+  img.addEventListener('touchstart', e => {
+    if (lbScale <= 1 || e.touches.length !== 1) return;
+    lbDrag = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; tx0 = lbTx; ty0 = lbTy;
+  }, { passive: true });
+  img.addEventListener('touchmove', e => {
+    if (!lbDrag || e.touches.length !== 1) return;
+    lbTx = tx0 + (e.touches[0].clientX - sx);
+    lbTy = ty0 + (e.touches[0].clientY - sy);
+    applyLb();
+    e.preventDefault();
+  }, { passive: false });
+  img.addEventListener('touchend', () => { lbDrag = false; });
+})();
 
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
 </script>
