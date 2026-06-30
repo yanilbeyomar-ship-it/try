@@ -496,7 +496,7 @@ function closeMenu(){document.getElementById('mobMenu').classList.remove('open')
 
   <!-- Lightbox -->
   <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999;">
-    <div id="lb-scroll" style="position:absolute; inset:0; overflow:auto; -webkit-overflow-scrolling:touch; padding:40px;">
+    <div id="lb-scroll" style="position:absolute; inset:0; overflow:auto; -webkit-overflow-scrolling:touch; padding:40px; cursor:grab;">
       <img id="lb-img" style="display:block; margin:0 auto; max-width:100%; transition:width 0.25s ease;">
     </div>
     <button onclick="closeLightbox()" style="position:fixed; top:14px; right:18px; background:rgba(255,255,255,0.18); color:white; border:1px solid rgba(255,255,255,0.3); width:44px; height:44px; border-radius:50%; font-size:22px; cursor:pointer; z-index:10000;">×</button>
@@ -714,6 +714,33 @@ function closeLightbox() {
   document.body.style.overflow = '';
   lbFit();
 }
+
+// Drag-to-pan with mouse on the zoom container
+(function(){
+  var sc = document.getElementById('lb-scroll');
+  if (!sc) return;
+  var down = false, sx = 0, sy = 0, sl = 0, st = 0, moved = false;
+  sc.addEventListener('mousedown', function(e){
+    if (e.button !== 0) return;
+    down = true; moved = false;
+    sx = e.clientX; sy = e.clientY;
+    sl = sc.scrollLeft; st = sc.scrollTop;
+    sc.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e){
+    if (!down) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    sc.scrollLeft = sl - dx;
+    sc.scrollTop = st - dy;
+  });
+  window.addEventListener('mouseup', function(){
+    if (!down) return;
+    down = false;
+    sc.style.cursor = 'grab';
+  });
+})();
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
 // wheel zoom on desktop
 document.addEventListener('wheel', function(e){
