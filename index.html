@@ -294,17 +294,17 @@ function closeMenu(){document.getElementById('mobMenu').classList.remove('open')
         <div class="card-white">
           <div class="c-ey">Bâtiment A</div>
           <div class="c-val">3 104<small> m²</small></div>
-          <div class="c-desc">2 cellules — A01 &amp; A02 — 1 552 m² chacune<br>Bureau + activité + sanitaires<br><em>Abri 2 roues</em></div>
+          <div class="c-desc">2 cellules — A01 &amp; A02 — 1 552 m² chacune<br>Bureau + locaux sociaux ~105 m² RDC + 190 m² mezzanine<br>Activité + sanitaires<br><em>Abri 2 roues</em></div>
         </div>
         <div class="card-white">
           <div class="c-ey">Bâtiment B</div>
           <div class="c-val">3 271<small> m²</small></div>
-          <div class="c-desc">2 cellules — B01 &amp; B02 — 1 635 m² chacune<br>Bureau + activité + sanitaires<br><em>Abri 2 roues</em></div>
+          <div class="c-desc">2 cellules — B01 &amp; B02 — 1 635 m² chacune<br>Bureau + locaux sociaux ~105 m² RDC + 190 m² mezzanine<br>Activité + sanitaires<br><em>Abri 2 roues</em></div>
         </div>
         <div class="card-white">
           <div class="c-ey">Bâtiment C</div>
           <div class="c-val">3 350<small> m²</small></div>
-          <div class="c-desc">2 cellules — C01 &amp; C02 — 1 675 m² chacune<br>Bureau + activité + sanitaires<br><em>Abri 2 roues</em></div>
+          <div class="c-desc">2 cellules — C01 &amp; C02 — 1 675 m² chacune<br>Bureau + locaux sociaux ~105 m² RDC + 190 m² mezzanine<br>Activité + sanitaires<br><em>Abri 2 roues</em></div>
         </div>
       </div>
     </div>
@@ -616,6 +616,7 @@ function closeMenu(){document.getElementById('mobMenu').classList.remove('open')
       <li>Stationnement vélo</li>
       <li>Stationnement VL &amp; PL</li>
       <li>Double accès dissocié PL / VL</li>
+      <li>Bureau + locaux sociaux : ~105 m² au RDC + 190 m² en mezzanine</li>
       <li>Mezzanine</li>
     </ul>
   </div>
@@ -699,7 +700,7 @@ let lbScale = 1, lbTx = 0, lbTy = 0;
 let lbDrag = null;
 function applyLb() {
   const img = document.getElementById('lb-img');
-  img.style.transition = lbDrag ? 'none' : 'transform 0.2s cubic-bezier(.2,.7,.2,1)';
+  img.style.transition = lbDrag ? 'none' : 'transform 0.15s cubic-bezier(.25,.8,.25,1)';
   img.style.maxWidth = 'none';
   img.style.maxHeight = 'none';
   img.style.transform = 'translate(' + lbTx + 'px,' + lbTy + 'px) scale(' + lbScale + ')';
@@ -725,16 +726,16 @@ function closeLightbox() {
 }
 function toggleLbZoom(e) {
   e.stopPropagation();
-  if (lbScale >= 3) { resetLb(); } else { lbScale = +(lbScale + 1).toFixed(2); applyLb(); }
+  if (lbScale >= 4) { resetLb(); } else { lbScale = +(lbScale + 0.3).toFixed(2); applyLb(); }
 }
-function lbZoomIn(e) { e.stopPropagation(); lbScale = Math.min(+(lbScale + 0.5).toFixed(2), 8); applyLb(); }
-function lbZoomOut(e) { e.stopPropagation(); lbScale = Math.max(+(lbScale - 0.5).toFixed(2), 1); if(lbScale===1){resetLb();}else{applyLb();} }
+function lbZoomIn(e) { e.stopPropagation(); lbScale = Math.min(+(lbScale + 0.25).toFixed(2), 8); applyLb(); }
+function lbZoomOut(e) { e.stopPropagation(); lbScale = Math.max(+(lbScale - 0.25).toFixed(2), 1); if(lbScale===1){resetLb();}else{applyLb();} }
 // wheel zoom (desktop)
 document.addEventListener('wheel', function(e){
   const lb = document.getElementById('lightbox');
   if (lb.style.display !== 'block') return;
   e.preventDefault();
-  const step = 0.15;
+  const step = 0.06;
   const prev = lbScale;
   if (e.deltaY < 0) lbScale = Math.min(+(lbScale + step).toFixed(2), 8);
   else lbScale = Math.max(+(lbScale - step).toFixed(2), 1);
