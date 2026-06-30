@@ -495,8 +495,12 @@ function closeMenu(){document.getElementById('mobMenu').classList.remove('open')
   </div>
 
   <!-- Lightbox -->
-  <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; justify-content:center; align-items:center; cursor:zoom-out;" onclick="closeLightbox()">
-    <img id="lb-img" style="max-width:95vw; max-height:95vh; object-fit:contain; border-radius:4px;">
+  <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; overflow:auto; -webkit-overflow-scrolling:touch; padding:20px; cursor:zoom-out; touch-action:pinch-zoom;" onclick="if(event.target.id==='lightbox')closeLightbox()">
+    <button onclick="closeLightbox()" style="position:fixed; top:14px; right:18px; background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); width:44px; height:44px; border-radius:50%; font-size:22px; cursor:pointer; z-index:10000; display:flex; align-items:center; justify-content:center;">×</button>
+    <button id="lb-zoom" onclick="toggleLbZoom(event)" style="position:fixed; bottom:18px; right:18px; background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3); padding:10px 16px; border-radius:24px; font-size:13px; cursor:pointer; z-index:10000;">🔍 Zoom</button>
+    <div style="min-height:100%; display:flex; align-items:center; justify-content:center;">
+      <img id="lb-img" style="max-width:100%; max-height:90vh; object-fit:contain; border-radius:4px; cursor:zoom-in; transition:max-width 0.2s, max-height 0.2s;" onclick="toggleLbZoom(event)">
+    </div>
   </div>
 </section>
 
@@ -672,14 +676,30 @@ document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 document.querySelectorAll('.zoom-wrap').forEach(wrap => {
   const img = wrap.querySelector('img');
   wrap.addEventListener('click', () => {
-    document.getElementById('lb-img').src = img.src;
+    const lbImg = document.getElementById('lb-img');
+    lbImg.src = img.src;
+    lbImg.style.maxWidth = '100%'; lbImg.style.maxHeight = '90vh'; lbImg.style.cursor = 'zoom-in';
     const lb = document.getElementById('lightbox');
-    lb.style.display = 'flex';
+    lb.style.display = 'block';
+    document.body.style.overflow = 'hidden';
   });
 });
 
 function closeLightbox() {
-  document.getElementById('lightbox').style.display = 'none';
+  const lb = document.getElementById('lightbox');
+  lb.style.display = 'none';
+  document.body.style.overflow = '';
+  const img = document.getElementById('lb-img');
+  img.style.maxWidth = '100%'; img.style.maxHeight = '90vh'; img.style.cursor = 'zoom-in';
+}
+function toggleLbZoom(e) {
+  e.stopPropagation();
+  const img = document.getElementById('lb-img');
+  if (img.style.maxWidth === 'none') {
+    img.style.maxWidth = '100%'; img.style.maxHeight = '90vh'; img.style.cursor = 'zoom-in';
+  } else {
+    img.style.maxWidth = 'none'; img.style.maxHeight = 'none'; img.style.cursor = 'zoom-out';
+  }
 }
 
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
