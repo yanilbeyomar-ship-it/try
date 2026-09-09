@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PORTA ACTIVA — Salses-le-Château — Parc d'activités</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  /* Charte ACTI BATI — couleurs relevées sur le logo */
+  --navy:#0E1B3D;          /* fond profond */
+  --blue:#1B3895;          /* bleu de marque */
+  --pink:#D01154;          /* magenta de marque (accent) */
+  --pink2:#E6316E;         /* magenta survol */
+  /* Tonalités reprises des perspectives (sable / béton) */
+  --sand:#F6F2EA;
+  --sand2:#EDE6DA;
+  --stone:#C9BCA8;
+  --border:#E6E0D6;
+  --muted:#8A8578;
+  --ink:#2E2C28;
+}
+html { scroll-behavior:smooth; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#fff; color:var(--ink); line-height:1.6; }
+
+/* ══ BANDEAU VERSION DE TRAVAIL — supprimer cette balise <div id="draft"> avant diffusion ══ */
+#draft { position:fixed; bottom:0; left:0; right:0; z-index:1200; background:#B8860B; color:#fff;
+  font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; text-align:center; padding:9px 16px; font-weight:700; }
+#draft button { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.45); color:#fff;
+  font-size:9px; letter-spacing:1px; padding:3px 10px; margin-left:12px; cursor:pointer; border-radius:2px; text-transform:uppercase; }
+
+/* ══ NAV ══ */
+nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between;
+  padding:0 60px; height:76px; background:#fff; border-bottom:1px solid var(--border); transition:box-shadow .3s; }
+nav.scroll { box-shadow:0 2px 14px rgba(14,27,61,.08); }
+.nl { display:flex; align-items:center; gap:14px; text-decoration:none; }
+.nl img { height:52px; width:auto; display:block; }
+.nlinks { display:flex; gap:26px; list-style:none; }
+.nlinks a { text-decoration:none; font-size:10.5px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:#6B6A66; transition:color .2s; }
+.nlinks a:hover { color:var(--pink); }
+.ncta { background:var(--pink); color:#fff; border:none; cursor:pointer; padding:12px 26px; font-size:10px;
+  font-weight:800; letter-spacing:2px; text-transform:uppercase; transition:background .2s; }
+.ncta:hover { background:var(--pink2); }
+.burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; border:none; background:none; }
+.burger span { display:block; width:23px; height:2px; background:var(--navy); }
+.mob-menu { display:none; position:fixed; top:60px; left:0; right:0; background:#fff; box-shadow:0 6px 24px rgba(0,0,0,.12);
+  z-index:999; padding:16px 20px; flex-direction:column; }
+.mob-menu a { display:block; padding:14px 0; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  color:var(--navy); text-decoration:none; border-bottom:1px solid var(--border); }
+.mob-menu a:last-child { border-bottom:none; }
+.mob-menu.open { display:flex; }
+
+/* ══ HERO ══ */
+#hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding-top:76px; }
+.hero-bg { position:absolute; inset:0; top:76px; background-size:cover; background-position:center;
+  background-color:var(--sand2); }
+.hero-ov { position:absolute; inset:0; top:76px;
+  background:linear-gradient(180deg, rgba(14,27,61,.35) 0%, rgba(14,27,61,.55) 55%, rgba(14,27,61,.82) 100%); }
+.hero-c { position:relative; z-index:2; text-align:center; max-width:1000px; color:#fff; padding:60px 40px; animation:fu .9s ease-out; }
+.htag { display:inline-block; background:var(--pink); font-size:10px; font-weight:800; letter-spacing:2.4px;
+  text-transform:uppercase; padding:9px 18px; margin-bottom:30px; }
+h1 { font-size:clamp(44px,8vw,104px); font-weight:900; line-height:.92; letter-spacing:-2.5px; margin-bottom:18px; }
+.hsub { font-size:13px; letter-spacing:2.6px; color:rgba(255,255,255,.75); text-transform:uppercase; margin-bottom:44px; }
+.hstats { display:flex; gap:52px; justify-content:center; flex-wrap:wrap; }
+.hstat .v { font-size:36px; font-weight:900; line-height:1; }
+.hstat .v sup { font-size:14px; font-weight:400; opacity:.7; }
+.hstat .l { font-size:9px; letter-spacing:1.6px; color:rgba(255,255,255,.55); text-transform:uppercase; margin-top:6px; }
+@keyframes fu { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:none; } }
+.scroll-down { position:absolute; bottom:44px; left:50%; transform:translateX(-50%); z-index:2; font-size:9px;
+  letter-spacing:2.4px; text-transform:uppercase; color:rgba(255,255,255,.45); animation:sd 2.5s infinite; }
+@keyframes sd { 0%,100% { transform:translateX(-50%);} 50% { transform:translateX(-50%) translateY(8px);} }
+
+/* ══ SECTIONS ══ */
+section { padding:100px 60px; border-top:1px solid rgba(14,27,61,.06); }
+#hero { border-top:none; }
+.ey { font-size:9.5px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--pink); margin-bottom:10px; }
+h2 { font-size:clamp(28px,4vw,50px); font-weight:900; line-height:1.05; letter-spacing:-1.2px; color:var(--navy); }
+h2 em { color:var(--pink); font-style:normal; }
+h3 { font-size:13px; font-weight:800; color:var(--navy); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:16px; }
+.rline { width:52px; height:3px; background:var(--pink); margin:22px 0; }
+.desc { font-size:15px; line-height:1.85; color:#5F5C55; max-width:760px; }
+.sec-logo { display:flex; justify-content:flex-end; margin-bottom:10px; }
+.sec-logo img { height:40px; width:auto; opacity:.85; }
+
+/* ══ GRILLES ══ */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; margin-top:56px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:52px; }
+.g4 { display:grid; grid-template-columns:repeat(2,1fr); gap:26px; margin-top:48px; }
+
+/* ══ CARTES ══ */
+.card { background:var(--sand); border:1px solid var(--border); border-left:4px solid var(--pink); padding:28px; transition:box-shadow .25s; }
+.card:hover { box-shadow:0 8px 24px rgba(14,27,61,.08); }
+.card-white { background:#fff; border:1px solid var(--border); border-left:4px solid var(--pink); padding:24px; }
+.c-ey { font-size:9px; font-weight:800; letter-spacing:2px; color:var(--pink); text-transform:uppercase; margin-bottom:8px; }
+.c-val { font-size:30px; font-weight:900; color:var(--navy); line-height:1; }
+.c-val small { font-size:14px; font-weight:300; color:var(--muted); }
+.c-desc { font-size:12.5px; color:#66625B; margin-top:8px; line-height:1.6; }
+
+/* ══ LISTES ══ */
+.blist { list-style:none; margin-top:16px; }
+.blist li { display:flex; align-items:flex-start; gap:11px; padding:10px 0; font-size:13.5px; color:#565349;
+  border-bottom:1px solid #F1EDE5; line-height:1.6; }
+.blist li::before { content:'▸'; color:var(--pink); font-weight:bold; flex-shrink:0; margin-top:1px; }
+.blist li:last-child { border-bottom:none; }
+
+/* ══ VISUELS ══ */
+img.fi { width:100%; display:block; border-radius:3px; box-shadow:0 10px 34px rgba(14,27,61,.12); }
+.ilab { font-size:10px; color:#A8A296; margin-top:9px; text-align:center; letter-spacing:.4px; }
+/* Emplacement réservé quand le fichier image n'est pas encore fourni */
+.ph { width:100%; aspect-ratio:16/9; border:2px dashed var(--stone); background:
+    repeating-linear-gradient(135deg, var(--sand) 0 12px, var(--sand2) 12px 24px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border-radius:3px; text-align:center; padding:24px; }
+.ph .ph-t { font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--navy); }
+.ph .ph-f { font-size:10.5px; color:var(--muted); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+.ph .ph-n { font-size:9.5px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+
+/* ══ ZOOM / LIGHTBOX ══ */
+.zoom-wrap { position:relative; overflow:hidden; cursor:zoom-in; border-radius:3px; background:#F2EFE9; }
+.zoom-wrap img { width:100%; display:block; }
+.zoom-label { position:absolute; bottom:10px; right:10px; background:rgba(14,27,61,.78); color:#fff; font-size:9px;
+  letter-spacing:1px; padding:5px 10px; text-transform:uppercase; pointer-events:none; }
+
+/* ══ TABLEAU ══ */
+.table-wrap { overflow-x:auto; margin-top:32px; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+table th { background:var(--navy); color:#fff; padding:14px 12px; text-align:left; font-weight:700; font-size:11px;
+  letter-spacing:1px; text-transform:uppercase; }
+table td { padding:13px 12px; border-bottom:1px solid var(--border); }
+table tbody tr:nth-child(even) { background:var(--sand); }
+table tbody tr:hover { background:#F1EDE5; }
+table .total { background:var(--navy) !important; }
+table .total td { color:#fff; font-weight:700; border:none; }
+.badge-grey { display:inline-block; background:#E4DFD5; color:#6B6760; padding:4px 11px; border-radius:2px; font-size:10px; font-weight:700; text-decoration:none; }
+.badge-grey:hover { background:var(--pink); color:#fff; }
+
+/* ══ CHIFFRES ══ */
+.stat-row { display:flex; margin-top:48px; border-top:2px solid var(--pink); border-bottom:2px solid var(--pink); }
+.stat-item { flex:1; padding:28px 20px; border-right:1px solid rgba(14,27,61,.08); text-align:center; }
+.stat-item:last-child { border-right:none; }
+.stat-item .sv { font-size:32px; font-weight:900; color:var(--navy); line-height:1; }
+.stat-item .sl { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; margin-top:7px; }
+
+.pull-quote { border-left:4px solid var(--pink); padding:22px 30px; background:#fff; margin:44px 0; font-size:16.5px;
+  color:var(--navy); font-weight:500; line-height:1.65; }
+.companies { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+.co-chip { background:var(--sand); border:1px solid var(--border); padding:9px 18px; font-size:11px; font-weight:700;
+  color:var(--navy); letter-spacing:.8px; text-transform:uppercase; }
+
+/* ══ DONNÉE À CONFIRMER ══ */
+.tbc { background:#FDF4D8; border-bottom:2px dotted #B8860B; color:#7A5C00; padding:0 3px; font-style:normal; }
+/* Déclinaison sur fond sombre (hero, contact) — sinon le marqueur devient illisible */
+#contact .tbc, #hero .tbc { background:rgba(232,180,74,.16); border-bottom-color:#E8B44A; color:#F5C86B; }
+
+/* ══ RÉVÉLATION ══ */
+.rv { opacity:0; transform:translateY(24px); }
+.rv.visible { animation:rv .55s ease-out forwards; }
+@keyframes rv { to { opacity:1; transform:none; } }
+
+/* ══ CONTACT ══ */
+#contact { background:var(--navy); color:#fff; }
+#contact h2 { color:#fff; }
+#contact .desc { color:rgba(255,255,255,.78); max-width:100%; }
+#contact .blist li { color:rgba(255,255,255,.78); border-color:rgba(255,255,255,.12); }
+.ct-btn { display:inline-block; background:var(--pink); color:#fff; padding:15px 34px; margin-top:26px; text-decoration:none;
+  font-weight:800; font-size:11px; letter-spacing:2px; text-transform:uppercase; transition:background .2s; }
+.ct-btn:hover { background:var(--pink2); }
+
+footer { background:#0A1229; color:#7E8698; padding:40px 60px; display:flex; justify-content:space-between;
+  align-items:center; font-size:11px; line-height:1.9; gap:20px; }
+footer strong { color:#B9C0CE; }
+
+/* ══ SÉLECTEUR DE NOM (interne — s'affiche avec ?noms=1) ══ */
+#namer { display:none; position:fixed; top:92px; right:18px; z-index:1100; background:#fff; border:1px solid var(--border);
+  box-shadow:0 12px 34px rgba(14,27,61,.18); padding:16px; width:230px; border-radius:4px; }
+#namer.on { display:block; }
+#namer h4 { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; font-weight:800; }
+#namer button { display:block; width:100%; text-align:left; background:var(--sand); border:1px solid var(--border);
+  padding:9px 11px; margin-bottom:6px; cursor:pointer; font-size:11.5px; font-weight:800; color:var(--navy);
+  letter-spacing:.6px; transition:.15s; }
+#namer button:hover, #namer button.sel { background:var(--pink); color:#fff; border-color:var(--pink); }
+#namer .sig { font-size:9.5px; color:var(--muted); line-height:1.5; margin-top:8px; }
+
+@media(max-width:1024px){
+  section { padding:64px 30px; }
+  nav { padding:0 30px; }
+  .g2 { grid-template-columns:1fr; gap:40px; }
+  .g3, .g4 { grid-template-columns:1fr 1fr; }
+  footer { flex-direction:column; text-align:center; }
+}
+@media(max-width:768px){
+  html, body { overflow-x:hidden; max-width:100vw; }
+  nav { padding:0 16px; height:62px; }
+  .nl img { height:40px; }
+  .nlinks, .ncta { display:none !important; }
+  .burger { display:flex !important; }
+  section { padding:52px 16px; }
+  .g2, .g3, .g4 { display:block !important; }
+  .g2 > *, .g3 > *, .g4 > * { margin-bottom:20px; }
+  #hero { padding-top:62px; min-height:auto; }
+  .hero-bg, .hero-ov { top:62px; }
+  .hero-c { padding:72px 18px 56px; }
+  h1 { font-size:46px; letter-spacing:-1.4px; }
+  .hsub { font-size:11px; letter-spacing:1.6px; margin-bottom:30px; }
+  .hstats { display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:340px; margin:0 auto; }
+  .hstat { padding:14px 8px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.18); border-radius:8px; }
+  .hstat .v { font-size:25px; }
+  h2 { font-size:26px; }
+  .stat-row { flex-direction:column; }
+  .stat-item { border-right:none; border-bottom:1px solid var(--border); padding:18px; }
+  .stat-item:last-child { border-bottom:none; }
+  .pull-quote { font-size:15px; padding:18px 20px; }
+  table { min-width:600px; }
+  .table-wrap { margin:16px -16px; padding:0 16px; }
+  footer { padding:26px 16px; }
+  #namer { display:none !important; }
+  .scroll-down { display:none; }
+}
+@media print {
+  nav, #draft, #namer, .scroll-down, .ncta, .mob-menu { display:none !important; }
+  section { padding:28px 0; page-break-inside:avoid; border-top:none; }
+  #hero { min-height:auto; padding-top:0; }
+  .rv { opacity:1 !important; transform:none !important; }
+  body { font-size:11px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ BANDEAU VERSION DE TRAVAIL — à supprimer avant diffusion client ══════════ -->
+<div id="draft">
+  Version de travail — visuels et données chiffrées à intégrer
+  <button onclick="document.getElementById('draft').remove()">Masquer</button>
+</div>
+
+<!-- ══════════ NAVIGATION ══════════ -->
+<nav id="nav">
+  <a href="#hero" class="nl"><img src="salses_assets/logo_actibati_full.png" alt="ACTI BATI — Immobilier d'entreprise"></a>
+  <ul class="nlinks">
+    <li><a href="#programme">Le parc</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#localisation">Localisation</a></li>
+    <li><a href="#environnement">Environnement</a></li>
+    <li><a href="#dispos">Disponibilités</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="ncta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Nous contacter</button>
+  <button class="burger" aria-label="Menu" onclick="document.getElementById('mobMenu').classList.toggle('open')"><span></span><span></span><span></span></button>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#programme" onclick="closeMenu()">Le parc</a>
+  <a href="#architecture" onclick="closeMenu()">Architecture</a>
+  <a href="#localisation" onclick="closeMenu()">Localisation</a>
+  <a href="#environnement" onclick="closeMenu()">Environnement</a>
+  <a href="#dispos" onclick="closeMenu()">Disponibilités</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- ══════════ SÉLECTEUR DE NOM (interne) ══════════ -->
+<div id="namer">
+  <h4>Nom du parc — essai</h4>
+  <div id="namer-btns"></div>
+  <p class="sig" id="namer-sig"></p>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="hero-bg" data-img="salses_assets/visuel_01_aerienne.jpg"></div>
+  <div class="hero-ov"></div>
+  <div class="hero-c">
+    <div class="htag">Salses-le-Château — Pyrénées-Orientales</div>
+    <h1 data-park="nom"></h1>
+    <p class="hsub" data-park="signature"></p>
+    <div class="hstats">
+      <div class="hstat"><div class="v"><span class="tbc">— —</span><sup>m²</sup></div><div class="l">Surface totale</div></div>
+      <div class="hstat"><div class="v"><span class="tbc">—</span></div><div class="l">Bâtiments</div></div>
+      <div class="hstat"><div class="v"><span class="tbc">—</span></div><div class="l">Cellules divisibles</div></div>
+      <div class="hstat"><div class="v"><span class="tbc">—</span></div><div class="l">Livraison</div></div>
+    </div>
+  </div>
+  <div class="scroll-down">Découvrir le parc</div>
+</section>
+
+<!-- ══════════ LE PARC ══════════ -->
+<section id="programme" style="background:linear-gradient(180deg, var(--sand) 0%, #fff 100%);">
+  <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
+
+  <div class="rv">
+    <div class="ey">Le programme</div>
+    <h2>Un parc d'activités neuf à <em>la porte du Pays Catalan</em></h2>
+    <div class="rline"></div>
+    <p class="desc">
+      À Salses-le-Château, en accès direct de l'A9, <strong data-park="nom-inline"></strong> développe un parc d'activités
+      mixte associant une grande cellule logistique et une série de bâtiments d'activités divisibles. Le programme est conçu
+      pour accueillir aussi bien des opérateurs logistiques que des PME industrielles, artisanales et tertiaires : cellules
+      indépendantes, bureaux intégrés, quais et portes plain-pied, toitures photovoltaïques sur l'ensemble des bâtiments.
+    </p>
+  </div>
+
+  <div class="pull-quote rv">
+    Louer 300 m² ou 15 000 m² sur le même parc, avec la même adresse autoroutière : <strong data-park="nom-inline"></strong>
+    est pensé pour accompagner la croissance des entreprises sans les obliger à déménager.
+  </div>
+
+  <div class="g2" style="align-items:start;">
+    <div class="rv">
+      <div class="ph" data-img="salses_assets/visuel_02_aerienne.jpg" data-t="Vue aérienne d'ensemble" data-f="visuel_02_aerienne.jpg"></div>
+      <p class="ilab">Perspective aérienne — Document non contractuel</p>
+    </div>
+    <div class="rv">
+      <div class="card-white" style="margin-bottom:16px;">
+        <div class="c-ey">Cellule logistique</div>
+        <div class="c-val"><span class="tbc">— —</span><small> m²</small></div>
+        <div class="c-desc">Grande cellule d'entreposage — quais de chargement niveleurs, accès poids lourds dédié,
+          bureaux et locaux sociaux intégrés.<br><em>Surfaces et divisibilité à confirmer</em></div>
+      </div>
+      <div class="card-white" style="margin-bottom:16px;">
+        <div class="c-ey">Bâtiments d'activités</div>
+        <div class="c-val"><span class="tbc">—</span><small> bâtiments</small></div>
+        <div class="c-desc">Bâtiments en bandes, divisibles en cellules indépendantes. Chaque cellule associe atelier /
+          stockage, bureau en façade et mezzanine.<br><em>Nombre et surfaces à confirmer</em></div>
+      </div>
+      <div class="card-white">
+        <div class="c-ey">Modularité</div>
+        <div class="c-val">à partir de <span class="tbc">—</span><small> m²</small></div>
+        <div class="c-desc">Location à la cellule, par regroupement de cellules ou en totalité. Bail commercial 3 / 6 / 9 ans.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g3 rv">
+    <div class="card">
+      <div class="c-ey">Hauteur libre</div>
+      <div class="c-val"><span class="tbc">—</span><small> m</small></div>
+      <div class="c-desc">Dallage industriel — activités lourdes</div>
+    </div>
+    <div class="card">
+      <div class="c-ey">Stationnement</div>
+      <div class="c-val"><span class="tbc">—</span><small> places</small></div>
+      <div class="c-desc">VL, PL et deux-roues — places PMR et bornes de recharge</div>
+    </div>
+    <div class="card">
+      <div class="c-ey">Foncier</div>
+      <div class="c-val"><span class="tbc">— —</span><small> m²</small></div>
+      <div class="c-desc">Terrain d'assiette du parc — Salses-le-Château (66600)</div>
+    </div>
+  </div>
+
+  <div class="rv" style="margin-top:48px;">
+    <h3>Prestations du programme</h3>
+    <ul class="blist">
+      <li>Quais de chargement niveleurs et portes sectionnelles plain-pied</li>
+      <li>Bureaux et locaux sociaux intégrés à chaque cellule — vestiaires, sanitaires H/F</li>
+      <li>Toitures équipées en panneaux photovoltaïques sur l'ensemble des bâtiments</li>
+      <li>Double accès dissocié — portail poids lourds et portail véhicules légers</li>
+      <li>Voirie lourde dédiée, aires de manœuvre PL dimensionnées</li>
+      <li>Clôture périmétrique et contrôle d'accès</li>
+      <li>Gestion des eaux pluviales : noues paysagères et bassins de rétention</li>
+      <li>Défense incendie : RIA, désenfumage, conformité assurance</li>
+      <li>Raccordement fibre optique très haut débit</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ ARCHITECTURE ══════════ -->
+<section id="architecture" style="background:#fff;">
+  <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
+
+  <div class="rv">
+    <div class="ey">Architecture &amp; insertion</div>
+    <h2>Une écriture <em>sobre et méditerranéenne</em></h2>
+    <div class="rline"></div>
+    <p class="desc">
+      Bardage nervuré en tons sable et pierre, casquettes horizontales au-dessus des baies, menuiseries sombres :
+      l'architecture joue la sobriété et la lumière du Roussillon plutôt que le vocabulaire industriel standard.
+      Les façades sur voirie sont traitées comme des façades d'entreprise — vitrines de bureaux, entrées identifiées,
+      plantations méditerranéennes en pied de bâtiment.
+    </p>
+  </div>
+
+  <div class="g4 rv">
+    <div>
+      <div class="ph" data-img="salses_assets/visuel_03_facade.jpg" data-t="Détail de façade" data-f="visuel_03_facade.jpg"></div>
+      <p style="font-size:12px; font-weight:800; color:var(--navy); margin-top:12px;">Façade type — bureau et accès cellule</p>
+      <p style="font-size:11.5px; color:#7A766D; margin-top:4px; line-height:1.55;">
+        Bardage nervuré ton sable, casquettes brise-soleil, baies vitrées toute hauteur au rez-de-chaussée,
+        porte sectionnelle sous auvent.</p>
+    </div>
+    <div>
+      <div class="ph" data-img="salses_assets/visuel_04_voirie.jpg" data-t="Vue depuis la voirie" data-f="visuel_04_voirie.jpg"></div>
+      <p style="font-size:12px; font-weight:800; color:var(--navy); margin-top:12px;">Ambiance depuis la voirie interne</p>
+      <p style="font-size:11.5px; color:#7A766D; margin-top:4px; line-height:1.55;">
+        Voirie paysagée, cyprès et pins d'alignement, cheminements piétons protégés, accès poids lourds dissocié.</p>
+    </div>
+  </div>
+
+  <div class="rv" style="margin-top:52px;">
+    <h3>Le parti architectural en bref</h3>
+    <div class="g3" style="margin-top:20px;">
+      <div class="card">
+        <div class="c-ey">Matériaux</div>
+        <div class="c-desc" style="margin-top:6px; font-size:13px;">Bardage métallique nervuré ton sable et pierre,
+          soubassement béton, menuiseries aluminium gris anthracite.</div>
+      </div>
+      <div class="card">
+        <div class="c-ey">Lumière</div>
+        <div class="c-desc" style="margin-top:6px; font-size:13px;">Baies généreuses côté bureaux, casquettes
+          brise-soleil, éclairage zénithal en toiture des cellules.</div>
+      </div>
+      <div class="card">
+        <div class="c-ey">Paysage</div>
+        <div class="c-desc" style="margin-top:6px; font-size:13px;">Palette végétale méditerranéenne — pins, cyprès,
+          arbustes de garrigue — en accompagnement des voiries et parkings.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LOCALISATION ══════════ -->
+<section id="localisation" style="background:var(--sand2);">
+  <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
+
+  <div class="rv">
+    <div class="ey">Localisation &amp; accessibilité</div>
+    <h2>Sur l'axe <em>A9 — La Catalane</em></h2>
+    <div class="rline"></div>
+    <p class="desc">
+      Salses-le-Château occupe le passage naturel entre la plaine du Roussillon et le Languedoc — le verrou que la
+      forteresse de Salses gardait déjà en 1500. Aujourd'hui, c'est l'A9 qui y passe : l'un des principaux corridors de
+      fret d'Europe (E15), qui relie l'Espagne et le Maghreb aux marchés du nord de l'Europe.
+    </p>
+  </div>
+
+  <div class="g3 rv" style="margin-top:44px;">
+    <div>
+      <h3>Accès routiers</h3>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Autoroute</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">A9 — échangeur <span class="tbc">n° 41 Perpignan Nord</span></div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Distance à l'échangeur : <span class="tbc">— km</span></div>
+      </div>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Route départementale</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">RD 900 (ex-RN 9) — accès direct</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Liaison Perpignan &nbsp;|&nbsp; Narbonne hors autoroute</div>
+      </div>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Aéroport</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">Perpignan-Rivesaltes — ≈ 15 km</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Fret et passagers</div>
+      </div>
+      <div class="card-white">
+        <div class="c-ey">Ferroviaire</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">Gare de Perpignan (TGV / TER) — ≈ 17 km</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Halte TER de Salses-le-Château dans le village</div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Temps &amp; distances</h3>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Villes</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px; line-height:2.1;">
+          Perpignan — ≈ 17 km<br>
+          Narbonne — ≈ 45 km<br>
+          Montpellier — ≈ 1 h 20<br>
+          Toulouse — ≈ 2 h 15<br>
+          Barcelone — ≈ 2 h 00
+        </div>
+      </div>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Frontière &amp; ports</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px; line-height:2.1;">
+          Frontière espagnole (Le Perthus / La Jonquera) — ≈ 50 km<br>
+          Port-Vendres — ≈ 55 km<br>
+          Port de Sète — ≈ 110 km
+        </div>
+      </div>
+      <p style="font-size:10.5px; color:var(--muted); line-height:1.5;">
+        Distances routières indicatives, à vérifier avant diffusion.</p>
+    </div>
+
+    <div>
+      <h3>Un bassin économique moteur</h3>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Saint-Charles International</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">≈ 20 km — Premier centre européen de commercialisation,
+          transport et logistique de fruits et légumes frais.</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">≈ 80 ha — plus de 150 entreprises de négoce,
+          transport et logistique.</div>
+      </div>
+      <div class="card-white" style="margin-bottom:10px;">
+        <div class="c-ey">Corridor européen</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">L'A9 fait partie de la route européenne E15,
+          axe majeur du fret entre la péninsule ibérique et l'Europe du Nord.</div>
+      </div>
+      <div class="card-white">
+        <div class="c-ey">Bassin de vie</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">Agglomération de Perpignan — ≈ 320 000 habitants
+          sur la communauté urbaine.</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Main-d'œuvre disponible, coûts d'implantation
+          compétitifs.</div>
+      </div>
+      <div class="companies">
+        <div class="co-chip">Logistique</div>
+        <div class="co-chip">Agroalimentaire</div>
+        <div class="co-chip">Transport</div>
+        <div class="co-chip">Négoce international</div>
+        <div class="co-chip">Énergies</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv" style="margin-top:48px;">
+    <div class="ph" data-img="salses_assets/plan_situation.jpg" data-t="Plan de situation" data-f="plan_situation.jpg"></div>
+    <p class="ilab">Plan de situation — A9, RD 900 et accès au parc</p>
+  </div>
+</section>
+
+<!-- ══════════ ENVIRONNEMENT ══════════ -->
+<section id="environnement" style="background:#fff;">
+  <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
+
+  <div class="rv">
+    <div class="ey">Performance &amp; environnement</div>
+    <h2>Un parc <em>producteur d'énergie</em></h2>
+    <div class="rline"></div>
+    <p class="desc">
+      L'intégralité des toitures du parc est équipée en panneaux photovoltaïques. Dans un département parmi les plus
+      ensoleillés de France, la ressource solaire n'est pas un argument marketing : c'est une ligne du compte
+      d'exploitation de chaque locataire.
+    </p>
+  </div>
+
+  <div class="stat-row rv">
+    <div class="stat-item"><div class="sv"><span class="tbc">— —</span></div><div class="sl">m² de toiture photovoltaïque</div></div>
+    <div class="stat-item"><div class="sv"><span class="tbc">—</span></div><div class="sl">MWc installés</div></div>
+    <div class="stat-item"><div class="sv"><span class="tbc">—</span></div><div class="sl">bornes de recharge</div></div>
+    <div class="stat-item"><div class="sv">100<small>%</small></div><div class="sl">des toitures équipées</div></div>
+  </div>
+
+  <div class="g3 rv" style="margin-top:48px;">
+    <div class="card">
+      <div class="c-ey">Énergie</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Toitures photovoltaïques sur l'ensemble des bâtiments.
+        Éclairage LED avec détection de présence. Isolation renforcée des cellules.</div>
+    </div>
+    <div class="card">
+      <div class="c-ey">Eau &amp; sols</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Noues paysagères et bassins de rétention pour la
+        gestion des eaux pluviales à la parcelle. Surfaces perméables sur les stationnements légers.</div>
+    </div>
+    <div class="card">
+      <div class="c-ey">Biodiversité</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Bandes boisées conservées en limite de parc,
+        palette végétale locale peu consommatrice d'eau, espaces verts en pleine terre.</div>
+    </div>
+  </div>
+
+  <div class="rv" style="margin-top:44px;">
+    <ul class="blist">
+      <li>Bornes de recharge pour véhicules électriques — VL et utilitaires</li>
+      <li>Abris deux-roues couverts et stationnement vélo sécurisé</li>
+      <li>Certification environnementale : <span class="tbc">démarche visée à préciser</span></li>
+      <li>Conformité à la réglementation environnementale en vigueur (RE 2020 pour les parties bureaux)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ DISPONIBILITÉS ══════════ -->
+<section id="dispos" style="background:var(--sand);">
+  <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
+
+  <div class="rv">
+    <div class="ey">Disponibilités</div>
+    <h2>Surfaces <em>disponibles</em></h2>
+    <div class="rline"></div>
+    <p class="desc">Tableau des surfaces à compléter dès réception du plan de masse coté et de la grille de
+      commercialisation.</p>
+  </div>
+
+  <div class="table-wrap rv">
+    <table>
+      <thead>
+        <tr><th>Bâtiment</th><th>Référence</th><th>Surface</th><th>Composition</th><th>Équipements</th><th>Loyer</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cellule logistique</strong></td><td class="tbc">L01</td><td class="tbc">— m²</td>
+          <td>Entreposage, bureaux, locaux sociaux</td>
+          <td>Quais niveleurs &nbsp;|&nbsp; Porte plain-pied</td>
+          <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
+        </tr>
+        <tr>
+          <td><strong>Bâtiment A</strong></td><td class="tbc">A01</td><td class="tbc">— m²</td>
+          <td>Activité, bureau, mezzanine</td>
+          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
+        </tr>
+        <tr>
+          <td></td><td class="tbc">A02</td><td class="tbc">— m²</td>
+          <td>Activité, bureau, mezzanine</td>
+          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
+        </tr>
+        <tr>
+          <td><strong>Bâtiment B</strong></td><td class="tbc">B01</td><td class="tbc">— m²</td>
+          <td>Activité, bureau, mezzanine</td>
+          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
+        </tr>
+        <tr>
+          <td></td><td class="tbc">B02</td><td class="tbc">— m²</td>
+          <td>Activité, bureau, mezzanine</td>
+          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
+        </tr>
+        <tr class="total">
+          <td colspan="2"><strong>Programme complet</strong></td>
+          <td><strong class="tbc" style="background:none; color:#fff; border-bottom-color:rgba(255,255,255,.5);">— — m²</strong></td>
+          <td colspan="2"><strong>Lignes à compléter selon la grille définitive</strong></td>
+          <td><strong>Nous consulter</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rv card-white" style="padding:34px; margin-top:44px;">
+    <div class="c-ey" style="margin-bottom:14px;">Descriptif général</div>
+    <p style="font-size:14px; color:#5F5C55; line-height:1.8;">
+      Programme neuf livré clés en main. Bail commercial 3 / 6 / 9 ans. Possibilité de personnalisation des cellules
+      (aménagement de bureaux, cloisonnement, quais complémentaires) sur étude.</p>
+    <ul class="blist" style="margin-top:18px;">
+      <li>Dallage industriel — charge d'exploitation <span class="tbc">— T/m²</span></li>
+      <li>Hauteur libre sous poutre <span class="tbc">— m</span></li>
+      <li>Portes sectionnelles motorisées et portes plain-pied</li>
+      <li>Quais de chargement avec niveleurs (cellule logistique)</li>
+      <li>Bureaux et locaux sociaux livrés finis</li>
+      <li>RIA, désenfumage, extincteurs — conformité assurance</li>
+      <li>Stationnement VL, PL et deux-roues</li>
+      <li>Clôture périmétrique et portails automatisés</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact">
+  <div style="text-align:center; padding:10px 20px 40px;">
+    <img src="salses_assets/logo_actibati_white.png" alt="ACTI BATI" style="height:120px; width:auto;"
+         onerror="this.src='salses_assets/logo_actibati_full.png'; this.style.background='#fff'; this.style.padding='16px'; this.style.borderRadius='4px';">
+  </div>
+
+  <div class="rv">
+    <div class="ey" style="color:rgba(255,255,255,.55);">Prise de contact</div>
+    <h2>Commercialisation</h2>
+    <div class="rline"></div>
+    <div class="g2" style="gap:56px;">
+      <div>
+        <p class="desc"><strong style="color:#fff;">ACTI BATI — Immobilier d'entreprise</strong></p>
+        <ul class="blist" style="margin-top:12px;">
+          <li>Adresse : <strong class="tbc">à compléter</strong></li>
+          <li>Téléphone : <strong class="tbc">à compléter</strong></li>
+          <li>Email : <strong class="tbc">à compléter</strong></li>
+          <li>Contact commercial : <strong class="tbc">à compléter</strong></li>
+        </ul>
+        <a href="#" class="ct-btn">Demander le dossier complet</a>
+      </div>
+      <div>
+        <p class="desc" style="font-size:13.5px; line-height:2;">
+          Adresse du projet :<br><strong style="color:#fff;">Salses-le-Château (66600) — Pyrénées-Orientales</strong><br><br>
+          Livraison prévisionnelle :<br><strong class="tbc">à confirmer</strong><br><br>
+          Type de commercialisation :<br><strong style="color:#fff;">Location — bail commercial 3 / 6 / 9 ans</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div>
+    <strong data-park="nom-inline"></strong><br>
+    Salses-le-Château (66600) — Pyrénées-Orientales<br>
+    Parc d'activités et logistique — Commercialisation ACTI BATI
+  </div>
+  <div style="text-align:right;">
+    Perspectives : agence d'architecture du projet<br>
+    <strong>Document non contractuel</strong>
+  </div>
+</footer>
+
+<!-- ══════════ LIGHTBOX ══════════ -->
+<div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(6,10,24,.96); z-index:9999;">
+  <div id="lb-scroll" style="position:absolute; inset:0; overflow:auto; padding:36px; cursor:grab;">
+    <img id="lb-img" style="display:block; margin:0 auto; max-width:100%;">
+  </div>
+  <button onclick="closeLightbox()" style="position:fixed; top:14px; right:18px; background:rgba(255,255,255,.18);
+    color:#fff; border:1px solid rgba(255,255,255,.3); width:46px; height:46px; border-radius:50%; font-size:22px;
+    cursor:pointer; z-index:10000;">×</button>
+  <div style="position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:10000;
+    background:rgba(0,0,0,.5); padding:6px; border-radius:30px;">
+    <button onclick="lbZoom(-1)" style="background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3);
+      width:46px; height:46px; border-radius:50%; font-size:22px; font-weight:700; cursor:pointer;">−</button>
+    <button onclick="lbFit()" style="background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3);
+      padding:0 18px; height:46px; border-radius:24px; font-size:13px; cursor:pointer;">Ajuster</button>
+    <button onclick="lbZoom(1)" style="background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3);
+      width:46px; height:46px; border-radius:50%; font-size:22px; font-weight:700; cursor:pointer;">+</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   1) NOM DU PARC — un seul endroit à modifier
+   Change la valeur de PARK_ACTIF ci-dessous pour basculer tout le
+   document (titre de page, hero, textes courants, pied de page).
+   ══════════════════════════════════════════════════════════════════ */
+const NOMS = {
+  porta:     { nom:'PORTA ACTIVA', signature:"Le parc d'entrée du Pays Catalan" },
+  catalane:  { nom:'LA CATALANE',  signature:"Parc d'activités — Salses-le-Château, sur l'A9" },
+  tramontana:{ nom:'TRAMONTANA',   signature:"Le parc d'activités qui a le vent en poupe" },
+  salina:    { nom:'SALINA',       signature:"Parc d'activités et logistique — Salses-le-Château" },
+  acti66:    { nom:'ACTI ROUSSILLON', signature:"Parc d'activités — Porte nord du Pays Catalan" }
+};
+const PARK_ACTIF = 'porta';   // ← modifier ici
+
+function appliquerNom(cle){
+  const p = NOMS[cle]; if(!p) return;
+  document.querySelectorAll('[data-park="nom"]').forEach(el => el.textContent = p.nom);
+  document.querySelectorAll('[data-park="nom-inline"]').forEach(el => el.textContent = p.nom);
+  document.querySelectorAll('[data-park="signature"]').forEach(el => el.textContent = p.signature);
+  document.title = p.nom + " — Salses-le-Château — Parc d'activités";
+  const sig = document.getElementById('namer-sig');
+  if(sig) sig.textContent = p.signature;
+  document.querySelectorAll('#namer-btns button').forEach(b =>
+    b.classList.toggle('sel', b.dataset.cle === cle));
+}
+appliquerNom(PARK_ACTIF);
+
+/* Sélecteur interne : ouvrir la page avec ?noms=1 pour comparer les noms en direct */
+if (new URLSearchParams(location.search).has('noms')) {
+  const box = document.getElementById('namer-btns');
+  Object.entries(NOMS).forEach(([cle, p]) => {
+    const b = document.createElement('button');
+    b.textContent = p.nom; b.dataset.cle = cle;
+    b.onclick = () => appliquerNom(cle);
+    box.appendChild(b);
+  });
+  document.getElementById('namer').classList.add('on');
+  appliquerNom(PARK_ACTIF);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   2) VISUELS — chargement automatique depuis /salses_assets
+   Dépose les fichiers dans le dossier salses_assets avec les noms
+   indiqués dans les cadres pointillés : ils remplacent seuls les
+   emplacements réservés, sans toucher au code.
+   ══════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.ph[data-img]').forEach(ph => {
+  const src = ph.dataset.img;
+  const test = new Image();
+  test.onload = () => {
+    const wrap = document.createElement('div');
+    wrap.className = 'zoom-wrap';
+    wrap.innerHTML = '<img src="' + src + '" alt="' + (ph.dataset.t || '') + '">' +
+                     '<div class="zoom-label">Cliquer pour agrandir</div>';
+    ph.replaceWith(wrap);
+    brancherZoom(wrap);
+  };
+  test.onerror = () => {
+    ph.innerHTML = '<div class="ph-n">Emplacement réservé</div>' +
+                   '<div class="ph-t">' + (ph.dataset.t || 'Visuel') + '</div>' +
+                   '<div class="ph-f">salses_assets/' + (ph.dataset.f || '') + '</div>';
+  };
+  test.src = src;
+});
+
+/* Image de fond du hero */
+(function(){
+  const bg = document.querySelector('.hero-bg');
+  if(!bg || !bg.dataset.img) return;
+  const t = new Image();
+  t.onload = () => bg.style.backgroundImage = "url('" + bg.dataset.img + "')";
+  t.src = bg.dataset.img;
+})();
+
+/* ══════════════════════════════════════════════════════════════════
+   3) INTERACTIONS
+   ══════════════════════════════════════════════════════════════════ */
+function closeMenu(){ document.getElementById('mobMenu').classList.remove('open'); }
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scroll', scrollY > 60);
+});
+
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold:.05, rootMargin:'0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+function brancherZoom(wrap){
+  wrap.addEventListener('click', () => {
+    document.getElementById('lb-img').src = wrap.querySelector('img').src;
+    lbFit();
+    document.getElementById('lb-scroll').scrollTo(0,0);
+    document.getElementById('lightbox').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  });
+}
+document.querySelectorAll('.zoom-wrap').forEach(brancherZoom);
+
+let lbW = 100;
+function lbFit(){ const i = document.getElementById('lb-img'); i.style.width=''; i.style.maxWidth='100%'; lbW=100; }
+function lbZoom(d){
+  const step = Math.max(15, lbW*.15);
+  lbW = d>0 ? Math.min(lbW+step, 800) : Math.max(lbW-step, 100);
+  const i = document.getElementById('lb-img');
+  if(lbW<=100) lbFit(); else { i.style.maxWidth='none'; i.style.width=lbW+'%'; }
+}
+function closeLightbox(){
+  document.getElementById('lightbox').style.display='none';
+  document.body.style.overflow=''; lbFit();
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+
+(function(){
+  const sc = document.getElementById('lb-scroll');
+  let down=false, sx=0, sy=0, sl=0, st=0;
+  sc.addEventListener('mousedown', e => {
+    if(e.button!==0) return;
+    down=true; sx=e.clientX; sy=e.clientY; sl=sc.scrollLeft; st=sc.scrollTop;
+    sc.style.cursor='grabbing'; e.preventDefault();
+  });
+  window.addEventListener('mousemove', e => {
+    if(!down) return;
+    sc.scrollLeft = sl-(e.clientX-sx); sc.scrollTop = st-(e.clientY-sy);
+  });
+  window.addEventListener('mouseup', () => { down=false; sc.style.cursor='grab'; });
+})();
+
+document.addEventListener('wheel', e => {
+  if(document.getElementById('lightbox').style.display!=='block') return;
+  if(!e.ctrlKey && !e.metaKey) return;
+  e.preventDefault(); lbZoom(e.deltaY<0 ? 1 : -1);
+}, { passive:false });
+</script>
+</body>
+</html>
