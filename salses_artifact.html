@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>document.documentElement.className += ' js';</script>
 <!-- Titre stable : le nom du parc n'est pas arrêté, le script le pose dans
      l'onglet une fois la page chargée. -->
 <title>Plaquette Salses-le-Château</title>
@@ -159,7 +153,7 @@ table .total td { color:#fff; font-weight:700; border:none; }
 /* ══ RÉVÉLATION ══
    Le contenu est visible par défaut : sans JavaScript, ou sur une capture
    faite avant le scroll, rien ne disparaît. L'effet ne s'arme que si le
-   script a marqué <html class="js">. */
+   script a marqué . */
 .js .rv { opacity:0; transform:translateY(24px); }
 .js .rv.visible { animation:rv .55s ease-out forwards; }
 @keyframes rv { to { opacity:1; transform:none; } }
@@ -238,9 +232,6 @@ footer strong { color:#B9C0CE; }
   body { font-size:11px; }
 }
 </style>
-</head>
-<body>
-
 <!-- ══════════ BANDEAU VERSION DE TRAVAIL — à supprimer avant diffusion client ══════════ -->
 <div id="draft">
   Version de travail — visuels et données chiffrées à intégrer
@@ -752,7 +743,7 @@ appliquerNom(PARK_ACTIF);
 
 /* Sélecteur interne : ouvrir la page avec ?noms=1 pour comparer les noms en direct.
    La version publiée en ligne force cette valeur à true (voir build_salses.py). */
-const AFFICHER_SELECTEUR = new URLSearchParams(location.search).has('noms');
+const AFFICHER_SELECTEUR = true;
 if (AFFICHER_SELECTEUR) {
   const box = document.getElementById('namer-btns');
   Object.entries(NOMS).forEach(([cle, p]) => {
@@ -859,5 +850,3 @@ document.addEventListener('wheel', e => {
   e.preventDefault(); lbZoom(e.deltaY<0 ? 1 : -1);
 }, { passive:false });
 </script>
-</body>
-</html>

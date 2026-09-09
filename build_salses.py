@@ -19,12 +19,37 @@ import re
 RACINE = pathlib.Path(__file__).parent
 SOURCE = RACINE / "salses_source.html"
 SORTIE = RACINE / "salses_le_chateau.html"
+ARTIFACT = RACINE / "salses_artifact.html"
 ASSETS = RACINE / "salses_assets"
+
+# L'hebergeur d'artifacts enveloppe lui-meme le fichier dans un squelette
+# <!doctype>...<head>...<body>, donc ces balises doivent disparaitre.
+ENVELOPPE = re.compile(
+    r"<!DOCTYPE html>\s*|</?html[^>]*>\s*|</?head>\s*|</?body>\s*|<meta[^>]*>\s*",
+    re.IGNORECASE,
+)
 
 
 def encode(chemin: pathlib.Path) -> str:
     mime = mimetypes.guess_type(chemin.name)[0] or "application/octet-stream"
     return f"data:{mime};base64,{base64.b64encode(chemin.read_bytes()).decode()}"
+
+
+def version_artifact(html: str) -> str:
+    """Adapte la version autonome a une publication en ligne.
+
+    Le selecteur de noms devient visible d'office : sur le lien partage, c'est
+    l'arbitrage attendu du client, pas un outil interne.
+    """
+    html = html.replace(
+        "const AFFICHER_SELECTEUR = new URLSearchParams(location.search).has('noms');",
+        "const AFFICHER_SELECTEUR = true;",
+    )
+    # <html class="js"> n'existe plus une fois l'enveloppe retiree.
+    html = html.replace(
+        "<script>document.documentElement.className += ' js';</script>", ""
+    )
+    return ENVELOPPE.sub("", html)
 
 
 def main() -> None:
@@ -40,8 +65,10 @@ def main() -> None:
             manquants.append(ref)
 
     SORTIE.write_text(html, encoding="utf-8")
+    ARTIFACT.write_text(version_artifact(html), encoding="utf-8")
 
-    print(f"{SORTIE.name} — {SORTIE.stat().st_size / 1_048_576:.2f} Mo")
+    for fichier in (SORTIE, ARTIFACT):
+        print(f"{fichier.name} — {fichier.stat().st_size / 1_048_576:.2f} Mo")
     for ref in inlines:
         print(f"  integre   {ref}")
     for ref in manquants:

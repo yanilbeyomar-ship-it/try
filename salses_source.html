@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PORTA ACTIVA — Salses-le-Château — Parc d'activités</title>
+<script>document.documentElement.className += ' js';</script>
+<!-- Titre stable : le nom du parc n'est pas arrêté, le script le pose dans
+     l'onglet une fois la page chargée. -->
+<title>Plaquette Salses-le-Château</title>
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -51,7 +54,9 @@ nav.scroll { box-shadow:0 2px 14px rgba(14,27,61,.08); }
 .mob-menu.open { display:flex; }
 
 /* ══ HERO ══ */
-#hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding-top:76px; }
+/* 88vh plutôt que 100vh : la section suivante amorce en bas de l'écran,
+   ce qui signale que la page continue. */
+#hero { position:relative; min-height:88vh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding-top:76px; }
 .hero-bg { position:absolute; inset:0; top:76px; background-size:cover; background-position:center;
   background-color:var(--sand2); }
 .hero-ov { position:absolute; inset:0; top:76px;
@@ -151,10 +156,20 @@ table .total td { color:#fff; font-weight:700; border:none; }
 /* Déclinaison sur fond sombre (hero, contact) — sinon le marqueur devient illisible */
 #contact .tbc, #hero .tbc { background:rgba(232,180,74,.16); border-bottom-color:#E8B44A; color:#F5C86B; }
 
-/* ══ RÉVÉLATION ══ */
-.rv { opacity:0; transform:translateY(24px); }
-.rv.visible { animation:rv .55s ease-out forwards; }
+/* ══ RÉVÉLATION ══
+   Le contenu est visible par défaut : sans JavaScript, ou sur une capture
+   faite avant le scroll, rien ne disparaît. L'effet ne s'arme que si le
+   script a marqué <html class="js">. */
+.js .rv { opacity:0; transform:translateY(24px); }
+.js .rv.visible { animation:rv .55s ease-out forwards; }
 @keyframes rv { to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) {
+  .js .rv { opacity:1; transform:none; }
+  .js .rv.visible { animation:none; }
+  html { scroll-behavior:auto; }
+  .scroll-down { animation:none; }
+  .hero-c { animation:none; }
+}
 
 /* ══ CONTACT ══ */
 #contact { background:var(--navy); color:#fff; }
@@ -735,8 +750,10 @@ function appliquerNom(cle){
 }
 appliquerNom(PARK_ACTIF);
 
-/* Sélecteur interne : ouvrir la page avec ?noms=1 pour comparer les noms en direct */
-if (new URLSearchParams(location.search).has('noms')) {
+/* Sélecteur interne : ouvrir la page avec ?noms=1 pour comparer les noms en direct.
+   La version publiée en ligne force cette valeur à true (voir build_salses.py). */
+const AFFICHER_SELECTEUR = new URLSearchParams(location.search).has('noms');
+if (AFFICHER_SELECTEUR) {
   const box = document.getElementById('namer-btns');
   Object.entries(NOMS).forEach(([cle, p]) => {
     const b = document.createElement('button');
