@@ -59,8 +59,10 @@ nav.scroll { box-shadow:0 2px 14px rgba(14,27,61,.08); }
 #hero { position:relative; min-height:88vh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding-top:76px; }
 .hero-bg { position:absolute; inset:0; top:76px; background-size:cover; background-position:center;
   background-color:var(--sand2); }
+/* La vue aérienne est claire en partie haute : le voile doit rester assez
+   dense pour que le titre blanc tienne le contraste sur toute sa hauteur. */
 .hero-ov { position:absolute; inset:0; top:76px;
-  background:linear-gradient(180deg, rgba(14,27,61,.35) 0%, rgba(14,27,61,.55) 55%, rgba(14,27,61,.82) 100%); }
+  background:linear-gradient(180deg, rgba(14,27,61,.48) 0%, rgba(14,27,61,.62) 55%, rgba(14,27,61,.85) 100%); }
 .hero-c { position:relative; z-index:2; text-align:center; max-width:1000px; color:#fff; padding:60px 40px; animation:fu .9s ease-out; }
 .htag { display:inline-block; background:var(--pink); font-size:10px; font-weight:800; letter-spacing:2.4px;
   text-transform:uppercase; padding:9px 18px; margin-bottom:30px; }
@@ -122,6 +124,10 @@ img.fi { width:100%; display:block; border-radius:3px; box-shadow:0 10px 34px rg
 /* ══ ZOOM / LIGHTBOX ══ */
 .zoom-wrap { position:relative; overflow:hidden; cursor:zoom-in; border-radius:3px; background:#F2EFE9; }
 .zoom-wrap img { width:100%; display:block; }
+.zoom-wrap[data-img]:empty { aspect-ratio:16/9; }
+/* Deux visuels côte à côte : même cadrage, pour que les légendes s'alignent
+   même quand les sources n'ont pas le même rapport. */
+.g2 .zoom-wrap img { aspect-ratio:3/2; object-fit:cover; }
 .zoom-label { position:absolute; bottom:10px; right:10px; background:rgba(14,27,61,.78); color:#fff; font-size:9px;
   letter-spacing:1px; padding:5px 10px; text-transform:uppercase; pointer-events:none; }
 
@@ -243,7 +249,7 @@ footer strong { color:#B9C0CE; }
 
 <!-- ══════════ BANDEAU VERSION DE TRAVAIL — à supprimer avant diffusion client ══════════ -->
 <div id="draft">
-  Version de travail — visuels et données chiffrées à intégrer
+  Version de travail — loyers et date de livraison à compléter
   <button onclick="document.getElementById('draft').remove()">Masquer</button>
 </div>
 
@@ -252,8 +258,9 @@ footer strong { color:#B9C0CE; }
   <a href="#hero" class="nl"><img src="salses_assets/logo_actibati_full.png" alt="ACTI BATI — Immobilier d'entreprise"></a>
   <ul class="nlinks">
     <li><a href="#programme">Le parc</a></li>
-    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#batiments">Les bâtiments</a></li>
     <li><a href="#localisation">Localisation</a></li>
+    <li><a href="#plans">Plans</a></li>
     <li><a href="#environnement">Environnement</a></li>
     <li><a href="#dispos">Disponibilités</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -263,8 +270,9 @@ footer strong { color:#B9C0CE; }
 </nav>
 <div class="mob-menu" id="mobMenu">
   <a href="#programme" onclick="closeMenu()">Le parc</a>
-  <a href="#architecture" onclick="closeMenu()">Architecture</a>
+  <a href="#batiments" onclick="closeMenu()">Les bâtiments</a>
   <a href="#localisation" onclick="closeMenu()">Localisation</a>
+  <a href="#plans" onclick="closeMenu()">Plans</a>
   <a href="#environnement" onclick="closeMenu()">Environnement</a>
   <a href="#dispos" onclick="closeMenu()">Disponibilités</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
@@ -286,10 +294,10 @@ footer strong { color:#B9C0CE; }
     <h1 data-park="nom"></h1>
     <p class="hsub" data-park="signature"></p>
     <div class="hstats">
-      <div class="hstat"><div class="v"><span class="tbc">— —</span><sup>m²</sup></div><div class="l">Surface totale</div></div>
-      <div class="hstat"><div class="v"><span class="tbc">—</span></div><div class="l">Bâtiments</div></div>
-      <div class="hstat"><div class="v"><span class="tbc">—</span></div><div class="l">Cellules divisibles</div></div>
-      <div class="hstat"><div class="v"><span class="tbc">—</span></div><div class="l">Livraison</div></div>
+      <div class="hstat"><div class="v">34 903<sup>m²</sup></div><div class="l">Surface de plancher</div></div>
+      <div class="hstat"><div class="v">9,8<sup>ha</sup></div><div class="l">de foncier</div></div>
+      <div class="hstat"><div class="v">779<sup>m²</sup></div><div class="l">Première cellule</div></div>
+      <div class="hstat"><div class="v">A9</div><div class="l">en limite de site</div></div>
     </div>
   </div>
   <div class="scroll-down">Découvrir le parc</div>
@@ -304,59 +312,55 @@ footer strong { color:#B9C0CE; }
     <h2>Un parc d'activités neuf à <em>la porte du Pays Catalan</em></h2>
     <div class="rline"></div>
     <p class="desc">
-      À Salses-le-Château, en accès direct de l'A9, <strong data-park="nom-inline"></strong> développe un parc d'activités
-      mixte associant une grande cellule logistique et une série de bâtiments d'activités divisibles. Le programme est conçu
-      pour accueillir aussi bien des opérateurs logistiques que des PME industrielles, artisanales et tertiaires : cellules
-      indépendantes, bureaux intégrés, quais et portes plain-pied, toitures photovoltaïques sur l'ensemble des bâtiments.
+      Au lieu-dit Pla de Salses, en limite directe de l'A9, <strong data-park="nom-inline"></strong> développe
+      34 903 m² de surface de plancher sur près de 9,8 hectares. Le parc réunit sur une même adresse un entrepôt
+      logistique de 15 245 m², une plateforme de messagerie à 49 portes à quai, et quatre bâtiments d'activités
+      divisibles en seize cellules indépendantes. Toutes les toitures sont équipées en panneaux photovoltaïques.
     </p>
   </div>
 
   <div class="pull-quote rv">
-    Louer 300 m² ou 15 000 m² sur le même parc, avec la même adresse autoroutière : <strong data-park="nom-inline"></strong>
-    est pensé pour accompagner la croissance des entreprises sans les obliger à déménager.
+    Louer 779 m² ou 15 245 m² sur le même parc, avec la même adresse autoroutière :
+    <strong data-park="nom-inline"></strong> est pensé pour accompagner la croissance des entreprises
+    sans les obliger à déménager.
   </div>
 
-  <div class="g2" style="align-items:start;">
-    <div class="rv">
-      <div class="ph" data-img="salses_assets/visuel_02_aerienne.jpg" data-t="Vue aérienne d'ensemble" data-f="visuel_02_aerienne.jpg"></div>
-      <p class="ilab">Perspective aérienne — Document non contractuel</p>
-    </div>
-    <div class="rv">
-      <div class="card-white" style="margin-bottom:16px;">
-        <div class="c-ey">Cellule logistique</div>
-        <div class="c-val"><span class="tbc">— —</span><small> m²</small></div>
-        <div class="c-desc">Grande cellule d'entreposage — quais de chargement niveleurs, accès poids lourds dédié,
-          bureaux et locaux sociaux intégrés.<br><em>Surfaces et divisibilité à confirmer</em></div>
-      </div>
-      <div class="card-white" style="margin-bottom:16px;">
-        <div class="c-ey">Bâtiments d'activités</div>
-        <div class="c-val"><span class="tbc">—</span><small> bâtiments</small></div>
-        <div class="c-desc">Bâtiments en bandes, divisibles en cellules indépendantes. Chaque cellule associe atelier /
-          stockage, bureau en façade et mezzanine.<br><em>Nombre et surfaces à confirmer</em></div>
-      </div>
-      <div class="card-white">
-        <div class="c-ey">Modularité</div>
-        <div class="c-val">à partir de <span class="tbc">—</span><small> m²</small></div>
-        <div class="c-desc">Location à la cellule, par regroupement de cellules ou en totalité. Bail commercial 3 / 6 / 9 ans.</div>
-      </div>
-    </div>
+  <div class="rv" style="margin-top:44px;">
+    <div class="zoom-wrap" data-img="salses_assets/visuel_02_ensemble.jpg"
+         data-t="Vue aérienne du cœur du parc"></div>
+    <p class="ilab">Le cœur du parc — entrepôt logistique et messagerie au nord, bâtiments d'activités au sud,
+      autour de la voirie centrale paysagée. Document non contractuel.</p>
   </div>
 
-  <div class="g3 rv">
-    <div class="card">
-      <div class="c-ey">Hauteur libre</div>
-      <div class="c-val"><span class="tbc">—</span><small> m</small></div>
-      <div class="c-desc">Dallage industriel — activités lourdes</div>
-    </div>
-    <div class="card">
-      <div class="c-ey">Stationnement</div>
-      <div class="c-val"><span class="tbc">—</span><small> places</small></div>
-      <div class="c-desc">VL, PL et deux-roues — places PMR et bornes de recharge</div>
-    </div>
-    <div class="card">
-      <div class="c-ey">Foncier</div>
-      <div class="c-val"><span class="tbc">— —</span><small> m²</small></div>
-      <div class="c-desc">Terrain d'assiette du parc — Salses-le-Château (66600)</div>
+  <div class="stat-row rv">
+    <div class="stat-item"><div class="sv">34 903</div><div class="sl">m² de surface de plancher</div></div>
+    <div class="stat-item"><div class="sv">97 861</div><div class="sl">m² de foncier</div></div>
+    <div class="stat-item"><div class="sv">18</div><div class="sl">lots commercialisables</div></div>
+    <div class="stat-item"><div class="sv">35,7<small>%</small></div><div class="sl">d'emprise au sol</div></div>
+  </div>
+
+  <div class="rv" style="margin-top:56px;">
+    <h3>Deux macrolots, six bâtiments</h3>
+    <div class="g3" style="margin-top:22px;">
+      <div class="card">
+        <div class="c-ey">Macrolot A — logistique &amp; messagerie</div>
+        <div class="c-val">23 971<small> m²</small></div>
+        <div class="c-desc">Lots A4 et A3 : l'entrepôt de 15 245 m² et la messagerie de 4 026 m², desservis
+          par leur propre cour poids lourds. Un lot de réserve de 6 483 m² de foncier (A4') complète le macrolot
+          au nord-ouest.</div>
+      </div>
+      <div class="card">
+        <div class="c-ey">Macrolot A — activités</div>
+        <div class="c-val">9 400<small> m²</small></div>
+        <div class="c-desc">Lots A1 et A2, de 4 700 m² chacun, divisibles en quatre cellules de 1 300 m²
+          et 1 050 m². Chaque cellule associe activité en rez-de-chaussée, bureau en façade et mezzanine.</div>
+      </div>
+      <div class="card">
+        <div class="c-ey">Macrolot B — activités</div>
+        <div class="c-val">6 232<small> m²</small></div>
+        <div class="c-desc">Lots B1 et B2, de 3 116 m² chacun, divisibles en quatre cellules de 779 m².
+          Le format d'entrée du parc, pour les PME et les artisans.</div>
+      </div>
     </div>
   </div>
 
@@ -365,67 +369,91 @@ footer strong { color:#B9C0CE; }
     <ul class="blist">
       <li>Quais de chargement niveleurs et portes sectionnelles plain-pied</li>
       <li>Bureaux et locaux sociaux intégrés à chaque cellule — vestiaires, sanitaires H/F</li>
+      <li>Mezzanines livrées : 175 m² par cellule sur A1 et A2, 119 m² sur B1 et B2</li>
       <li>Toitures équipées en panneaux photovoltaïques sur l'ensemble des bâtiments</li>
-      <li>Double accès dissocié — portail poids lourds et portail véhicules légers</li>
-      <li>Voirie lourde dédiée, aires de manœuvre PL dimensionnées</li>
-      <li>Clôture périmétrique et contrôle d'accès</li>
-      <li>Gestion des eaux pluviales : noues paysagères et bassins de rétention</li>
-      <li>Défense incendie : RIA, désenfumage, conformité assurance</li>
+      <li>Accès unique sécurisé depuis l'avenue Clément Ader, voirie interne desservant tous les lots</li>
+      <li>Cours poids lourds dissociées des circulations véhicules légers</li>
+      <li>Clôture périmétrique et contrôle d'accès par lot</li>
+      <li>Gestion des eaux pluviales : deux bassins de rétention de 5 214 m³ et 1 138 m³</li>
+      <li>Défense incendie : RIA, désenfumage, poteaux incendie</li>
       <li>Raccordement fibre optique très haut débit</li>
     </ul>
   </div>
 </section>
 
-<!-- ══════════ ARCHITECTURE ══════════ -->
-<section id="architecture" style="background:#fff;">
+<!-- ══════════ LES BÂTIMENTS ══════════ -->
+<section id="batiments" style="background:#fff;">
   <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
 
   <div class="rv">
-    <div class="ey">Architecture &amp; insertion</div>
-    <h2>Une écriture <em>sobre et méditerranéenne</em></h2>
+    <div class="ey">Les bâtiments</div>
+    <h2>Du <em>cross-dock</em> à la cellule de 779 m²</h2>
     <div class="rline"></div>
     <p class="desc">
-      Bardage nervuré en tons sable et pierre, casquettes horizontales au-dessus des baies, menuiseries sombres :
-      l'architecture joue la sobriété et la lumière du Roussillon plutôt que le vocabulaire industriel standard.
-      Les façades sur voirie sont traitées comme des façades d'entreprise — vitrines de bureaux, entrées identifiées,
-      plantations méditerranéennes en pied de bâtiment.
+      Le parc ne propose pas un produit unique décliné en plusieurs tailles, mais trois typologies distinctes,
+      chacune dimensionnée pour son métier : l'entrepôt, la messagerie, et l'atelier avec bureau.
     </p>
   </div>
 
-  <div class="g4 rv">
-    <div>
-      <div class="ph" data-img="salses_assets/visuel_03_facade.jpg" data-t="Détail de façade" data-f="visuel_03_facade.jpg"></div>
-      <p style="font-size:12px; font-weight:800; color:var(--navy); margin-top:12px;">Façade type — bureau et accès cellule</p>
-      <p style="font-size:11.5px; color:#7A766D; margin-top:4px; line-height:1.55;">
-        Bardage nervuré ton sable, casquettes brise-soleil, baies vitrées toute hauteur au rez-de-chaussée,
-        porte sectionnelle sous auvent.</p>
+  <div class="g2" style="margin-top:52px; align-items:start;">
+    <div class="rv">
+      <div class="zoom-wrap" data-img="salses_assets/visuel_03_logistique.jpg" data-t="Lot A4 — entrepôt logistique"></div>
+      <p style="font-size:13px; font-weight:800; color:var(--navy); margin-top:14px;">Lot A4 — entrepôt logistique · 15 245 m²</p>
+      <p style="font-size:12.5px; color:#7A766D; margin-top:5px; line-height:1.6;">
+        14 825 m² en rez-de-chaussée et 420 m² de mezzanine, sur un foncier de 28 920 m². Bloc bureaux sur deux
+        niveaux en pignon, quais de chargement en façade longue, parking véhicules légers dissocié de la cour
+        poids lourds.</p>
     </div>
-    <div>
-      <div class="ph" data-img="salses_assets/visuel_04_voirie.jpg" data-t="Vue depuis la voirie" data-f="visuel_04_voirie.jpg"></div>
-      <p style="font-size:12px; font-weight:800; color:var(--navy); margin-top:12px;">Ambiance depuis la voirie interne</p>
-      <p style="font-size:11.5px; color:#7A766D; margin-top:4px; line-height:1.55;">
-        Voirie paysagée, cyprès et pins d'alignement, cheminements piétons protégés, accès poids lourds dissocié.</p>
+    <div class="rv">
+      <div class="zoom-wrap" data-img="salses_assets/visuel_04_messagerie.jpg" data-t="Lot A3 — plateforme de messagerie"></div>
+      <p style="font-size:13px; font-weight:800; color:var(--navy); margin-top:14px;">Lot A3 — messagerie · 4 026 m²</p>
+      <p style="font-size:12.5px; color:#7A766D; margin-top:5px; line-height:1.6;">
+        Bâtiment traversant à quais sur ses deux faces : 25 portes d'un côté, 24 de l'autre, soit 49 portes à quai.
+        Huit places d'attente poids lourds et une station de lavage PL sur une cour de 16 855 m².</p>
     </div>
   </div>
 
-  <div class="rv" style="margin-top:52px;">
-    <h3>Le parti architectural en bref</h3>
-    <div class="g3" style="margin-top:20px;">
-      <div class="card">
-        <div class="c-ey">Matériaux</div>
-        <div class="c-desc" style="margin-top:6px; font-size:13px;">Bardage métallique nervuré ton sable et pierre,
-          soubassement béton, menuiseries aluminium gris anthracite.</div>
-      </div>
-      <div class="card">
-        <div class="c-ey">Lumière</div>
-        <div class="c-desc" style="margin-top:6px; font-size:13px;">Baies généreuses côté bureaux, casquettes
-          brise-soleil, éclairage zénithal en toiture des cellules.</div>
-      </div>
-      <div class="card">
-        <div class="c-ey">Paysage</div>
-        <div class="c-desc" style="margin-top:6px; font-size:13px;">Palette végétale méditerranéenne — pins, cyprès,
-          arbustes de garrigue — en accompagnement des voiries et parkings.</div>
-      </div>
+  <div class="rv" style="margin-top:56px;">
+    <h3>Découpage des cellules d'activités</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Lot</th><th>Cellule</th><th>Rez-de-chaussée</th><th>Mezzanine</th><th>Surface totale</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="4"><strong>A1</strong> et <strong>A2</strong><br><span style="font-size:11px; color:var(--muted);">découpage identique</span></td>
+              <td>cellule a</td><td>1 125 m²</td><td>175 m²</td><td><strong>1 300 m²</strong></td></tr>
+          <tr><td>cellule b</td><td>875 m²</td><td>175 m²</td><td><strong>1 050 m²</strong></td></tr>
+          <tr><td>cellule c</td><td>875 m²</td><td>175 m²</td><td><strong>1 050 m²</strong></td></tr>
+          <tr><td>cellule d</td><td>1 125 m²</td><td>175 m²</td><td><strong>1 300 m²</strong></td></tr>
+          <tr><td rowspan="4"><strong>B1</strong> et <strong>B2</strong><br><span style="font-size:11px; color:var(--muted);">découpage identique</span></td>
+              <td>cellule a</td><td>660 m²</td><td>119 m²</td><td><strong>779 m²</strong></td></tr>
+          <tr><td>cellule b</td><td>660 m²</td><td>119 m²</td><td><strong>779 m²</strong></td></tr>
+          <tr><td>cellule c</td><td>660 m²</td><td>119 m²</td><td><strong>779 m²</strong></td></tr>
+          <tr><td>cellule d</td><td>660 m²</td><td>119 m²</td><td><strong>779 m²</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px; color:var(--muted); margin-top:12px;">
+      Les cellules d'un même bâtiment sont regroupables : un preneur peut prendre 779 m², 1 558 m² ou la
+      totalité du lot.</p>
+  </div>
+
+  <div class="g3 rv" style="margin-top:52px;">
+    <div class="card">
+      <div class="c-ey">Matériaux</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Bardage métallique nervuré ton sable et pierre,
+        soubassement béton, menuiseries aluminium gris anthracite.</div>
+    </div>
+    <div class="card">
+      <div class="c-ey">Lumière</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Baies généreuses côté bureaux, casquettes
+        brise-soleil, éclairage zénithal en toiture des cellules.</div>
+    </div>
+    <div class="card">
+      <div class="c-ey">Paysage</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Palette méditerranéenne — pins, cyprès, arbustes
+        de garrigue — en accompagnement des voiries et des parkings. Conception CMO Paysages.</div>
     </div>
   </div>
 </section>
@@ -436,27 +464,33 @@ footer strong { color:#B9C0CE; }
 
   <div class="rv">
     <div class="ey">Localisation &amp; accessibilité</div>
-    <h2>Sur l'axe <em>A9 — La Catalane</em></h2>
+    <h2>En limite directe de <em>l'axe A9</em></h2>
     <div class="rline"></div>
     <p class="desc">
       Salses-le-Château occupe le passage naturel entre la plaine du Roussillon et le Languedoc — le verrou que la
-      forteresse de Salses gardait déjà en 1500. Aujourd'hui, c'est l'A9 qui y passe : l'un des principaux corridors de
-      fret d'Europe (E15), qui relie l'Espagne et le Maghreb aux marchés du nord de l'Europe.
+      forteresse de Salses gardait déjà en 1500. Aujourd'hui, c'est l'A9 qui y passe, l'un des principaux corridors
+      de fret d'Europe, et le parc est implanté en bordure immédiate de cet axe.
     </p>
   </div>
 
-  <div class="g3 rv" style="margin-top:44px;">
+  <div class="rv" style="margin-top:44px;">
+    <div class="zoom-wrap" data-img="salses_assets/visuel_05_insertion.jpg" data-t="Insertion du parc dans le site"></div>
+    <p class="ilab">Insertion dans le site — le domaine ancien et son parc au sud-ouest, les vignes à l'est,
+      l'autoroute A9 en limite est. Document non contractuel.</p>
+  </div>
+
+  <div class="g3 rv" style="margin-top:48px;">
     <div>
       <h3>Accès routiers</h3>
       <div class="card-white" style="margin-bottom:10px;">
         <div class="c-ey">Autoroute</div>
-        <div class="c-desc" style="margin-top:4px; font-size:13px;">A9 — échangeur <span class="tbc">n° 41 Perpignan Nord</span></div>
-        <div class="c-desc" style="font-size:12px; color:#9A958A;">Distance à l'échangeur : <span class="tbc">— km</span></div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">A9 — le site jouxte l'axe autoroutier</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Échangeur de raccordement : <span class="tbc">à confirmer</span></div>
       </div>
       <div class="card-white" style="margin-bottom:10px;">
-        <div class="c-ey">Route départementale</div>
-        <div class="c-desc" style="margin-top:4px; font-size:13px;">RD 900 (ex-RN 9) — accès direct</div>
-        <div class="c-desc" style="font-size:12px; color:#9A958A;">Liaison Perpignan &nbsp;|&nbsp; Narbonne hors autoroute</div>
+        <div class="c-ey">Entrée du parc</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">Avenue Clément Ader</div>
+        <div class="c-desc" style="font-size:12px; color:#9A958A;">Accès unique, dissocié PL / VL</div>
       </div>
       <div class="card-white" style="margin-bottom:10px;">
         <div class="c-ey">Aéroport</div>
@@ -498,8 +532,8 @@ footer strong { color:#B9C0CE; }
       <h3>Un bassin économique moteur</h3>
       <div class="card-white" style="margin-bottom:10px;">
         <div class="c-ey">Saint-Charles International</div>
-        <div class="c-desc" style="margin-top:4px; font-size:13px;">≈ 20 km — Premier centre européen de commercialisation,
-          transport et logistique de fruits et légumes frais.</div>
+        <div class="c-desc" style="margin-top:4px; font-size:13px;">≈ 20 km — Premier centre européen de
+          commercialisation, transport et logistique de fruits et légumes frais.</div>
         <div class="c-desc" style="font-size:12px; color:#9A958A;">≈ 80 ha — plus de 150 entreprises de négoce,
           transport et logistique.</div>
       </div>
@@ -517,22 +551,47 @@ footer strong { color:#B9C0CE; }
       </div>
       <div class="companies">
         <div class="co-chip">Logistique</div>
+        <div class="co-chip">Messagerie</div>
         <div class="co-chip">Agroalimentaire</div>
         <div class="co-chip">Transport</div>
         <div class="co-chip">Négoce international</div>
-        <div class="co-chip">Énergies</div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="rv" style="margin-top:48px;">
-    <div class="ph" data-img="salses_assets/plan_situation.jpg" data-t="Plan de situation" data-f="plan_situation.jpg"></div>
-    <p class="ilab">Plan de situation — A9, RD 900 et accès au parc</p>
+<!-- ══════════ PLANS ══════════ -->
+<section id="plans" style="background:#fff;">
+  <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
+
+  <div class="rv">
+    <div class="ey">Plans</div>
+    <h2>Plan de masse et <em>organisation des lots</em></h2>
+    <div class="rline"></div>
+    <p class="desc">Cliquez sur un plan pour l'agrandir et zoomer sur le détail des lots, des voiries et des cours
+      poids lourds.</p>
+  </div>
+
+  <div class="rv" style="margin-top:44px;">
+    <div class="zoom-wrap" data-img="salses_assets/plan_masse.jpg" data-t="Plan de masse — permis d'aménager"></div>
+    <p style="font-size:13px; font-weight:800; color:var(--navy); margin-top:14px;">Plan de masse — permis d'aménager</p>
+    <p style="font-size:12.5px; color:#7A766D; margin-top:5px; line-height:1.6;">
+      Macrolot A au nord (A4, A4', A3, A2, A1), macrolot B à l'ouest (B1, B2), voirie commune Z1.1 en épine
+      centrale, entrée unique au sud sur l'avenue Clément Ader et bassins de rétention au sud-est.
+      Échelle 1:1000 — indice A du 06/07/2026.</p>
+  </div>
+
+  <div class="rv" style="margin-top:44px;">
+    <div class="zoom-wrap" data-img="salses_assets/plan_messagerie.jpg" data-t="Plan de la messagerie — lot A3"></div>
+    <p style="font-size:13px; font-weight:800; color:var(--navy); margin-top:14px;">Lot A3 — plan de la messagerie</p>
+    <p style="font-size:12.5px; color:#7A766D; margin-top:5px; line-height:1.6;">
+      Bâtiment traversant, 25 portes à quai au nord et 24 au sud, places d'attente poids lourds, station de
+      lavage PL, transformateur et poteau incendie. Échelle 1:400.</p>
   </div>
 </section>
 
 <!-- ══════════ ENVIRONNEMENT ══════════ -->
-<section id="environnement" style="background:#fff;">
+<section id="environnement" style="background:var(--sand2);">
   <div class="sec-logo"><img src="salses_assets/logo_actibati_mark.png" alt=""></div>
 
   <div class="rv">
@@ -547,27 +606,27 @@ footer strong { color:#B9C0CE; }
   </div>
 
   <div class="stat-row rv">
-    <div class="stat-item"><div class="sv"><span class="tbc">— —</span></div><div class="sl">m² de toiture photovoltaïque</div></div>
-    <div class="stat-item"><div class="sv"><span class="tbc">—</span></div><div class="sl">MWc installés</div></div>
-    <div class="stat-item"><div class="sv"><span class="tbc">—</span></div><div class="sl">bornes de recharge</div></div>
     <div class="stat-item"><div class="sv">100<small>%</small></div><div class="sl">des toitures équipées</div></div>
+    <div class="stat-item"><div class="sv">6 352</div><div class="sl">m³ de rétention d'eaux pluviales</div></div>
+    <div class="stat-item"><div class="sv">64,3<small>%</small></div><div class="sl">du foncier non bâti</div></div>
+    <div class="stat-item"><div class="sv">2</div><div class="sl">bassins paysagers</div></div>
   </div>
 
   <div class="g3 rv" style="margin-top:48px;">
     <div class="card">
       <div class="c-ey">Énergie</div>
-      <div class="c-desc" style="margin-top:6px; font-size:13px;">Toitures photovoltaïques sur l'ensemble des bâtiments.
-        Éclairage LED avec détection de présence. Isolation renforcée des cellules.</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Toitures photovoltaïques sur l'ensemble des
+        bâtiments. Éclairage LED avec détection de présence. Isolation renforcée des cellules.</div>
     </div>
     <div class="card">
       <div class="c-ey">Eau &amp; sols</div>
-      <div class="c-desc" style="margin-top:6px; font-size:13px;">Noues paysagères et bassins de rétention pour la
-        gestion des eaux pluviales à la parcelle. Surfaces perméables sur les stationnements légers.</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Deux bassins de rétention paysagers —
+        5 214 m³ et 1 138 m³ — traitent les eaux pluviales à la parcelle, au point bas du site.</div>
     </div>
     <div class="card">
       <div class="c-ey">Biodiversité</div>
-      <div class="c-desc" style="margin-top:6px; font-size:13px;">Bandes boisées conservées en limite de parc,
-        palette végétale locale peu consommatrice d'eau, espaces verts en pleine terre.</div>
+      <div class="c-desc" style="margin-top:6px; font-size:13px;">Emprise au sol limitée à 35,7 % : près de deux
+        tiers du foncier restent non bâtis, en voiries perméables, noues et espaces plantés.</div>
     </div>
   </div>
 
@@ -575,6 +634,7 @@ footer strong { color:#B9C0CE; }
     <ul class="blist">
       <li>Bornes de recharge pour véhicules électriques — VL et utilitaires</li>
       <li>Abris deux-roues couverts et stationnement vélo sécurisé</li>
+      <li>Station de lavage poids lourds intégrée au lot messagerie</li>
       <li>Certification environnementale : <span class="tbc">démarche visée à préciser</span></li>
       <li>Conformité à la réglementation environnementale en vigueur (RE 2020 pour les parties bureaux)</li>
     </ul>
@@ -589,55 +649,56 @@ footer strong { color:#B9C0CE; }
     <div class="ey">Disponibilités</div>
     <h2>Surfaces <em>disponibles</em></h2>
     <div class="rline"></div>
-    <p class="desc">Tableau des surfaces à compléter dès réception du plan de masse coté et de la grille de
-      commercialisation.</p>
+    <p class="desc">Surfaces de plancher issues du tableau de surfaces du 15 septembre 2026, variante logistique.</p>
   </div>
 
   <div class="table-wrap rv">
     <table>
       <thead>
-        <tr><th>Bâtiment</th><th>Référence</th><th>Surface</th><th>Composition</th><th>Équipements</th><th>Loyer</th></tr>
+        <tr><th>Macrolot</th><th>Lot</th><th>Surface de plancher</th><th>Typologie</th><th>Divisibilité</th><th>Loyer</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Cellule logistique</strong></td><td class="tbc">L01</td><td class="tbc">— m²</td>
-          <td>Entreposage, bureaux, locaux sociaux</td>
-          <td>Quais niveleurs &nbsp;|&nbsp; Porte plain-pied</td>
+          <td rowspan="4"><strong>A</strong></td><td><strong>A4</strong></td><td>15 245 m²</td>
+          <td>Entrepôt logistique</td><td>Quais niveleurs, bureaux sur 2 niveaux</td>
           <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
         </tr>
         <tr>
-          <td><strong>Bâtiment A</strong></td><td class="tbc">A01</td><td class="tbc">— m²</td>
-          <td>Activité, bureau, mezzanine</td>
-          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><strong>A3</strong></td><td>4 026 m²</td>
+          <td>Messagerie</td><td>49 portes à quai, station de lavage PL</td>
           <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
         </tr>
         <tr>
-          <td></td><td class="tbc">A02</td><td class="tbc">— m²</td>
-          <td>Activité, bureau, mezzanine</td>
-          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><strong>A2</strong></td><td>4 700 m²</td>
+          <td>Activités</td><td>4 cellules — 1 300 / 1 050 / 1 050 / 1 300 m²</td>
           <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
         </tr>
         <tr>
-          <td><strong>Bâtiment B</strong></td><td class="tbc">B01</td><td class="tbc">— m²</td>
-          <td>Activité, bureau, mezzanine</td>
-          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td><strong>A1</strong></td><td>4 700 m²</td>
+          <td>Activités</td><td>4 cellules — 1 300 / 1 050 / 1 050 / 1 300 m²</td>
           <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
         </tr>
         <tr>
-          <td></td><td class="tbc">B02</td><td class="tbc">— m²</td>
-          <td>Activité, bureau, mezzanine</td>
-          <td>Porte sectionnelle &nbsp;|&nbsp; Bureau en façade</td>
+          <td rowspan="2"><strong>B</strong></td><td><strong>B1</strong></td><td>3 116 m²</td>
+          <td>Activités</td><td>4 cellules de 779 m²</td>
+          <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
+        </tr>
+        <tr>
+          <td><strong>B2</strong></td><td>3 116 m²</td>
+          <td>Activités</td><td>4 cellules de 779 m²</td>
           <td><a href="#contact" class="badge-grey">Nous consulter</a></td>
         </tr>
         <tr class="total">
           <td colspan="2"><strong>Programme complet</strong></td>
-          <td><strong class="tbc" style="background:none; color:#fff; border-bottom-color:rgba(255,255,255,.5);">— — m²</strong></td>
-          <td colspan="2"><strong>Lignes à compléter selon la grille définitive</strong></td>
+          <td><strong>34 903 m²</strong></td>
+          <td colspan="2"><strong>6 bâtiments — 18 lots commercialisables</strong></td>
           <td><strong>Nous consulter</strong></td>
         </tr>
       </tbody>
     </table>
   </div>
+  <p style="font-size:11.5px; color:var(--muted); margin-top:12px;">
+    Un lot de réserve foncière (A4', 6 483 m² de terrain) complète le macrolot A au nord-ouest.</p>
 
   <div class="rv card-white" style="padding:34px; margin-top:44px;">
     <div class="c-ey" style="margin-bottom:14px;">Descriptif général</div>
@@ -645,12 +706,13 @@ footer strong { color:#B9C0CE; }
       Programme neuf livré clés en main. Bail commercial 3 / 6 / 9 ans. Possibilité de personnalisation des cellules
       (aménagement de bureaux, cloisonnement, quais complémentaires) sur étude.</p>
     <ul class="blist" style="margin-top:18px;">
-      <li>Dallage industriel — charge d'exploitation <span class="tbc">— T/m²</span></li>
-      <li>Hauteur libre sous poutre <span class="tbc">— m</span></li>
+      <li>Dallage industriel — charge d'exploitation <span class="tbc">à préciser</span></li>
+      <li>Hauteur libre sous poutre <span class="tbc">à préciser</span></li>
       <li>Portes sectionnelles motorisées et portes plain-pied</li>
-      <li>Quais de chargement avec niveleurs (cellule logistique)</li>
+      <li>Quais de chargement avec niveleurs sur les lots A3 et A4</li>
       <li>Bureaux et locaux sociaux livrés finis</li>
-      <li>RIA, désenfumage, extincteurs — conformité assurance</li>
+      <li>Mezzanines livrées : 175 m² par cellule sur A1 et A2, 119 m² sur B1 et B2</li>
+      <li>RIA, désenfumage, poteaux incendie — conformité assurance</li>
       <li>Stationnement VL, PL et deux-roues</li>
       <li>Clôture périmétrique et portails automatisés</li>
     </ul>
@@ -660,8 +722,7 @@ footer strong { color:#B9C0CE; }
 <!-- ══════════ CONTACT ══════════ -->
 <section id="contact">
   <div style="text-align:center; padding:10px 20px 40px;">
-    <img src="salses_assets/logo_actibati_white.png" alt="ACTI BATI" style="height:120px; width:auto;"
-         onerror="this.src='salses_assets/logo_actibati_full.png'; this.style.background='#fff'; this.style.padding='16px'; this.style.borderRadius='4px';">
+    <img src="salses_assets/logo_actibati_white.png" alt="ACTI BATI" style="height:120px; width:auto;">
   </div>
 
   <div class="rv">
@@ -672,7 +733,7 @@ footer strong { color:#B9C0CE; }
       <div>
         <p class="desc"><strong style="color:#fff;">ACTI BATI — Immobilier d'entreprise</strong></p>
         <ul class="blist" style="margin-top:12px;">
-          <li>Adresse : <strong class="tbc">à compléter</strong></li>
+          <li>7 rue Auguste, 30000 Nîmes</li>
           <li>Téléphone : <strong class="tbc">à compléter</strong></li>
           <li>Email : <strong class="tbc">à compléter</strong></li>
           <li>Contact commercial : <strong class="tbc">à compléter</strong></li>
@@ -681,7 +742,9 @@ footer strong { color:#B9C0CE; }
       </div>
       <div>
         <p class="desc" style="font-size:13.5px; line-height:2;">
-          Adresse du projet :<br><strong style="color:#fff;">Salses-le-Château (66600) — Pyrénées-Orientales</strong><br><br>
+          Adresse du projet :<br>
+          <strong style="color:#fff;">Zone d'activités, Pla de Salses<br>
+          Avenue Clément Ader — 66600 Salses-le-Château</strong><br><br>
           Livraison prévisionnelle :<br><strong class="tbc">à confirmer</strong><br><br>
           Type de commercialisation :<br><strong style="color:#fff;">Location — bail commercial 3 / 6 / 9 ans</strong>
         </p>
@@ -694,12 +757,12 @@ footer strong { color:#B9C0CE; }
 <footer>
   <div>
     <strong data-park="nom-inline"></strong><br>
-    Salses-le-Château (66600) — Pyrénées-Orientales<br>
-    Parc d'activités et logistique — Commercialisation ACTI BATI
+    Pla de Salses — Avenue Clément Ader, 66600 Salses-le-Château<br>
+    34 903 m² — 6 bâtiments — Commercialisation ACTI BATI
   </div>
   <div style="text-align:right;">
-    Perspectives : agence d'architecture du projet<br>
-    <strong>Document non contractuel</strong>
+    Architectes : <strong>STONE ARCHITECTES</strong> — Paysagiste : CMO Paysages<br>
+    Perspectives et plans : document non contractuel
   </div>
 </footer>
 
@@ -726,21 +789,21 @@ footer strong { color:#B9C0CE; }
 /* ══════════════════════════════════════════════════════════════════
    1) NOM DU PARC — un seul endroit à modifier
    Change la valeur de PARK_ACTIF ci-dessous pour basculer tout le
-   document (titre de page, hero, textes courants, pied de page).
+   document (titre de l'onglet, hero, textes courants, pied de page).
    ══════════════════════════════════════════════════════════════════ */
 const NOMS = {
-  porta:     { nom:'PORTA ACTIVA', signature:"Le parc d'entrée du Pays Catalan" },
-  catalane:  { nom:'LA CATALANE',  signature:"Parc d'activités — Salses-le-Château, sur l'A9" },
-  tramontana:{ nom:'TRAMONTANA',   signature:"Le parc d'activités qui a le vent en poupe" },
-  salina:    { nom:'SALINA',       signature:"Parc d'activités et logistique — Salses-le-Château" },
+  porta:     { nom:'PORTA ACTIVA',    signature:"Le parc d'entrée du Pays Catalan" },
+  pla:       { nom:'PLA DE SALSES',   signature:"Parc d'activités et logistique — en limite de l'A9" },
+  catalane:  { nom:'LA CATALANE',     signature:"Parc d'activités — Salses-le-Château, sur l'A9" },
+  tramontana:{ nom:'TRAMONTANA',      signature:"Le parc d'activités qui a le vent en poupe" },
+  salina:    { nom:'SALINA',          signature:"Parc d'activités et logistique — Salses-le-Château" },
   acti66:    { nom:'ACTI ROUSSILLON', signature:"Parc d'activités — Porte nord du Pays Catalan" }
 };
 const PARK_ACTIF = 'porta';   // ← modifier ici
 
 function appliquerNom(cle){
   const p = NOMS[cle]; if(!p) return;
-  document.querySelectorAll('[data-park="nom"]').forEach(el => el.textContent = p.nom);
-  document.querySelectorAll('[data-park="nom-inline"]').forEach(el => el.textContent = p.nom);
+  document.querySelectorAll('[data-park="nom"], [data-park="nom-inline"]').forEach(el => el.textContent = p.nom);
   document.querySelectorAll('[data-park="signature"]').forEach(el => el.textContent = p.signature);
   document.title = p.nom + " — Salses-le-Château — Parc d'activités";
   const sig = document.getElementById('namer-sig');
@@ -766,26 +829,24 @@ if (AFFICHER_SELECTEUR) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   2) VISUELS — chargement automatique depuis /salses_assets
-   Dépose les fichiers dans le dossier salses_assets avec les noms
-   indiqués dans les cadres pointillés : ils remplacent seuls les
-   emplacements réservés, sans toucher au code.
+   2) VISUELS — chargement depuis /salses_assets
+   Chaque cadre porte le nom du fichier attendu dans data-img. Si le
+   fichier manque, le cadre devient un emplacement réservé qui rappelle
+   ce nom, au lieu d'une image cassée.
    ══════════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.ph[data-img]').forEach(ph => {
-  const src = ph.dataset.img;
+document.querySelectorAll('.zoom-wrap[data-img]').forEach(wrap => {
+  const src = wrap.dataset.img;
   const test = new Image();
   test.onload = () => {
-    const wrap = document.createElement('div');
-    wrap.className = 'zoom-wrap';
-    wrap.innerHTML = '<img src="' + src + '" alt="' + (ph.dataset.t || '') + '">' +
+    wrap.innerHTML = '<img src="' + src + '" alt="' + (wrap.dataset.t || '') + '">' +
                      '<div class="zoom-label">Cliquer pour agrandir</div>';
-    ph.replaceWith(wrap);
     brancherZoom(wrap);
   };
   test.onerror = () => {
-    ph.innerHTML = '<div class="ph-n">Emplacement réservé</div>' +
-                   '<div class="ph-t">' + (ph.dataset.t || 'Visuel') + '</div>' +
-                   '<div class="ph-f">salses_assets/' + (ph.dataset.f || '') + '</div>';
+    wrap.className = 'ph';
+    wrap.innerHTML = '<div class="ph-n">Emplacement réservé</div>' +
+                     '<div class="ph-t">' + (wrap.dataset.t || 'Visuel') + '</div>' +
+                     '<div class="ph-f">' + src + '</div>';
   };
   test.src = src;
 });
@@ -815,14 +876,14 @@ document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 
 function brancherZoom(wrap){
   wrap.addEventListener('click', () => {
-    document.getElementById('lb-img').src = wrap.querySelector('img').src;
+    const img = wrap.querySelector('img'); if(!img) return;
+    document.getElementById('lb-img').src = img.src;
     lbFit();
     document.getElementById('lb-scroll').scrollTo(0,0);
     document.getElementById('lightbox').style.display = 'block';
     document.body.style.overflow = 'hidden';
   });
 }
-document.querySelectorAll('.zoom-wrap').forEach(brancherZoom);
 
 let lbW = 100;
 function lbFit(){ const i = document.getElementById('lb-img'); i.style.width=''; i.style.maxWidth='100%'; lbW=100; }
