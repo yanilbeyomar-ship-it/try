@@ -17,10 +17,14 @@ import pathlib
 import re
 
 RACINE = pathlib.Path(__file__).parent
-SOURCE = RACINE / "salses_source.html"
-SORTIE = RACINE / "salses_le_chateau.html"
-ARTIFACT = RACINE / "salses_artifact.html"
 ASSETS = RACINE / "salses_assets"
+
+# (source, version autonome, version en ligne). La version en ligne est
+# optionnelle : la plaquette imprimee n'a pas de selecteur a forcer.
+DOCUMENTS = [
+    ("salses_source.html", "salses_le_chateau.html", "salses_artifact.html"),
+    ("roussillon41_source.html", "roussillon41.html", "roussillon41_artifact.html"),
+]
 
 # L'hebergeur d'artifacts enveloppe lui-meme le fichier dans un squelette
 # <!doctype>...<head>...<body>, donc ces balises doivent disparaitre.
@@ -52,8 +56,8 @@ def version_artifact(html: str) -> str:
     return ENVELOPPE.sub("", html)
 
 
-def main() -> None:
-    html = SOURCE.read_text(encoding="utf-8")
+def construire(nom_source: str, nom_sortie: str, nom_artifact: str) -> None:
+    html = (RACINE / nom_source).read_text(encoding="utf-8")
     inlines, manquants = [], []
 
     for ref in sorted(set(re.findall(r'(?:src|data-img)="(salses_assets/[^"]+)"', html))):
@@ -64,15 +68,23 @@ def main() -> None:
         else:
             manquants.append(ref)
 
-    SORTIE.write_text(html, encoding="utf-8")
-    ARTIFACT.write_text(version_artifact(html), encoding="utf-8")
+    sortie = RACINE / nom_sortie
+    sortie.write_text(html, encoding="utf-8")
+    artifact = RACINE / nom_artifact
+    artifact.write_text(version_artifact(html), encoding="utf-8")
 
-    for fichier in (SORTIE, ARTIFACT):
-        print(f"{fichier.name} — {fichier.stat().st_size / 1_048_576:.2f} Mo")
+    print(f"\n{nom_source}")
+    for fichier in (sortie, artifact):
+        print(f"  {fichier.name} — {fichier.stat().st_size / 1_048_576:.2f} Mo")
     for ref in inlines:
-        print(f"  integre   {ref}")
+        print(f"    integre   {ref}")
     for ref in manquants:
-        print(f"  a fournir {ref}")
+        print(f"    a fournir {ref}")
+
+
+def main() -> None:
+    for document in DOCUMENTS:
+        construire(*document)
 
 
 if __name__ == "__main__":

@@ -1,18 +1,61 @@
-# Salses-le-Château — plaquette de commercialisation
+# Salses-le-Château — plaquettes de commercialisation
 
 Opération ACTI BATI au lieu-dit Pla de Salses, avenue Clément Ader,
-66600 Salses-le-Château. Plaquette construite sur le gabarit des Ateliers
-Ferroviaires / Acti-Sud Nîmes (`index.html`).
+66600 Salses-le-Château. Le parc est commercialisé sous le nom **ROUSSILLON 41**.
+
+## Deux documents distincts
+
+Le cahier des charges impose une discipline commerciale : **un logisticien ne doit
+jamais recevoir la plaquette artisans**. Voir un entrepôt de 15 000 m² voisiner avec
+des cellules de 779 m² dans le même document lui fait craindre un site mal calibré.
+
+| Document | Périmètre | État |
+|---|---|---|
+| `roussillon41_source.html` | Pôle Logistique & Messagerie — lots A4 et A3 uniquement, 12 pages A4 imprimables | Rédigé, données à compléter |
+| `salses_source.html` | Parc entier, tous lots, format page web déroulante | Fait, **ne pas diffuser à un logisticien** |
+| Plaquette Entreprises & Artisans | Lots A1, A2, B1, B2 — propriété, cellule, coût d'occupation | À écrire |
+
+La plaquette web couvrant tout le parc est antérieure au cahier des charges et
+mélange les deux cibles. Elle reste utile en interne ou comme page d'atterrissage,
+mais elle ne remplace aucune des deux plaquettes ciblées.
+
+## Correction importante : les 49 portes à quai
+
+Le cahier des charges attribue les 49 portes à quai au bâtiment **A4** et le
+signale lui-même comme point à vérifier. **Vérification faite : elles sont sur A3.**
+
+Le plan 05.1 Messagerie au 1:400 porte la mention « 25 portes a quai » en façade
+nord et « 24 portes a quai » en façade sud, sur un bâtiment explicitement étiqueté
+A3, long de 135,28 m, avec « Attente PL 3 places » au nord et « Attente PL 5 places »
+au sud, plus une station de lavage PL.
+
+Conséquences reportées dans la plaquette : la fiche A4 ne revendique plus de portes
+à quai (le nombre n'apparaît sur aucune pièce fournie, il reste à relever auprès de
+la maîtrise d'œuvre), et la fiche A3 devient la fiche messagerie. Les 8 places
+d'attente PL sont sur A3, pas les 3 annoncées sur A4.
 
 ## Fichiers
 
 | Fichier | Rôle |
 |---|---|
-| `salses_source.html` | Source à modifier. Images en chemins relatifs. |
-| `salses_le_chateau.html` | Version autonome générée, transférable par email. **Ne pas éditer à la main.** |
-| `salses_artifact.html` | Version générée pour la publication en ligne. **Ne pas éditer à la main.** |
-| `build_salses.py` | Regénère les deux versions : `python3 build_salses.py` |
+| `roussillon41_source.html` | Source de la plaquette logistique. **Fichier à modifier.** |
+| `roussillon41.html` | Version autonome générée, transférable par email |
+| `roussillon41_artifact.html` | Version générée pour la publication en ligne |
+| `salses_source.html` | Source de la plaquette web tous lots |
+| `salses_le_chateau.html`, `salses_artifact.html` | Versions générées |
+| `build_salses.py` | Regénère les quatre sorties : `python3 build_salses.py` |
 | `salses_assets/` | Logos ACTI BATI, perspectives et plans |
+
+Les fichiers générés ne s'éditent pas à la main.
+
+## Produire le PDF de la plaquette
+
+Ouvrir `roussillon41.html`, masquer les notes de production avec le bouton en haut
+de page, puis Imprimer → Enregistrer en PDF, format A4, marges nulles, arrière-plans
+activés. Les douze pages sont calées au format A4 portrait.
+
+Le bouton bascule le document entre version de travail et version nette : les notes
+encadrées en jaune et en rouge ne doivent jamais partir chez un preneur.
 
 ## Visuels intégrés
 
