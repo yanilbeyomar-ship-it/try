@@ -542,6 +542,47 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 .s-cover .tag { right: calc(var(--pad-x) + var(--u) * 22); }
 .s-cover .photo.hero ~ .meta { bottom: calc(var(--u) * 2.6); width: calc(var(--u) * 22); padding-top: calc(var(--u) * 1.6); border-top: 1px solid rgba(242,240,232,.18); }
 
+/* ---------- Paquet YAKA en 3D (écran café) ------------------------------ */
+.s-product .photo .scene { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: calc(var(--u) * 110);
+  background: radial-gradient(42% 46% at 50% 48%, rgba(233,200,160,.10), transparent 70%); }
+.scene .tilt { transform-style: preserve-3d; transform: rotateX(-7deg); }
+.bag3d { --w: calc(var(--u) * 22); --h: calc(var(--u) * 32); --d: calc(var(--u) * 7);
+  position: relative; width: var(--w); height: var(--h); transform-style: preserve-3d; animation: bagspin 16s linear infinite; }
+.s-product .photo:hover .bag3d { animation-duration: 32s; }
+@keyframes bagspin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+.bag3d .face { position: absolute; top: 0; left: 50%; height: var(--h); backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.bag3d .front, .bag3d .back { width: var(--w); margin-left: calc(var(--w) / -2); border-radius: calc(var(--u) * .5) calc(var(--u) * .5) calc(var(--u) * .25) calc(var(--u) * .25);
+  background: linear-gradient(100deg, #0b0b0b 0%, #1c1b19 38%, #141312 62%, #090909 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.035), inset 0 calc(var(--u) * -3) calc(var(--u) * 4) rgba(0,0,0,.45);
+  display: flex; flex-direction: column; align-items: center; text-align: center; color: #E8C9A4; }
+.bag3d .front { transform: translateZ(calc(var(--d) / 2)); }
+.bag3d .back { transform: rotateY(180deg) translateZ(calc(var(--d) / 2)); }
+.bag3d .front::after, .bag3d .back::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(112deg, transparent 30%, rgba(255,240,220,.07) 46%, transparent 58%); }
+.bag3d .side { width: var(--d); margin-left: calc(var(--d) / -2);
+  background: linear-gradient(90deg, #070707 0%, #151413 40%, #050505 50%, #121110 60%, #070707 100%); }
+.bag3d .right { transform: rotateY(90deg) translateZ(calc(var(--w) / 2)); }
+.bag3d .left { transform: rotateY(-90deg) translateZ(calc(var(--w) / 2)); }
+.bag3d .cap { width: var(--w); height: var(--d); margin-left: calc(var(--w) / -2); background: #0d0d0c; }
+.bag3d .top { top: calc(var(--d) / -2); transform: rotateX(90deg); }
+.bag3d .bottom { top: calc(var(--h) - var(--d) / 2); transform: rotateX(-90deg); background: #050505; }
+.bag3d .seal { position: absolute; left: 0; right: 0; top: 0; height: 11%; background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.25)); border-bottom: 1px solid rgba(0,0,0,.6); }
+.bag3d .zip { position: absolute; left: 3%; right: 3%; top: 15.5%; height: 2px; background: linear-gradient(180deg, rgba(0,0,0,.7), rgba(255,255,255,.05)); }
+.bag3d .front .logo { width: 58%; margin-top: 40%; }
+.bag3d .rule { display: block; width: 14%; height: 1px; background: rgba(232,201,164,.6); margin: 6% 0 4%; }
+.bag3d .arabica { font-size: calc(var(--u) * .78); letter-spacing: .34em; margin-right: -.34em; }
+.bag3d .weight { position: absolute; bottom: 5%; left: 0; right: 0; font-size: calc(var(--u) * .78); letter-spacing: .06em; }
+.bag3d .back .kicker { margin-top: 22%; font-size: calc(var(--u) * .7); letter-spacing: .26em; text-transform: uppercase; line-height: 1.7; }
+.bag3d .back .kicker.small { margin-top: 5%; font-size: calc(var(--u) * .6); }
+.bag3d .back dl { display: grid; grid-template-columns: 1fr; gap: calc(var(--u) * .55); margin: 0 10%; font-size: calc(var(--u) * .62); letter-spacing: .14em; text-transform: uppercase; }
+.bag3d .back dt { color: rgba(232,201,164,.6); font-size: .9em; }
+.bag3d .back dd { margin-top: -.5em; }
+.bag3d .back .notes { margin-top: 2%; font-family: var(--serif); font-style: italic; font-size: calc(var(--u) * 1.05); letter-spacing: .02em; }
+.bag3d .back .cause { margin-top: 5%; padding-top: 4%; border-top: 1px solid rgba(232,201,164,.25); width: 78%; font-size: calc(var(--u) * .56); letter-spacing: .12em; text-transform: uppercase; line-height: 1.7; color: rgba(232,201,164,.8); }
+.scene .floor { position: absolute; left: 50%; top: calc(50% + var(--u) * 16.6); width: calc(var(--u) * 28); height: calc(var(--u) * 3); transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,.75), transparent 70%); filter: blur(4px); animation: floorpulse 8s ease-in-out infinite; }
+@keyframes floorpulse { 0%, 100% { transform: translateX(-50%) scaleX(1); opacity: .9; } 25%, 75% { transform: translateX(-50%) scaleX(.72); opacity: .7; } 50% { transform: translateX(-50%) scaleX(1); opacity: .9; } }
+
 /* ---------- Concrètement (respiration photo) --------------------------- */
 .s-interlude { display: flex; flex-direction: column; }
 .s-interlude .title { margin-top: auto; margin-bottom: auto; font-size: calc(var(--u) * 6.4); line-height: 1; }
@@ -620,6 +661,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 @media (prefers-reduced-motion: reduce) {
   .s-cover .photo.hero img { transform: none !important; filter: none !important; transition: none !important; }
   .s-cover .photo.hero::before { display: none; }
+  .bag3d { animation: none !important; transform: rotateY(-28deg); } .scene .floor { animation: none !important; }
   html { scroll-behavior: auto; }
   .r, .r-fade, .lines .ln > span, .s-cover .mega .logo, .rule-x, .stand .draw, .cycle .ring-draw, .s-origin .wave path, .timeline .track i { transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
   .flow .arrow::after, .s-cover .scroll-cue::after { animation: none; }
@@ -653,12 +695,14 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 
   .s-cover { min-height: 100svh; padding: 0; }
   .s-cover .photo { width: 100%; height: 58%; bottom: auto; }
-  .s-cover .photo.hero { height: 62%; inset: 0 0 auto 0; }
+  .s-cover .photo.hero { inset: 0 0 auto 0; height: min(134vw, 68svh); }
+  .s-cover .photo.hero img { object-position: 50% 30% !important; }
+  .s-cover .photo.hero::after { background: linear-gradient(0deg, var(--bg) 0%, rgba(16,15,12,.6) 12%, rgba(16,15,12,0) 30%) !important; }
   .s-cover .photo.hero::after { background: linear-gradient(0deg, var(--bg) 0%, rgba(16,15,12,.6) 18%, rgba(16,15,12,0) 45%); }
   .s-cover .photo.hero img { object-position: 100% 50%; left: 0; transform: scale(1.12); }
   .s-cover.in .photo.hero img { transform: none; }
-  .s-cover .mega { display: block; bottom: 12%; }
-  .s-cover .tag { max-width: none; bottom: 27%; display: block; border-top: 0; padding-top: 0; }
+  .s-cover .mega { display: none; }
+  .s-cover .tag { max-width: none; bottom: 92px; display: block; border-top: 0; padding-top: 0; }
   .s-cover .tag { right: var(--pad-x); }
   .s-cover .photo.hero ~ .meta { width: auto; border-top: 0; padding-top: 0; bottom: 26px; }
   .s-cover .tag .promise { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(242,240,232,.18); }
@@ -735,6 +779,11 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 
   .s-product { display: block; padding: 0; }
   .s-product .photo { height: 62svh; }
+  .bag3d { --w: 46vw; --h: 68vw; --d: 15vw; }
+  .scene .floor { top: calc(50% + 35vw); width: 60vw; height: 8vw; }
+  .bag3d .arabica, .bag3d .weight { font-size: 8px; }
+  .bag3d .back .kicker { font-size: 7px; } .bag3d .back .kicker.small { font-size: 6px; }
+  .bag3d .back dl { font-size: 6.5px; gap: 5px; } .bag3d .back .notes { font-size: 11px; } .bag3d .back .cause { font-size: 5.5px; }
   .s-product .photo::after { background: linear-gradient(0deg, var(--bg) 0%, rgba(16,15,12,0) 40%); }
   .s-product .info { padding: 8px var(--pad-x) 64px; }
   .s-product .title { font-size: 52px; margin-top: 22px; }
@@ -844,6 +893,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
   .s-spark .band { transform: none !important; }
   .s-cover .photo.hero img { transform: none !important; filter: none !important; transition: none !important; }
   .s-cover .photo.hero::before { display: none; }
+  .bag3d { animation: none !important; transform: rotateY(-28deg); } .scene .floor { animation: none !important; }
   .s-why .words li { opacity: 1 !important; transform: none !important; }
 }
 
@@ -1134,7 +1184,7 @@ window.YAKA_CONTENT = {
   next();
   add("cover", "black", S.cover.nav, `
     <section class="slide s-cover" data-theme="black">
-      <div class="photo hero">${photo(C.images.hero, "Visuel YAKA", "YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café")}</div>
+      <div class="photo hero"><picture><source media="(max-width: 900px), (max-aspect-ratio: 4/5)" srcset="${C.images.packFront}"><img src="${C.images.hero}" alt="YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café"></picture></div>
       <div class="tag">
         <div class="label r"><span>${C.meta.edition}</span></div>
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
@@ -1281,7 +1331,34 @@ window.YAKA_CONTENT = {
   const cf = C.coffee;
   add("product", "black", S.product.nav, `
     <section class="slide s-product">
-      <div class="photo">${photo(C.images.packBack, "Dos du paquet YAKA", "Dos du paquet YAKA : torréfaction, profil et origines")}</div>
+      <div class="photo">
+        <div class="scene" role="img" aria-label="Le paquet YAKA en 3D, qui tourne sur lui-même">
+          <div class="tilt"><div class="bag3d">
+            <div class="face front">
+              <i class="seal"></i><i class="zip"></i>
+              <span class="logo gold"></span><i class="rule"></i>
+              <span class="arabica">100&#8239;% ARABICA</span>
+              <span class="weight">${cf.weight.replace(" ", "")}</span>
+            </div>
+            <div class="face back">
+              <i class="seal"></i><i class="zip"></i>
+              <span class="kicker">Un café d’exception<br>pour les vrais moments</span><i class="rule"></i>
+              <dl>
+                <dt>100&#8239;%</dt><dd>Arabica</dd>
+                <dt>Origines</dt><dd>${cf.origins.replace(/ · /g, " · ")}</dd>
+                <dt>Torréfaction</dt><dd>${cf.roast}</dd>
+              </dl>
+              <span class="kicker small">Profil aromatique</span>
+              <span class="notes">${cf.profile.join(" · ")}</span>
+              <span class="cause">1&#8239;€ reversé par paquet<br>aux personnes sourdes et malentendantes</span>
+              <span class="weight">${cf.weight.replace(" ", "")}</span>
+            </div>
+            <div class="face side right"></div><div class="face side left"></div>
+            <div class="face cap top"></div><div class="face cap bottom"></div>
+          </div></div>
+          <i class="floor"></i>
+        </div>
+      </div>
       <div class="info">
         ${label(next(), S.product.label)}
         ${lines(S.product.title, "title serif")}
