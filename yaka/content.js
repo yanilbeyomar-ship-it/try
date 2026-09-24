@@ -28,12 +28,12 @@ window.YAKA_CONTENT = {
   partner: null,
 
   founders: [
-    { name: "Yanil Bey-Omar", role: "Cofondateur", image: "assets/yanil.jpg", phone: null, email: null },
-    { name: "Arthur Mignon",  role: "Cofondateur", image: "assets/arthur.jpg", phone: null, email: null },
+    { name: "Yanil Bey-Omar", role: "Cofondateur", image: "assets/yanil.jpg", phone: "06 17 99 14 80", email: "yanil@webonestudio.fr" },
+    { name: "Arthur Mignon",  role: "Cofondateur", image: "assets/arthur.jpg", phone: null, email: "arthur@webonestudio.fr" },
   ],
 
   /* Adresse utilisée par le bouton final. null → le bouton renvoie aux contacts. */
-  ctaEmail: null,
+  ctaEmail: "yanil@webonestudio.fr",
 
   images: {
     packaging: "assets/packaging.jpg",   // paquet YAKA 250 g
@@ -45,14 +45,17 @@ window.YAKA_CONTENT = {
 
   /* ---------- Le café ---------------------------------------------------- */
   coffee: {
-    form: "Café en grain",
+    type: "100 % Arabica",
+    blend: "Assemblage de plusieurs origines",
+    origins: "Brésil · Pérou · Colombie · Éthiopie",
+    roast: "Medium-dark",
+    form: "En grains",
     weight: "250 g",
     price: "≈ 15 € TTC",
     priceLabel: "Prix public cible",
-    positioning: "Premium accessible",
-    usage: "Pensé pour les machines automatiques avec broyeur",
-    origin: "[[Sourcing en cours de finalisation]]",
-    profile: ["Doux", "Équilibré", "Gourmand", "Chocolaté", "Caramel", "Faible acidité"],
+    usage: "Espresso et machines automatiques avec broyeur",
+    profile: ["Doux", "Sucré", "Chocolaté"],
+    // Fournisseur (non affiché) : Premium Dolce
   },
 
   /* ---------- L'association ---------------------------------------------- */
@@ -89,14 +92,14 @@ window.YAKA_CONTENT = {
     gains: {
       nav: "Pour votre magasin",
       label: "Pour votre magasin",
-      title: "Ce qu’un samedi YAKA\napporte à votre magasin.",
+      title: "Ce que YAKA apporte\nà votre magasin.",
       items: [
         ["Une animation, sans effort", "Un étudiant qui présente le café toute la journée. Vos équipes n’ont rien à gérer."],
         ["Des allées plus vivantes", "Une présence humaine qui arrête les clients et crée l’échange."],
         ["Une expérience client", "Une découverte accompagnée plutôt qu’un produit simplement posé en rayon."],
         ["Un engagement à votre nom", "Chaque paquet vendu chez vous reverse 1 € à une association pour les personnes sourdes et malentendantes. Un geste que votre magasin peut mettre en avant."],
-        ["Un bilan chiffré", "Ventes, transactions, retours clients, montant reversé : un bilan clair après chaque samedi."],
-        ["Aucun risque", "Un seul samedi pour tester, sans engagement pour la suite."],
+        ["Un bilan chiffré", "Ventes, transactions, retours clients, montant reversé : un bilan clair après chaque journée."],
+        ["Une présence régulière", "Chaque samedi, un rendez-vous que vos clients retrouvent. Et d’autres jours si vous le souhaitez."],
       ],
     },
 
@@ -117,25 +120,25 @@ window.YAKA_CONTENT = {
       store: [
         "Un emplacement dans une allée passante",
         "Surface : [[à préciser]]",
-        "Un samedi",
-        "Un contact le jour J",
+        "Vos samedis (et d’autres jours si vous le souhaitez)",
+        "Un contact sur place",
         "Une table, si vous pouvez en prêter une (sinon, pas de souci : l’étudiant va à la rencontre des clients)",
       ],
       note: "Pas de stock à acheter. Pas de caisse mobilisée. Pas de personnel détaché.",
     },
 
     day: {
-      nav: "Le jour J",
-      label: "Le jour J",
-      title: "Un samedi,\nétape par étape.",
+      nav: "Une journée",
+      label: "Une journée YAKA",
+      title: "Chaque samedi,\nétape par étape.",
       steps: [
-        ["Avant", "Nous validons ensemble la date et l’emplacement. Nous vous envoyons des visuels si vous souhaitez annoncer l’animation."],
+        ["Avant", "Nous validons ensemble le calendrier et l’emplacement. Nous vous envoyons des visuels si vous souhaitez annoncer l’animation."],
         ["Le matin", "Mise en place légère, avant l’affluence. Rien à monter."],
         ["La journée", "L’étudiant présente le café, raconte la cause, conseille et vend. Encaissement sur notre terminal."],
         ["Le soir", "Rangement complet. L’emplacement est rendu tel qu’il nous a été confié."],
         ["Après", "Vous recevez le bilan : ventes, transactions, retours clients et montant reversé à l’association."],
       ],
-      hours: "Horaires de présence : [[à caler avec le magasin]]",
+      hours: "Tous les samedis. Le mercredi ou d’autres jours de forte affluence sont possibles. Horaires : [[à caler avec le magasin]]",
     },
 
     cause: {
@@ -164,7 +167,7 @@ window.YAKA_CONTENT = {
       nav: "Le café",
       label: "Le café",
       title: "Un café premium,\nsimple à choisir.",
-      promise: "Une seule référence, pensée pour plaire au plus grand nombre.\nAchetée d’abord parce qu’elle est bonne.",
+      promise: "Un assemblage 100 % Arabica, doux et facile à boire.\nAcheté d’abord parce qu’il est bon.",
     },
 
     people: {
@@ -202,15 +205,15 @@ window.YAKA_CONTENT = {
     pilot: {
       nav: "Notre proposition",
       label: "Notre proposition",
-      titleGeneric: "Un samedi test,\nsans engagement.",
-      titlePartner: "Un samedi test\nà {city}.",
-      formula: [["1", "magasin"], ["1", "samedi"], ["1", "étudiant"], ["1 €", "par paquet"]],
+      titleGeneric: "YAKA chez vous,\nchaque samedi.",
+      titlePartner: "YAKA à {city},\nchaque samedi.",
+      formula: [["1", "magasin"], ["1", "étudiant"], ["Tous", "les samedis"], ["1 €", "par paquet"]],
       askTitle: "Ce que nous vous demandons",
-      asks: ["Un emplacement dans une allée passante", "Un samedi", "Une mise à disposition gracieuse ou à tarif solidaire"],
+      asks: ["Un emplacement dans une allée passante", "Une présence chaque samedi, et d’autres jours si vous le souhaitez (le mercredi par exemple)", "Une mise à disposition gracieuse ou à tarif solidaire"],
       askWhy: "Un emplacement gracieux ou solidaire nous permet de consacrer nos moyens au projet et à l’association.",
-      measureTitle: "Ce que vous recevez après",
+      measureTitle: "Ce que vous recevez après chaque journée",
       measures: ["Ventes et transactions", "Retours clients", "Retour de vos équipes", "Montant reversé grâce à vos clients"],
-      line: "Pas besoin de croire à une projection.\nTestons-la sur le terrain.",
+      line: "Un rendez-vous régulier,\nun bilan partagé,\nune cause qui avance.",
     },
 
     founders: {
@@ -221,10 +224,10 @@ window.YAKA_CONTENT = {
     },
 
     cta: {
-      nav: "Commençons",
-      title: "Commençons\npar un samedi.",
-      body: "Si l’expérience fonctionne pour votre magasin, construisons la suite ensemble.",
-      button: "Proposer une date",
+      nav: "Contact",
+      title: "Faisons de vos samedis\ndes samedis YAKA.",
+      body: "Parlons de votre emplacement et de votre calendrier.",
+      button: "Nous écrire",
     },
   },
 };
