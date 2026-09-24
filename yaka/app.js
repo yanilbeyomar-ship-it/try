@@ -54,7 +54,7 @@
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
         <p class="promise r" style="--d:4">${fmt(S.cover.promise)}</p>
       </div>
-      <h1 class="mega" aria-label="${C.meta.brand}">${[...C.meta.brand].map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join("")}</h1>
+      <h1 class="mega" aria-label="${C.meta.brand}"><span class="logo gold" aria-hidden="true"></span></h1>
       <div class="meta r" style="--d:6"><div class="upper muted">${PT ? "Présentation à l’attention de" : "Présentation"}</div><div class="serif h-m" style="margin-top:.35em">${PT ? partnerLabel : C.meta.audience}</div></div>
       <div class="scroll-cue" aria-hidden="true"></div>
     </section>`);
@@ -105,7 +105,7 @@
         <div class="cycle r-fade" style="--d:1">
           ${cycleSvg}
           <div class="core">
-            <div class="brand">${C.meta.brand}</div>
+            <div class="brand"><span class="logo" role="img" aria-label="YAKA"></span></div>
             <div class="who upper muted">${nodes[0].name} · reçoit</div>
             <div class="gets">${nodes[0].gets}</div>
           </div>
@@ -321,7 +321,7 @@
     <section class="slide s-cta kaki">
       <div class="bg">${C.images.packaging ? `<img src="${C.images.packaging}" alt="">` : ""}</div>
       <div class="label r"><span class="num">${String(next()).padStart(2, "0")}</span><span class="rule"></span><span>${partnerLabel}</span></div>
-      <div class="sign r" style="--d:2"><div class="serif" style="font-size:calc(var(--u)*1.6);letter-spacing:.4em">${C.meta.brand}</div><div class="upper muted" style="margin-top:.6em">${fmt(S.cover.tagline.replace("\n", " "))}</div></div>
+      <div class="sign r" style="--d:2"><span class="logo gold" role="img" aria-label="YAKA" style="height:calc(var(--u)*2.4)"></span><div class="upper muted" style="margin-top:.6em">${fmt(S.cover.tagline.replace("\n", " "))}</div></div>
       ${lines(S.cta.title, "title serif", 1)}
       <p class="body r" style="--d:4">${fmt(S.cta.body)}</p>
       <div class="actions">
@@ -347,7 +347,7 @@
   chrome.innerHTML = `
     <div class="bar"></div>
     <div class="chrome-top">
-      <a class="brandmark" href="#cover" aria-label="Début">${C.meta.brand}</a>
+      <a class="brandmark" href="#cover" aria-label="YAKA, retour au début"><span class="logo"></span></a>
       <div class="chrome-tools">
         <span class="counter"><span class="cur">01</span> <span class="total">/ ${pad(total)}</span></span>
         <button class="t-full" type="button" data-act="full" title="Plein écran (F)">Plein écran</button>
