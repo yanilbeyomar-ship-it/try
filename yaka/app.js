@@ -48,7 +48,7 @@
   next();
   add("cover", "black", S.cover.nav, `
     <section class="slide s-cover" data-theme="black">
-      <div class="photo hero">${photo(C.images.hero, "Visuel YAKA", "YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café")}</div>
+      <div class="photo hero"><picture><source media="(max-width: 900px), (max-aspect-ratio: 4/5)" srcset="${C.images.packFront}"><img src="${C.images.hero}" alt="YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café"></picture></div>
       <div class="tag">
         <div class="label r"><span>${C.meta.edition}</span></div>
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
@@ -195,7 +195,34 @@
   const cf = C.coffee;
   add("product", "black", S.product.nav, `
     <section class="slide s-product">
-      <div class="photo">${photo(C.images.packBack, "Dos du paquet YAKA", "Dos du paquet YAKA : torréfaction, profil et origines")}</div>
+      <div class="photo">
+        <div class="scene" role="img" aria-label="Le paquet YAKA en 3D, qui tourne sur lui-même">
+          <div class="tilt"><div class="bag3d">
+            <div class="face front">
+              <i class="seal"></i><i class="zip"></i>
+              <span class="logo gold"></span><i class="rule"></i>
+              <span class="arabica">100&#8239;% ARABICA</span>
+              <span class="weight">${cf.weight.replace(" ", "")}</span>
+            </div>
+            <div class="face back">
+              <i class="seal"></i><i class="zip"></i>
+              <span class="kicker">Un café d’exception<br>pour les vrais moments</span><i class="rule"></i>
+              <dl>
+                <dt>100&#8239;%</dt><dd>Arabica</dd>
+                <dt>Origines</dt><dd>${cf.origins.replace(/ · /g, " · ")}</dd>
+                <dt>Torréfaction</dt><dd>${cf.roast}</dd>
+              </dl>
+              <span class="kicker small">Profil aromatique</span>
+              <span class="notes">${cf.profile.join(" · ")}</span>
+              <span class="cause">1&#8239;€ reversé par paquet<br>aux personnes sourdes et malentendantes</span>
+              <span class="weight">${cf.weight.replace(" ", "")}</span>
+            </div>
+            <div class="face side right"></div><div class="face side left"></div>
+            <div class="face cap top"></div><div class="face cap bottom"></div>
+          </div></div>
+          <i class="floor"></i>
+        </div>
+      </div>
       <div class="info">
         ${label(next(), S.product.label)}
         ${lines(S.product.title, "title serif")}
