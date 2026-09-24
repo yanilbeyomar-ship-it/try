@@ -31,6 +31,8 @@ html = html
 const out = path.join(dist, "YAKA_presentation.html");
 fs.writeFileSync(out, html);
 console.log("HTML :", path.relative(process.cwd(), out), (fs.statSync(out).size / 1024).toFixed(0) + " Ko");
+// Copie à la racine du dépôt : servie par GitHub Pages sur /try/yaka.html
+fs.copyFileSync(out, path.join(root, "..", "yaka.html"));
 
 // Version « artifact » (lien claude.ai à ouvrir sur téléphone) : sans squelette
 // <html>/<head>/<body> (ajouté à la publication) et sans bouton PDF (impression bloquée).
