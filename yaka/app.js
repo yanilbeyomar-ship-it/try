@@ -49,6 +49,7 @@
   add("cover", "black", S.cover.nav, `
     <section class="slide s-cover" data-theme="black">
       <div class="photo hero"><picture><source media="(max-width: 900px), (max-aspect-ratio: 4/5)" srcset="${C.images.packFront}"><img src="${C.images.hero}" alt="YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café"></picture></div>
+      <div class="hero-logo"><img src="${C.images.logoGold}" alt="YAKA"></div>
       <div class="tag">
         <div class="label r"><span>${C.meta.edition}</span></div>
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
