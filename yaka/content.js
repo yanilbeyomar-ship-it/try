@@ -38,8 +38,8 @@ window.YAKA_CONTENT = {
   images: {
     packaging: "assets/packaging.jpg",   // paquet YAKA 250 g
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
-    student: null,                       // étudiant YAKA au stand
-    stand: null,                         // stand YAKA en magasin
+    student: null,                       // étudiant YAKA en magasin
+    onsite: null,                        // étudiant YAKA en magasin, avec ou sans table
   },
 
   /* ---------- Le café ---------------------------------------------------- */
@@ -90,7 +90,7 @@ window.YAKA_CONTENT = {
       label: "Pour votre magasin",
       title: "Ce qu’un samedi YAKA\napporte à votre magasin.",
       items: [
-        ["Une animation, sans effort", "Un stand élégant et un étudiant qui présente le café toute la journée. Vos équipes n’ont rien à gérer."],
+        ["Une animation, sans effort", "Un étudiant qui présente le café toute la journée. Vos équipes n’ont rien à gérer."],
         ["Des allées plus vivantes", "Une présence humaine qui arrête les clients et crée l’échange."],
         ["Une expérience client", "Une découverte accompagnée plutôt qu’un produit simplement posé en rayon."],
         ["Un engagement à votre nom", "Chaque paquet vendu chez vous reverse 1 € à une association pour les personnes sourdes et malentendantes. Un geste que votre magasin peut mettre en avant."],
@@ -106,7 +106,6 @@ window.YAKA_CONTENT = {
       yakaTitle: "YAKA apporte",
       yaka: [
         "Le café et tout le stock",
-        "Le stand et sa signalétique",
         "Un étudiant formé au produit et à la cause",
         "L’installation et le rangement",
         "L’encaissement, sur notre propre terminal",
@@ -119,6 +118,7 @@ window.YAKA_CONTENT = {
         "Surface : [[à préciser]]",
         "Un samedi",
         "Un contact le jour J",
+        "Une table, si vous pouvez en prêter une (sinon, pas de souci : l’étudiant va à la rencontre des clients)",
       ],
       note: "Pas de stock à acheter. Pas de caisse mobilisée. Pas de personnel détaché.",
     },
@@ -129,7 +129,7 @@ window.YAKA_CONTENT = {
       title: "Un samedi,\nétape par étape.",
       steps: [
         ["Avant", "Nous validons ensemble la date et l’emplacement. Nous vous envoyons des visuels si vous souhaitez annoncer l’animation."],
-        ["Le matin", "Installation rapide, avant l’affluence. Aucune structure lourde, aucun outil."],
+        ["Le matin", "Mise en place légère, avant l’affluence. Rien à monter."],
         ["La journée", "L’étudiant présente le café, raconte la cause, conseille et vend. Encaissement sur notre terminal."],
         ["Le soir", "Rangement complet. L’emplacement est rendu tel qu’il nous a été confié."],
         ["Après", "Vous recevez le bilan : ventes, transactions, retours clients et montant reversé à l’association."],
@@ -169,29 +169,33 @@ window.YAKA_CONTENT = {
     people: {
       nav: "Les étudiants",
       label: "Les étudiants",
-      formula: [["1", "étudiant"], ["1", "stand"], ["1", "café"], ["1", "journée"]],
-      title: "Derrière chaque stand,\nun étudiant.",
+      formula: [["1", "étudiant"], ["1", "magasin"], ["1", "café"], ["1", "journée"]],
+      title: "Dans chaque magasin,\nun étudiant.",
       body: "Un étudiant rémunéré, briefé sur le produit et sur la cause. Il présente, il conseille, il n’interpelle pas.",
       skills: ["Prise de parole", "Confiance", "Vente", "Autonomie", "Relation client", "Responsabilité", "Expérience professionnelle"],
       quote: "Un samedi de travail.\nUne expérience qui reste.",
       network: "À terme : un réseau d’étudiants capables de représenter YAKA dans différents points de vente.",
-      photoCaption: "Étudiant YAKA au stand — échange, produit en main",
+      photoCaption: "Étudiant YAKA en magasin — échange, produit en main",
     },
 
     proof: {
       nav: "Le terrain",
       label: "Le terrain",
-      title: "La vente sur stand,\nnous savons la faire.",
+      title: "La vente en direct,\nnous savons la faire.",
       claim: "Des chiffres observés face à de vrais clients.",
     },
 
     meeting: {
-      nav: "Le stand",
-      label: "Le stand",
+      nav: "Sur place",
+      label: "Sur place",
       lines: ["Le produit attire.", "L’histoire touche.", "Le client décide."],
       body: "Pas de vendeur qui interpelle. Un étudiant qui présente le café et explique où va l’euro reversé.",
-      qualities: ["Léger", "Élégant", "Simple à installer", "Peu encombrant", "Sans infrastructure lourde"],
-      caption: "Illustration de principe — stand en cours de conception.",
+      qualities: ["Léger", "Mobile", "Rien à installer", "Aucune charge pour vos équipes"],
+      optionsTitle: "Deux façons de faire",
+      options: [
+        ["Avec une table", "Si le magasin peut nous en prêter une, le café y est présenté et les clients viennent à l’étudiant."],
+        ["Sans table", "Aucun souci : l’étudiant va directement à la rencontre des clients dans l’allée, paquet en main."],
+      ],
     },
 
     pilot: {
@@ -199,7 +203,7 @@ window.YAKA_CONTENT = {
       label: "Notre proposition",
       titleGeneric: "Un samedi test,\nsans engagement.",
       titlePartner: "Un samedi test\nà {city}.",
-      formula: [["1", "magasin"], ["1", "samedi"], ["1", "étudiant"], ["1", "stand"], ["1 €", "par paquet"]],
+      formula: [["1", "magasin"], ["1", "samedi"], ["1", "étudiant"], ["1 €", "par paquet"]],
       askTitle: "Ce que nous vous demandons",
       asks: ["Un emplacement dans une allée passante", "Un samedi", "Une mise à disposition gracieuse ou à tarif solidaire"],
       askWhy: "Un emplacement gracieux ou solidaire nous permet de consacrer nos moyens au projet et à l’association.",
@@ -212,7 +216,7 @@ window.YAKA_CONTENT = {
       nav: "Qui sommes-nous",
       label: "Qui sommes-nous",
       title: "Deux entrepreneurs.\nLe goût du terrain.\nUne cause à servir.",
-      body: "Yanil et Arthur vendent en direct, sur stand, face aux clients. Ils en ont tiré une conviction : quand un produit est bon et qu’on le présente avec sincérité, les gens s’arrêtent, écoutent et achètent.\n\nYAKA réunit ce savoir-faire et une cause qui les touche de près.",
+      body: "Yanil et Arthur vendent en direct, face aux clients. Ils en ont tiré une conviction : quand un produit est bon et qu’on le présente avec sincérité, les gens s’arrêtent, écoutent et achètent.\n\nYAKA réunit ce savoir-faire et une cause qui les touche de près.",
     },
 
     cta: {

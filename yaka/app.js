@@ -187,7 +187,7 @@
           <div class="skills r" style="--d:7">${S.people.skills.map((s) => `<span>${s}</span>`).join("")}</div>
         </div>
         <div class="right">
-          <div class="frame r-fade" style="--d:2">${photo(C.images.student, S.people.photoCaption, "Étudiant YAKA au stand")}</div>
+          <div class="frame r-fade" style="--d:2">${photo(C.images.student, S.people.photoCaption, "Étudiant YAKA en magasin")}</div>
           <p class="quote serif italic r" style="--d:8">${fmt(S.people.quote)}</p>
           <p class="muted t-s r" style="--d:9;font-size:var(--fs-body)">${fmt(S.people.network)}</p>
         </div>
@@ -219,44 +219,8 @@
       </div>
     </section>`);
 
-  // 10 — Le stand
-  const standSvg = `
-    <svg class="stand" viewBox="-80 0 720 430" role="img" aria-label="Principe du stand YAKA">
-      <!-- sol -->
-      <line class="ln thin" x1="-70" y1="392" x2="620" y2="392"/>
-      <ellipse class="ln dash" cx="320" cy="404" rx="210" ry="16"/>
-      <!-- panneau signature -->
-      <rect class="fillb" x="468" y="96" width="58" height="296"/>
-      <text class="logo-s" x="497" y="140" text-anchor="middle">YAKA</text>
-      <line x1="486" y1="152" x2="508" y2="152" stroke="#F2F0E8" stroke-width=".6"/>
-      <!-- étudiant -->
-      <g class="ln draw">
-        <circle cx="330" cy="150" r="17"/>
-        <path d="M 330 167 L 330 176 M 292 250 C 292 204 304 184 330 184 C 356 184 368 204 368 250"/>
-        <path d="M 304 212 C 312 232 330 238 350 232"/>
-      </g>
-      <!-- comptoir -->
-      <path class="fillb" d="M 196 262 L 444 262 L 444 392 L 196 392 Z"/>
-      <path class="ln" d="M 186 252 L 454 252 L 454 262 L 186 262 Z" style="fill:#050505"/>
-      <text class="logo" x="320" y="336" text-anchor="middle">YAKA</text>
-      <!-- paquets -->
-      ${[232, 266, 390].map((x) => `
-        <path class="fillb" d="M ${x} 252 L ${x} 206 L ${x + 3} 200 L ${x + 23} 200 L ${x + 26} 206 L ${x + 26} 252 Z"/>
-        <line x1="${x + 7}" y1="222" x2="${x + 19}" y2="222" stroke="#F2F0E8" stroke-width=".6"/>`).join("")}
-      <!-- repères -->
-      <g class="ln thin">
-        <path d="M 246 198 L 246 150 L -70 150"/>
-        <path d="M 312 150 L 150 110 L -70 110" />
-        <path d="M 196 300 L -70 300"/>
-        <path d="M 150 404 L 90 360 L -70 360"/>
-        <path d="M 526 180 L 580 180 L 580 150"/>
-      </g>
-      <text x="-70" y="102">Étudiant YAKA</text>
-      <text x="-70" y="142">Café signature · 250 g</text>
-      <text x="-70" y="292">Comptoir léger</text>
-      <text x="-70" y="352">Espace de rencontre</text>
-      <text x="580" y="140" text-anchor="middle">Signature</text>
-    </svg>`;
+  // 10 — Sur place (avec ou sans table)
+
   add("meeting", "ivory", S.meeting.nav, `
     <section class="slide s-meeting ivory">
       <div class="grid">
@@ -266,9 +230,10 @@
           <p class="body r" style="--d:7">${fmt(S.meeting.body)}</p>
           <div class="qual r" style="--d:8">${S.meeting.qualities.map((q) => `<span>${q}</span>`).join("")}</div>
         </div>
-        <div class="right r-fade" style="--d:2">
-          ${C.images.stand ? photo(C.images.stand, "", "Stand YAKA") : standSvg}
-          <p class="caption">${fmt(S.meeting.caption)}</p>
+        <div class="right">
+          ${C.images.onsite ? `<div class="frame r-fade" style="--d:2">${photo(C.images.onsite, "", "Étudiant YAKA en magasin")}</div>` : ""}
+          <h4 class="upper muted r" style="--d:3">${S.meeting.optionsTitle}</h4>
+          <div class="options">${S.meeting.options.map(([h, t], i) => `<div class="opt r" style="--d:${4 + i}"><em>${String.fromCharCode(65 + i)}</em><b class="serif">${h}</b><p>${fmt(t)}</p></div>`).join("")}</div>
         </div>
       </div>
     </section>`);
@@ -279,8 +244,10 @@
   add("pilot", "kaki", P.nav, `
     <section class="slide s-pilot kaki">
       ${label(next(), PT ? `${P.label} · ${partnerLabel}` : P.label)}
-      ${lines(pilotTitle, "title serif")}
-      <div class="formula">${P.formula.map(([a, b], i) => `<div class="f r" style="--d:${2 + i}"><b>${a}</b><span class="upper muted">${b}</span></div>`).join("")}</div>
+      <div class="top">
+        ${lines(pilotTitle, "title serif")}
+        <div class="formula">${P.formula.map(([a, b], i) => `<div class="f r" style="--d:${2 + i}"><b>${a}</b><span class="upper muted">${b}</span></div>`).join("")}</div>
+      </div>
       <div class="bottom">
         <div class="r" style="--d:7"><h4 class="upper muted">${P.askTitle}</h4><ol class="steps">${P.asks.map((s, i) => `<li><em>0${i + 1}</em><span>${s}</span></li>`).join("")}</ol><p class="why muted">${fmt(P.askWhy)}</p></div>
         <div class="r" style="--d:8"><h4 class="upper muted">${P.measureTitle}</h4><ul>${P.measures.map((m) => `<li>${m}</li>`).join("")}</ul></div>
