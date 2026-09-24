@@ -26,9 +26,7 @@ const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
 html = html
   .replace('<link rel="stylesheet" href="styles.css">', () => `<style>\n${css}\n</style>`)
   .replace('<script src="content.js"></script>', () => `<script>\n${safeScript(content)}\n</script>`)
-  .replace('<script src="app.js"></script>', () => `<script>\n${safeScript(app)}\n</script>`)
-  .replace('<script src="vendor/three.min.js"></script>', () => `<script>\n${safeScript(fs.readFileSync(path.join(root, "vendor/three.min.js"), "utf8"))}\n</script>`)
-  .replace('<script src="bag3d.js"></script>', () => `<script>\n${safeScript(fs.readFileSync(path.join(root, "bag3d.js"), "utf8"))}\n</script>`);
+  .replace('<script src="app.js"></script>', () => `<script>\n${safeScript(app)}\n</script>`);
 
 const out = path.join(dist, "YAKA_presentation.html");
 fs.writeFileSync(out, html);

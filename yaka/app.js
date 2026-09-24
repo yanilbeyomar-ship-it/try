@@ -195,34 +195,7 @@
   const cf = C.coffee;
   add("product", "black", S.product.nav, `
     <section class="slide s-product">
-      <div class="photo">
-        <div class="scene" role="img" aria-label="Le paquet YAKA en 3D, qui tourne sur lui-même">
-          <div class="tilt"><div class="bag3d">
-            <div class="face front">
-              <i class="seal"></i><i class="zip"></i>
-              <span class="logo gold"></span><i class="rule"></i>
-              <span class="arabica">100&#8239;% ARABICA</span>
-              <span class="weight">${cf.weight.replace(" ", "")}</span>
-            </div>
-            <div class="face back">
-              <i class="seal"></i><i class="zip"></i>
-              <span class="kicker">Un café d’exception<br>pour les vrais moments</span><i class="rule"></i>
-              <dl>
-                <dt>100&#8239;%</dt><dd>Arabica</dd>
-                <dt>Origines</dt><dd>${cf.origins.replace(/ · /g, " · ")}</dd>
-                <dt>Torréfaction</dt><dd>${cf.roast}</dd>
-              </dl>
-              <span class="kicker small">Profil aromatique</span>
-              <span class="notes">${cf.profile.join(" · ")}</span>
-              <span class="cause">1&#8239;€ reversé par paquet<br>aux personnes sourdes et malentendantes</span>
-              <span class="weight">${cf.weight.replace(" ", "")}</span>
-            </div>
-            <div class="face side right"></div><div class="face side left"></div>
-            <div class="face cap top"></div><div class="face cap bottom"></div>
-          </div></div>
-          <i class="floor"></i>
-        </div>
-      </div>
+      <div class="photo pack"><img src="${C.images.packBack}" alt="Dos du paquet YAKA : 100 % Arabica, origines Brésil, Pérou, Colombie, Éthiopie, torréfaction medium-dark, profil chocolaté, doux, gourmand"></div>
       <div class="info">
         ${label(next(), S.product.label)}
         ${lines(S.product.title, "title serif")}

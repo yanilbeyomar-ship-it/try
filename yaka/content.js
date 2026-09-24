@@ -36,11 +36,11 @@ window.YAKA_CONTENT = {
   ctaEmail: "yanil@webonestudio.fr",
 
   images: {
-    packaging: "assets/paquet-face.jpg", // fond de l’écran contact
+    packaging: "assets/paquet-face.webp", // fond de l’écran contact
     hero: "assets/hero.jpg",             // visuel de couverture (paquet sur rochers)
-    logoGold: "assets/logo-or.png",      // logo YAKA doré (couverture)
-    packFront: "assets/paquet-face.jpg", // face du paquet (couverture)
-    packBack: "assets/paquet-dos.jpg",   // dos du paquet (écran café)
+    logoGold: "assets/logo-or.webp",      // logo YAKA doré (couverture)
+    packFront: "assets/paquet-face.webp", // face du paquet (couverture)
+    packBack: "assets/paquet-dos.webp",   // dos du paquet (écran café)
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
     student: null,                       // étudiant YAKA en magasin
     ear: "assets/oreille.jpg",           // oreille formée par une foule (écran « Pourquoi cette cause »)
