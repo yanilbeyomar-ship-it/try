@@ -1,6 +1,6 @@
 # YAKA — Présentation partenaires
 
-Présentation interactive (14 écrans) + export PDF 16:9.
+Présentation interactive (15 écrans) + export PDF 16:9, version générique pour tous les magasins.
 
 ## Livrables
 - `dist/YAKA_presentation.html` : fichier unique et autonome (images et polices incluses), fonctionne hors ligne.
@@ -11,7 +11,8 @@ Tout se trouve dans **`content.js`** : textes, prix, chiffres terrain, café, as
 - `[[texte]]` → s'affiche comme élément à compléter (souligné pointillé doré).
 - `image: null` → un emplacement photo s'affiche à la place.
 - Contacts : renseigner `phone` / `email` dans `founders`, et `ctaEmail` pour le bouton final.
-- Association : renseigner `cause.partnerName` quand le partenariat est officiel.
+- Association : renseigner `cause.partnerName` (et `cause.share`) quand le partenariat est officiel.
+- Version personnalisée pour un magasin : `partner: { name: "…", city: "…" }` (laisser `null` pour la version générique).
 
 Puis reconstruire :
 

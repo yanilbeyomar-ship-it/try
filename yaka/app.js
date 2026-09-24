@@ -33,6 +33,10 @@
 
   const euro = (n) => `${n}<small>&#8239;€</small>`;
 
+  // Magasin : version générique ou personnalisée (content.js → partner)
+  const PT = C.partner && C.partner.name ? C.partner : null;
+  const partnerLabel = PT ? [PT.name, PT.city].filter(Boolean).join(" ") : "Magasins partenaires";
+
   /* ---------- Écrans ----------------------------------------------------- */
 
   const slides = [];
@@ -50,11 +54,26 @@
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
       </div>
       <h1 class="mega" aria-label="${C.meta.brand}">${[...C.meta.brand].map((ch, i) => `<span style="--i:${i}">${ch}</span>`).join("")}</h1>
-      <div class="meta r" style="--d:6"><div class="upper muted">Présentation à l’attention de</div><div class="serif h-m" style="margin-top:.35em">${C.meta.audience}</div></div>
+      <div class="meta r" style="--d:6"><div class="upper muted">${PT ? "Présentation à l’attention de" : "Présentation"}</div><div class="serif h-m" style="margin-top:.35em">${PT ? partnerLabel : C.meta.audience}</div></div>
       <div class="scroll-cue" aria-hidden="true"></div>
     </section>`);
 
-  // 02 — Notre histoire
+  // 02 — Pourquoi YAKA existe
+  add("origin", "black", S.origin.nav, `
+    <section class="slide s-origin">
+      ${label(next(), S.origin.label)}
+      <div class="center">
+        <p class="lead serif italic r" style="--d:1">${fmt(S.origin.lead)}</p>
+        ${lines(S.origin.title, "title serif", 2)}
+        <div class="cols">
+          <p class="body r" style="--d:6">${fmt(S.origin.body)}</p>
+          <p class="closing r" style="--d:8">${fmt(S.origin.closing)}</p>
+        </div>
+      </div>
+      <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M 0 60.0 L 5 72.0 L 10 82.1 L 15 86.5 L 20 82.8 L 25 71.3 L 30 55.1 L 35 39.1 L 40 28.7 L 45 27.5 L 50 36.2 L 55 52.2 L 60 70.5 L 65 85.3 L 70 92.1 L 75 89.1 L 80 77.8 L 85 62.2 L 90 47.4 L 95 37.9 L 100 35.9 L 105 41.1 L 110 50.8 L 115 61.5 L 120 69.8 L 125 73.5 L 130 72.6 L 135 68.4 L 140 62.9 L 145 58.1 L 150 55.3 L 155 54.7 L 160 55.7 L 165 57.6 L 170 59.5 L 175 61.1 L 180 62.1 L 185 62.6 L 190 62.5 L 195 61.6 L 200 60.0 L 205 57.7 L 210 55.3 L 215 53.9 L 220 54.3 L 225 56.9 L 230 61.6 L 235 66.9 L 240 71.1 L 245 72.3 L 250 69.6 L 255 63.3 L 260 55.0 L 265 47.4 L 270 43.1 L 275 43.8 L 280 49.6 L 285 58.8 L 290 68.6 L 295 75.9 L 300 78.3 L 305 75.2 L 310 67.8 L 315 58.4 L 320 50.2 L 325 45.5 L 330 45.4 L 335 49.6 L 340 56.2 L 345 62.9 L 350 67.8 L 355 69.5 L 360 68.3 L 365 64.9 L 370 60.9 L 375 57.7 L 380 56.0 L 385 55.9 L 390 57.0 L 395 58.6 L 400 60.0 L 405 61.0 L 410 61.4 L 415 61.3 L 420 61.0 L 425 60.4 L 430 59.8 L 435 59.1 L 440 58.5 L 445 58.2 L 450 58.5 L 455 59.4 L 460 61.0 L 465 62.6 L 470 63.8 L 475 63.9 L 480 62.7 L 485 60.3 L 490 57.4 L 495 54.9 L 500 53.8 L 505 54.5 L 510 57.1 L 515 60.7 L 520 64.2 L 525 66.5 L 530 66.9 L 535 65.2 L 540 61.9 L 545 58.3 L 550 55.4 L 555 54.0 L 560 54.5 L 565 56.6 L 570 59.3 L 575 61.9 L 580 63.6 L 585 63.9 L 590 63.1 L 595 61.6 L 600 59.9 L 605 58.7 L 610 58.1 L 615 58.3 L 620 58.8 L 625 59.6 L 630 60.2 L 635 60.5 L 640 60.6 L 645 60.5 L 650 60.3 L 655 60.1 L 660 59.9 L 665 59.8 L 670 59.7 L 675 59.7 L 680 59.8 L 685 60.0 L 690 60.2 L 695 60.4 L 700 60.5 L 705 60.4 L 710 60.2 L 715 59.9 L 720 59.6 L 725 59.4 L 730 59.3 L 735 59.5 L 740 59.8 L 745 60.2 L 750 60.4 L 755 60.6 L 760 60.5 L 765 60.3 L 770 60.1 L 775 59.9 L 780 59.8 L 785 59.8 L 790 59.8 L 795 59.9 L 800 60.0 L 805 60.0 L 810 60.0 L 815 60.0 L 820 60.0 L 825 60.0 L 830 60.0 L 835 60.0 L 840 60.0 L 845 60.0 L 850 60.0 L 855 60.0 L 860 60.0 L 865 60.0 L 870 60.0 L 875 60.0 L 880 60.0 L 885 60.0 L 890 60.0 L 895 60.0 L 900 60.0 L 905 60.0 L 910 60.0 L 915 60.0 L 920 60.0 L 925 60.0 L 930 60.0 L 935 60.0 L 940 60.0 L 945 60.0 L 950 60.0 L 955 60.0 L 960 60.0 L 965 60.0 L 970 60.0 L 975 60.0 L 980 60.0 L 985 60.0 L 990 60.0 L 995 60.0 L 1000 60.0 L 1005 60.0 L 1010 60.0 L 1015 60.0 L 1020 60.0 L 1025 60.0 L 1030 60.0 L 1035 60.0 L 1040 60.0 L 1045 60.0 L 1050 60.0 L 1055 60.0 L 1060 60.0 L 1065 60.0 L 1070 60.0 L 1075 60.0 L 1080 60.0 L 1085 60.0 L 1090 60.0 L 1095 60.0 L 1100 60.0 L 1105 60.0 L 1110 60.0 L 1115 60.0 L 1120 60.0 L 1125 60.0 L 1130 60.0 L 1135 60.0 L 1140 60.0 L 1145 60.0 L 1150 60.0 L 1155 60.0 L 1160 60.0 L 1165 60.0 L 1170 60.0 L 1175 60.0 L 1180 60.0 L 1185 60.0 L 1190 60.0 L 1195 60.0 L 1200 60.0"/></svg>
+    </section>`);
+
+  // 03 — Les fondateurs
   add("story", "kaki", S.story.nav, `
     <section class="slide s-story kaki">
       <div class="grid">
@@ -324,7 +343,7 @@
       </div>
       <div class="line r" style="--d:8">
         <p class="serif italic">${fmt(S.store.line)}</p>
-        <p class="upper muted" style="text-align:right">${fmt(S.pilot.storeSide)}</p>
+        <p class="muted light">${fmt(S.store.light)}</p>
       </div>
     </section>`);
 
@@ -340,26 +359,27 @@
       </div>
     </section>`);
 
-  // 13 — Proposition Saint-Aunès
+  // Proposition
   const P = S.pilot;
+  const pilotTitle = PT && PT.city ? P.titlePartner.replace("{city}", PT.city) : P.titleGeneric;
   add("pilot", "ivory", P.nav, `
     <section class="slide s-pilot ivory">
-      ${label(next(), `${P.label} · ${C.partner.name} ${C.partner.city}`)}
-      ${lines(P.title, "title serif")}
+      ${label(next(), PT ? `${P.label} · ${partnerLabel}` : P.label)}
+      ${lines(pilotTitle, "title serif")}
       <div class="formula">${P.formula.map(([a, b], i) => `<div class="f r" style="--d:${2 + i}"><b>${a}</b><span class="upper muted">${b}</span></div>`).join("")}</div>
       <div class="bottom">
-        <div class="r" style="--d:7"><h4 class="upper muted">${P.measureTitle}</h4><ul>${P.measures.map((m) => `<li>${m}</li>`).join("")}</ul></div>
-        <div class="r" style="--d:8"><h4 class="upper muted">Ensuite</h4><ol class="steps">${P.steps.map((s, i) => `<li><em>0${i + 1}</em><span>${s}</span></li>`).join("")}</ol></div>
-        <div class="final r" style="--d:9"><p class="serif italic">${fmt(P.line)}</p><p class="soft">${fmt(P.storeSide)}</p></div>
+        <div class="r" style="--d:7"><h4 class="upper muted">${P.askTitle}</h4><ol class="steps">${P.asks.map((s, i) => `<li><em>0${i + 1}</em><span>${s}</span></li>`).join("")}</ol></div>
+        <div class="r" style="--d:8"><h4 class="upper muted">${P.measureTitle}</h4><ul>${P.measures.map((m) => `<li>${m}</li>`).join("")}</ul></div>
+        <div class="final r" style="--d:9"><p class="serif italic">${fmt(P.line)}</p><p class="soft">${fmt(P.after)}</p></div>
       </div>
     </section>`);
 
   // 14 — Call to action
-  const mail = C.ctaEmail ? `mailto:${C.ctaEmail}?subject=${encodeURIComponent("Premier test YAKA — " + C.partner.name + " " + C.partner.city)}` : "#contacts";
+  const mail = C.ctaEmail ? `mailto:${C.ctaEmail}?subject=${encodeURIComponent("Un samedi YAKA" + (PT ? " — " + partnerLabel : ""))}` : "#contacts";
   add("cta", "black", S.cta.nav, `
     <section class="slide s-cta">
       <div class="bg">${C.images.packaging ? `<img src="${C.images.packaging}" alt="">` : ""}</div>
-      <div class="label r"><span class="num">${String(next()).padStart(2, "0")}</span><span class="rule"></span><span>${C.partner.name} ${C.partner.city}</span></div>
+      <div class="label r"><span class="num">${String(next()).padStart(2, "0")}</span><span class="rule"></span><span>${partnerLabel}</span></div>
       <div class="sign r" style="--d:2"><div class="serif" style="font-size:calc(var(--u)*1.6);letter-spacing:.4em">${C.meta.brand}</div><div class="upper muted" style="margin-top:.6em">${fmt(S.cover.tagline.replace("\n", " "))}</div></div>
       ${lines(S.cta.title, "title serif", 1)}
       <p class="body r" style="--d:4">${fmt(S.cta.body)}</p>
@@ -410,13 +430,75 @@
     if (history.replaceState) history.replaceState(null, "", "#" + slides[i].id);
   }
 
+  /* ---------- Défilement fluide ------------------------------------------
+     Sur grand écran, chaque geste (molette, trackpad, clavier) fait avancer
+     d'exactement un écran, avec une courbe douce et sans à-coups d'inertie.
+     Sur mobile, le défilement natif au doigt est conservé. */
+  const deckMQ = matchMedia("(min-width: 901px) and (min-aspect-ratio: 4/5)");
+  const reduceMQ = matchMedia("(prefers-reduced-motion: reduce)");
+  const root = document.documentElement;
+  const isDeck = () => deckMQ.matches && !root.classList.contains("is-print");
+  const syncMode = () => root.classList.toggle("deck-mode", isDeck());
+  syncMode();
+  deckMQ.addEventListener?.("change", syncMode);
+
+  let anim = null;
+  const easeInOut = (t) => t < .5 ? 16 * t ** 5 : 1 - (-2 * t + 2) ** 5 / 2; // quintic
+  function scrollToY(y, dur) {
+    if (anim) cancelAnimationFrame(anim.raf);
+    const from = window.scrollY, dist = y - from;
+    if (Math.abs(dist) < 1 || reduceMQ.matches || !dur) { window.scrollTo(0, y); anim = null; return; }
+    const t0 = performance.now();
+    anim = { raf: 0 };
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      window.scrollTo(0, from + dist * easeInOut(p));
+      if (p < 1) anim.raf = requestAnimationFrame(step);
+      else { anim = null; lastAnimEnd = performance.now(); }
+    };
+    anim.raf = requestAnimationFrame(step);
+  }
+  let lastAnimEnd = 0;
+
   const go = (i) => {
     i = Math.max(0, Math.min(total - 1, i));
-    els[i].scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    if (!isDeck()) { els[i].scrollIntoView({ behavior: reduceMQ.matches ? "auto" : "smooth", block: "start" }); return; }
+    const jump = Math.abs(i - current);
+    setCurrent(i);
+    enter(els[i]);
+    scrollToY(els[i].offsetTop, Math.min(1500, 1050 + (jump - 1) * 90));
   };
+
+  // Molette / trackpad : un geste = un écran. Les événements d'inertie qui
+  // suivent un geste (espacés de moins de 160 ms) sont ignorés.
+  let lastWheel = 0, streamUsed = false;
+  window.addEventListener("wheel", (e) => {
+    if (!isDeck() || e.ctrlKey) return;
+    e.preventDefault();
+    const now = performance.now(), gap = now - lastWheel;
+    lastWheel = now;
+    if (gap > 160) streamUsed = false;
+    if (anim || streamUsed || Math.abs(e.deltaY) < 3) return;
+    streamUsed = true;
+    go(current + (e.deltaY > 0 ? 1 : -1));
+  }, { passive: false });
+
+  // Si l'utilisateur tire la barre de défilement, on se recale en douceur
+  let settle = 0;
+  window.addEventListener("scroll", () => {
+    if (!isDeck() || anim) return;
+    clearTimeout(settle);
+    settle = setTimeout(() => {
+      if (anim) return;
+      const i = Math.round(window.scrollY / innerHeight);
+      if (Math.abs(window.scrollY - els[i].offsetTop) > 2) { setCurrent(i); scrollToY(els[i].offsetTop, 600); }
+    }, 180);
+  }, { passive: true });
+  window.addEventListener("resize", () => { if (isDeck() && current >= 0) window.scrollTo(0, els[current].offsetTop); });
 
   // Écran courant = celui qui traverse le milieu de l'écran
   const centerObs = new IntersectionObserver((entries) => {
+    if (typeof anim !== "undefined" && anim) return; // pendant une transition pilotée, l'écran cible fait foi
     entries.forEach((e) => { if (e.isIntersecting) setCurrent(+e.target.dataset.index); });
   }, { rootMargin: "-50% 0px -50% 0px", threshold: 0 });
   // Révélation dès qu'un écran est visible à ~35 %

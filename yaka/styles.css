@@ -50,6 +50,9 @@ html {
   background: var(--black);
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+}
+html.deck-mode { scroll-snap-type: none; scroll-behavior: auto; overscroll-behavior: none; }
+html {
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -71,7 +74,7 @@ a { color: inherit; }
 
 /* Grain photographique très léger */
 body::after {
-  content: ""; position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .055;
+  content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -207,6 +210,19 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
 .s-cover .scroll-cue { position: absolute; left: 50%; bottom: calc(var(--u) * 2.2); width: 1px; height: calc(var(--u) * 4); background: var(--ivory-20); overflow: hidden; }
 .s-cover .scroll-cue::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--ivory); animation: cue 2.4s var(--ease-soft) infinite; }
 @keyframes cue { to { top: 100%; } }
+
+/* ---------- 02 · Pourquoi YAKA existe ---------------------------------- */
+.s-origin { display: flex; flex-direction: column; }
+.s-origin .center { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 86%; }
+.s-origin .lead { font-size: calc(var(--u) * 2.1); color: var(--ivory-70); }
+.s-origin .title { font-size: calc(var(--u) * 5.8); line-height: 1.02; margin-top: calc(var(--u) * 1.6); }
+.s-origin .cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: calc(var(--u) * 6); margin-top: calc(var(--u) * 4); align-items: end; }
+.s-origin .body { font-size: var(--fs-s); line-height: 1.55; }
+.s-origin .closing { font-family: var(--serif); font-style: italic; font-size: calc(var(--u) * 2.1); line-height: 1.2; padding-left: calc(var(--u) * 2); border-left: 1px solid var(--ivory-20); }
+.s-origin .wave { flex: none; display: block; width: calc(100% + var(--pad-x) * 2); height: calc(var(--u) * 7); margin: 0 calc(var(--pad-x) * -1) calc(var(--u) * -1); overflow: visible; }
+.s-origin .wave path { fill: none; stroke: var(--ivory-45); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 4.5s var(--ease-soft) .6s; }
+.s-origin.in .wave path { stroke-dashoffset: 0; }
+.s-store .line .light { max-width: 30em; text-align: right; font-size: var(--fs-body); }
 
 /* ---------- 02 · Histoire ------------------------------------------------- */
 .s-story .grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: calc(var(--u) * 6); height: 100%; }
@@ -382,8 +398,8 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
 
 /* ---------- 11 · Magasin ------------------------------------------------ */
 .s-store { display: flex; flex-direction: column; }
-.s-store .title { font-size: calc(var(--u) * 5.2); line-height: 1; margin-top: calc(var(--u) * 2.4); }
-.equation { display: grid; grid-template-columns: 1.3fr auto 1fr auto 1fr; gap: calc(var(--u) * 2.6); margin-top: auto; align-items: start; }
+.s-store .title { font-size: calc(var(--u) * 4.2); line-height: 1.02; margin-top: calc(var(--u) * 2.2); }
+.equation { display: grid; grid-template-columns: 1.3fr auto 1fr auto 1fr; gap: calc(var(--u) * 2.6); margin-top: auto; padding-top: calc(var(--u) * 2.4); align-items: start; }
 .equation .op { font-family: var(--serif); font-weight: 300; font-size: calc(var(--u) * 5); line-height: 1; color: var(--ivory-45); padding-top: calc(var(--u) * .2); }
 .equation .term .h { font-family: var(--serif); font-weight: 300; font-size: calc(var(--u) * 3.8); line-height: 1; }
 .equation .term .sub { font-family: var(--serif); font-style: italic; font-size: var(--fs-m); color: var(--ivory-70); margin-top: .25em; }
@@ -392,19 +408,19 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
 .equation .term li { font-size: var(--fs-label); letter-spacing: .26em; text-transform: uppercase; font-weight: 500; padding: calc(var(--u) * .65) 0; border-top: 1px solid var(--ivory-10); break-inside: avoid; }
 .equation .term.result .h { color: var(--ivory); }
 .equation .term.result li { color: var(--ivory); }
-.s-store .line { display: flex; justify-content: space-between; align-items: flex-end; margin-top: calc(var(--u) * 4.2); padding-top: calc(var(--u) * 2.2); border-top: 1px solid var(--ivory-10); }
+.s-store .line { display: flex; justify-content: space-between; align-items: flex-end; margin-top: calc(var(--u) * 3.4); padding-top: calc(var(--u) * 2.2); border-top: 1px solid var(--ivory-10); }
 .s-store .line .serif { font-size: calc(var(--u) * 3.1); line-height: 1.08; }
 
 /* ---------- 12 · Bénéfices ---------------------------------------------- */
 .s-benefits .grid { display: grid; grid-template-columns: calc(var(--u) * 32) 1fr; gap: calc(var(--u) * 6); height: 100%; }
 .s-benefits .title { font-size: calc(var(--u) * 2.9); line-height: 1.08; margin-top: calc(var(--u) * 3); }
 .s-benefits ol { list-style: none; align-self: center; }
-.s-benefits li { display: grid; grid-template-columns: calc(var(--u) * 4) calc(var(--u) * 17) 1fr; align-items: baseline; padding: calc(var(--u) * 1.05) 0; border-top: 1px solid var(--ivory-10); transition: padding .6s var(--ease); }
+.s-benefits li { display: grid; grid-template-columns: calc(var(--u) * 4) calc(var(--u) * 19) 1fr; align-items: baseline; padding: calc(var(--u) * .8) 0; border-top: 1px solid var(--ivory-10); transition: padding .6s var(--ease); }
 .s-benefits li:last-child { border-bottom: 1px solid var(--ivory-10); }
 .s-benefits li:hover { padding-left: calc(var(--u) * .8); }
 .s-benefits li em { font-style: normal; font-size: var(--fs-label); letter-spacing: .2em; color: var(--ivory-45); font-weight: 500; }
-.s-benefits li b { font-family: var(--serif); font-weight: 300; font-size: calc(var(--u) * 2.2); line-height: 1.1; }
-.s-benefits li span { color: var(--ivory-70); }
+.s-benefits li b { font-family: var(--serif); font-weight: 300; font-size: calc(var(--u) * 1.9); line-height: 1.1; }
+.s-benefits li span { color: var(--ivory-70); font-size: calc(var(--u) * 1.05); }
 .s-benefits li.last b { font-style: italic; }
 
 /* ---------- 13 · Pilote Saint-Aunès ------------------------------------- */
@@ -452,7 +468,7 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .r, .r-fade, .lines .ln > span, .s-cover .mega span, .rule-x, .stand .draw, .cycle .ring-draw { transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+  .r, .r-fade, .lines .ln > span, .s-cover .mega span, .rule-x, .stand .draw, .cycle .ring-draw, .s-origin .wave path { transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
   .flow .arrow::after, .s-cover .scroll-cue::after { animation: none; }
 }
 :focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
@@ -492,6 +508,13 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
 
   .s-story .grid, .s-why .grid, .s-people .grid, .s-impact .grid, .s-model .grid, .s-meeting .grid, .s-benefits .grid { grid-template-columns: 1fr; gap: 40px; height: auto; }
   .s-story .title { font-size: 30px; margin-top: 28px; }
+  .s-origin .center { max-width: none; padding: 40px 0; }
+  .s-origin .lead { font-size: 20px; }
+  .s-origin .title { font-size: 38px; }
+  .s-origin .cols { grid-template-columns: 1fr; gap: 28px; margin-top: 30px; }
+  .s-origin .closing { font-size: 22px; }
+  .s-origin .wave { height: 60px; }
+  .s-store .line .light { text-align: left; }
   .s-story .body { margin-top: 28px; }
 
   .s-spark { min-height: 100svh; padding-bottom: 0; }
@@ -571,7 +594,7 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
   .s-benefits .title { font-size: 30px; }
   .s-benefits li { grid-template-columns: 34px 1fr; row-gap: 6px; padding: 16px 0; }
   .s-benefits li b { font-size: 24px; }
-  .s-benefits li span { grid-column: 2; }
+  .s-benefits li span { grid-column: 2; font-size: 14px; }
 
   .s-pilot .title { font-size: 44px; }
   .s-pilot .formula .f b { font-size: 44px; }
@@ -605,7 +628,7 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
   .r, .r-fade, .lines .ln > span, .s-cover .mega span, .rule-x, .s-product .photo img {
     transition: none !important; opacity: 1 !important; transform: none !important;
   }
-  .stand .draw, .cycle .ring-draw { transition: none !important; stroke-dashoffset: 0 !important; }
+  .stand .draw, .cycle .ring-draw, .s-origin .wave path { transition: none !important; stroke-dashoffset: 0 !important; }
   .flow .arrow::after, .cycle .runner { display: none; }
   .s-spark .band { transform: none !important; }
   .s-why .words li { opacity: 1 !important; transform: none !important; }
