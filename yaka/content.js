@@ -36,7 +36,7 @@ window.YAKA_CONTENT = {
   ctaEmail: "yanil@webonestudio.fr",
 
   images: {
-    packaging: "assets/packaging.jpg",   // les deux paquets (fond de l’écran contact)
+    packaging: "assets/paquet-face.jpg", // fond de l’écran contact
     packFront: "assets/paquet-face.jpg", // face du paquet (couverture)
     packBack: "assets/paquet-dos.jpg",   // dos du paquet (écran café)
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
@@ -55,8 +55,8 @@ window.YAKA_CONTENT = {
     weight: "250 g",
     price: "≈ 15 € TTC",
     priceLabel: "Prix public cible",
-    usage: "Espresso et machines automatiques avec broyeur",
-    profile: ["Doux", "Sucré", "Chocolaté"],
+    usage: "Espresso, machine automatique, italienne, filtre, piston",
+    profile: ["Doux", "Chocolaté", "Gourmand"],
     // Fournisseur (non affiché) : Premium Dolce
   },
 

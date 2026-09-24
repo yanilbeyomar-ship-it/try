@@ -211,8 +211,8 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 .s-cover { padding: 0; }
 .s-cover .photo { position: absolute; top: 0; right: 0; bottom: 0; width: 58%; }
 .s-cover .photo { display: flex; align-items: center; justify-content: center; }
-.s-cover .photo img { width: auto; height: auto; max-width: 100%; max-height: 100%; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 75%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 75%, transparent 100%); }
-.s-cover .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, rgba(21,20,15,.55) 22%, rgba(21,20,15,0) 55%), linear-gradient(0deg, var(--bg) 0%, rgba(21,20,15,0) 38%); }
+.s-cover .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.s-cover .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, rgba(16,15,12,.55) 22%, rgba(16,15,12,0) 55%), linear-gradient(0deg, var(--bg) 0%, rgba(16,15,12,0) 38%); }
 .s-cover .tag { position: absolute; left: var(--pad-x); top: 30%; }
 .s-cover .tag .h-l { margin-top: calc(var(--u) * 2.2); }
 .s-cover .mega {
@@ -291,7 +291,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 .s-product .photo { display: flex; align-items: center; justify-content: center; }
 .s-product .photo img { width: auto; height: auto; max-width: 100%; max-height: 100%; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 75%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 75%, transparent 100%); opacity: 0; transform: translateY(12px); transition: opacity 1.6s var(--ease-soft), transform 2s var(--ease); }
 .s-product.in .photo img { opacity: 1; transform: none; }
-.s-product .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(21,20,15,0) 70%, var(--bg) 100%); }
+.s-product .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(16,15,12,0) 70%, var(--bg) 100%); }
 .s-product .info { padding: calc(var(--pad-y) + var(--u) * 2.5) var(--pad-x) var(--pad-y) calc(var(--u) * 4); display: flex; flex-direction: column; }
 .s-product .title { margin-top: calc(var(--u) * 2.6); font-size: calc(var(--u) * 5.4); line-height: .98; }
 .s-product .specs { margin-top: auto; padding-top: calc(var(--u) * 2); }
@@ -501,7 +501,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 /* ---------- Couverture : promesse -------------------------------------- */
 .s-cover .promise { margin-top: calc(var(--u) * 2.4); padding-top: calc(var(--u) * 1.4); border-top: 1px solid var(--fg-20); max-width: 30em; font-size: var(--fs-body); color: var(--fg-70); letter-spacing: .01em; }
 
-.s-cover, .s-product { --bg: #15140F; }
+.s-cover, .s-product { --bg: #100F0C; }
 
 /* ---------- Concrètement (respiration photo) --------------------------- */
 .s-interlude { display: flex; flex-direction: column; }
@@ -612,7 +612,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 
   .s-cover { min-height: 100svh; padding: 0; }
   .s-cover .photo { width: 100%; height: 72%; bottom: auto; }
-  .s-cover .photo::after { background: linear-gradient(0deg, var(--bg) 2%, rgba(21,20,15,.2) 45%, rgba(21,20,15,.35) 100%); }
+  .s-cover .photo::after { background: linear-gradient(0deg, var(--bg) 2%, rgba(16,15,12,.2) 45%, rgba(16,15,12,.35) 100%); }
   .s-cover .tag { top: auto; bottom: 30%; left: var(--pad-x); right: var(--pad-x); }
   .s-cover .tag .h-l { font-size: 30px; }
   .s-cover .mega { font-size: 27vw; bottom: 9%; left: calc(var(--pad-x) - 4px); letter-spacing: .06em; }
@@ -681,7 +681,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 
   .s-product { display: block; padding: 0; }
   .s-product .photo { height: 62svh; }
-  .s-product .photo::after { background: linear-gradient(0deg, var(--bg) 0%, rgba(21,20,15,0) 40%); }
+  .s-product .photo::after { background: linear-gradient(0deg, var(--bg) 0%, rgba(16,15,12,0) 40%); }
   .s-product .info { padding: 8px var(--pad-x) 64px; }
   .s-product .title { font-size: 52px; margin-top: 22px; }
   .s-product .specs { margin-top: 36px; }
