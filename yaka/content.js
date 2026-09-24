@@ -28,7 +28,7 @@ window.YAKA_CONTENT = {
   partner: null,
 
   founders: [
-    { name: "Yanil Bey-Omar", role: "Cofondateur", image: null, phone: null, email: null },
+    { name: "Yanil Bey-Omar", role: "Cofondateur", image: "assets/yanil.jpg", phone: null, email: null },
     { name: "Arthur Mignon",  role: "Cofondateur", image: null, phone: null, email: null },
   ],
 
