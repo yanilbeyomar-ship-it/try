@@ -29,7 +29,7 @@ window.YAKA_CONTENT = {
 
   founders: [
     { name: "Yanil Bey-Omar", role: "Cofondateur", image: "assets/yanil.jpg", phone: null, email: null },
-    { name: "Arthur Mignon",  role: "Cofondateur", image: null, phone: null, email: null },
+    { name: "Arthur Mignon",  role: "Cofondateur", image: "assets/arthur.jpg", phone: null, email: null },
   ],
 
   /* Adresse utilisée par le bouton final. null → le bouton renvoie aux contacts. */
@@ -39,6 +39,7 @@ window.YAKA_CONTENT = {
     packaging: "assets/packaging.jpg",   // paquet YAKA 250 g
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
     student: null,                       // étudiant YAKA en magasin
+    ear: "assets/oreille.jpg",           // oreille formée par une foule (écran « Pourquoi cette cause »)
     onsite: null,                        // étudiant YAKA en magasin, avec ou sans table
   },
 
@@ -154,7 +155,7 @@ window.YAKA_CONTENT = {
       nav: "Pourquoi cette cause",
       label: "Pourquoi cette cause",
       lead: "Ce n’est pas une cause choisie au hasard.",
-      title: "L’un des fondateurs de YAKA\na un frère sourd.",
+      title: "L’un des fondateurs\nde YAKA a un frère sourd.",
       body: "Les barrières du quotidien, les portes qui s’ouvrent moins facilement : ils les connaissent de près. C’est pour cela que YAKA soutient une association dédiée aux personnes sourdes et malentendantes.",
       closing: "Dans votre magasin, vos clients n’achètent pas seulement un café. Ils soutiennent une cause réelle, portée par une histoire vraie.",
     },

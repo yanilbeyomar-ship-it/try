@@ -140,7 +140,8 @@
   // 06 — Pourquoi cette cause (histoire familiale)
   const W = S.deaf;
   add("deaf", "ivory", W.nav, `
-    <section class="slide s-origin ivory">
+    <section class="slide s-origin ivory${C.images.ear ? " has-ear" : ""}">
+      ${C.images.ear ? `<figure class="ear r-fade" style="--d:2"><img src="${C.images.ear}" alt="Une oreille dessinée par une foule de personnes"></figure>` : ""}
       ${label(next(), W.label)}
       <div class="center">
         <p class="lead serif italic r" style="--d:1">${fmt(W.lead)}</p>
