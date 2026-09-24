@@ -18,8 +18,8 @@ window.YAKA_CONTENT = {
   /* ---------- Général ---------------------------------------------------- */
   meta: {
     brand: "YAKA",
-    documentTitle: "YAKA — Présentation aux magasins partenaires",
-    edition: "Café solidaire · Présentation partenaires",
+    documentTitle: "YAKA — L’animation café solidaire pour votre magasin",
+    edition: "Animation café solidaire · Présentation magasins",
     audience: "Magasins partenaires",
   },
 
@@ -40,12 +40,10 @@ window.YAKA_CONTENT = {
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
     student: null,                       // étudiant YAKA au stand
     stand: null,                         // stand YAKA en magasin
-    origin: null,                        // photo d'ambiance pour l'écran « Pourquoi YAKA existe » (mains, lumière…)
   },
 
   /* ---------- Le café ---------------------------------------------------- */
   coffee: {
-    name: "Le café YAKA",
     form: "Café en grain",
     weight: "250 g",
     price: "≈ 15 € TTC",
@@ -56,14 +54,14 @@ window.YAKA_CONTENT = {
     profile: ["Doux", "Équilibré", "Gourmand", "Chocolaté", "Caramel", "Faible acidité"],
   },
 
-  /* ---------- Cause soutenue --------------------------------------------- */
+  /* ---------- L'association ---------------------------------------------- */
   cause: {
+    perPack: 1,                 // € reversés par paquet vendu
+    example: 1000,              // exemple mis en avant : 1 000 paquets = 1 000 €
+    simulatorMax: 3000,         // borne haute du simulateur (paquets)
     audience: "les personnes sourdes et malentendantes",
     partnerStatus: "Association en cours de sélection",
     partnerName: null,          // renseigner lorsque le partenariat sera officiel
-    share: null,                // ex. "1 € par paquet" ou "10 % du CA" — null tant que non décidé
-    cafesSold: null,            // ex. "12 000" — null tant que rien n'est mesuré
-    amountDonated: null,        // ex. "3 000 €"
   },
 
   /* ---------- Vente terrain (autre catégorie de produit) ----------------- */
@@ -83,51 +81,89 @@ window.YAKA_CONTENT = {
 
     cover: {
       nav: "YAKA",
-      tagline: "Un café qui a du goût.\nUn projet qui a du sens.",
+      tagline: "L’animation café solidaire,\nclé en main.",
+      promise: "1 paquet vendu = 1 € reversé\naux personnes sourdes et malentendantes.",
     },
 
-    origin: {
-      nav: "Pourquoi YAKA",
-      label: "Pourquoi YAKA existe",
-      lead: "Tout est parti d’une histoire de famille.",
-      title: "L’un de nous a grandi\naux côtés d’un frère sourd.",
-      body: "Les regards, les barrières, les portes qui s’ouvrent moins facilement : nous les connaissons de près. Alors en créant YAKA, une évidence s’est imposée : notre entreprise devait aussi servir cette cause.",
-      closing: "YAKA soutiendra une association dédiée\naux personnes sourdes et malentendantes.",
-      photoCaption: "Photo d’ambiance — mains, regard, lumière",
+    gains: {
+      nav: "Pour votre magasin",
+      label: "Pour votre magasin",
+      title: "Ce qu’un samedi YAKA\napporte à votre magasin.",
+      items: [
+        ["Une animation, sans effort", "Un stand élégant et un étudiant qui présente le café toute la journée. Vos équipes n’ont rien à gérer."],
+        ["Des allées plus vivantes", "Une présence humaine qui arrête les clients et crée l’échange."],
+        ["Une expérience client", "Une découverte accompagnée plutôt qu’un produit simplement posé en rayon."],
+        ["Un engagement à votre nom", "Chaque paquet vendu chez vous reverse 1 € à une association pour les personnes sourdes et malentendantes. Un geste que votre magasin peut mettre en avant."],
+        ["Un bilan chiffré", "Ventes, transactions, retours clients, montant reversé : un bilan clair après chaque samedi."],
+        ["Aucun risque", "Un seul samedi pour tester, sans engagement pour la suite."],
+      ],
     },
 
-    story: {
-      nav: "Les fondateurs",
-      label: "Les fondateurs",
-      title: "Deux entrepreneurs.\nLe goût du terrain.\nUne cause à servir.",
-      body: "Yanil et Arthur vendent en direct, sur stand, face aux clients. Ils en ont tiré une conviction : quand un produit est bon et qu’on le présente avec sincérité, les gens s’arrêtent, écoutent et achètent.\n\nYAKA réunit ce savoir-faire et une cause qui leur tient à cœur.",
+    turnkey: {
+      nav: "Clé en main",
+      label: "Clé en main",
+      title: "Nous apportons tout.\nVous ouvrez la porte.",
+      yakaTitle: "YAKA apporte",
+      yaka: [
+        "Le café et tout le stock",
+        "Le stand et sa signalétique",
+        "Un étudiant formé au produit et à la cause",
+        "L’installation et le rangement",
+        "L’encaissement, sur notre propre terminal",
+        "Les visuels, si vous souhaitez annoncer l’animation",
+        "Le bilan de la journée",
+      ],
+      storeTitle: "Votre magasin fournit",
+      store: [
+        "Un emplacement dans une allée passante",
+        "Surface : [[à préciser]]",
+        "Un samedi",
+        "Un contact le jour J",
+      ],
+      note: "Pas de stock à acheter. Pas de caisse mobilisée. Pas de personnel détaché.",
     },
 
-    spark: {
-      nav: "Le déclic",
-      label: "Le déclic",
-      intro: "Sur le stand, plusieurs clients posaient spontanément la même question.",
-      question: "« Est-ce que vous vendez aussi du café ? »",
-      answer: "Et si le café devenait\nle moyen de porter notre cause ?",
-      note: "Un produit que tout le monde aime.\nUne vente humaine. Une cause concrète.",
+    day: {
+      nav: "Le jour J",
+      label: "Le jour J",
+      title: "Un samedi,\nétape par étape.",
+      steps: [
+        ["Avant", "Nous validons ensemble la date et l’emplacement. Nous vous envoyons des visuels si vous souhaitez annoncer l’animation."],
+        ["Le matin", "Installation rapide, avant l’affluence. Aucune structure lourde, aucun outil."],
+        ["La journée", "L’étudiant présente le café, raconte la cause, conseille et vend. Encaissement sur notre terminal."],
+        ["Le soir", "Rangement complet. L’emplacement est rendu tel qu’il nous a été confié."],
+        ["Après", "Vous recevez le bilan : ventes, transactions, retours clients et montant reversé à l’association."],
+      ],
+      hours: "Horaires de présence : [[à caler avec le magasin]]",
     },
 
-    why: {
-      nav: "Pourquoi le café",
-      label: "Pourquoi le café",
-      words: ["Quotidien", "Universel", "Émotionnel", "Récurrent", "Partageable", "Premium"],
-      problem: "Un produit que chacun achète chaque semaine peut soutenir une cause chaque semaine.",
-      turn: "Encore faut-il qu’il soit simple à choisir.",
-      nots: ["Pas dix cafés au lancement.", "Pas une gamme incompréhensible.", "Pas une accumulation d’origines et de termes techniques."],
-      trio: ["Une marque.", "Un café signature.", "Une histoire."],
-      closing: "Le client ne se demande pas lequel choisir.\nIl découvre le café YAKA.",
+    cause: {
+      nav: "L’association",
+      label: "L’association",
+      title: "1 paquet vendu,\n1 € reversé.",
+      body: "À chaque paquet de café YAKA vendu, 1 € est reversé à une association qui accompagne les personnes sourdes et malentendantes.",
+      example: "paquets vendus",
+      exampleResult: "reversés à l’association",
+      simLabel: "Faites glisser pour simuler",
+      simNote: "Simulation illustrative : 1 € par paquet vendu.",
+      transparency: "Montants publiés en toute transparence. Chaque magasin reçoit le montant reversé grâce à ses clients.",
+      honesty: "Le choix de l’association est en cours. Aucun partenariat n’est encore signé : il sera annoncé publiquement.",
+    },
+
+    deaf: {
+      nav: "Pourquoi cette cause",
+      label: "Pourquoi cette cause",
+      lead: "Ce n’est pas une cause choisie au hasard.",
+      title: "L’un des fondateurs de YAKA\na un frère sourd.",
+      body: "Les barrières du quotidien, les portes qui s’ouvrent moins facilement : ils les connaissent de près. C’est pour cela que YAKA soutient une association dédiée aux personnes sourdes et malentendantes.",
+      closing: "Dans votre magasin, vos clients n’achètent pas seulement un café. Ils soutiennent une cause réelle, portée par une histoire vraie.",
     },
 
     product: {
-      nav: "Le produit",
-      label: "Le produit",
-      title: "Un café.\nUne signature.",
-      promise: "Assez bon pour être acheté pour lui-même.\nLa cause donne une raison de plus de le choisir.",
+      nav: "Le café",
+      label: "Le café",
+      title: "Un café premium,\nsimple à choisir.",
+      promise: "Une seule référence, pensée pour plaire au plus grand nombre.\nAchetée d’abord parce qu’elle est bonne.",
     },
 
     people: {
@@ -135,100 +171,55 @@ window.YAKA_CONTENT = {
       label: "Les étudiants",
       formula: [["1", "étudiant"], ["1", "stand"], ["1", "café"], ["1", "journée"]],
       title: "Derrière chaque stand,\nun étudiant.",
-      body: "Des missions rémunérées, principalement le samedi. Les étudiants représentent la marque, racontent la cause et repartent avec une vraie expérience.",
+      body: "Un étudiant rémunéré, briefé sur le produit et sur la cause. Il présente, il conseille, il n’interpelle pas.",
       skills: ["Prise de parole", "Confiance", "Vente", "Autonomie", "Relation client", "Responsabilité", "Expérience professionnelle"],
       quote: "Un samedi de travail.\nUne expérience qui reste.",
       network: "À terme : un réseau d’étudiants capables de représenter YAKA dans différents points de vente.",
       photoCaption: "Étudiant YAKA au stand — échange, produit en main",
     },
 
-    impact: {
-      nav: "La cause",
-      label: "La cause",
-      kicker: "Au cœur du projet, pas en bas de page.",
-      title: "Plus YAKA grandit,\nplus son impact grandit.",
-      body: "Une partie de chaque vente est destinée à une association qui accompagne les personnes sourdes et malentendantes.",
-      focus: "Chaque paquet vendu en magasin devient un geste concret, visible et mesurable.",
-      flow: ["cafés vendus", "reversés à l’association", "un impact concret, publié en toute transparence"],
-      honesty: "Le choix de l’association est en cours. Aucun partenariat n’est encore signé : il sera annoncé publiquement, avec les montants reversés.",
-    },
-
-    model: {
-      nav: "Le cercle",
-      label: "Le cercle YAKA",
-      title: "Chacun y gagne\nquelque chose.",
-      hint: "Survolez le cercle",
-      nodes: [
-        { key: "client",   name: "Client",   does: "achète un bon café",                        gets: "Un bon produit et un geste qui compte." },
-        { key: "etudiant", name: "Étudiant", does: "travaille et apprend",                      gets: "Un revenu et une expérience." },
-        { key: "cause",    name: "Cause",    does: "reçoit une part de chaque vente",           gets: "Un soutien financier régulier." },
-        { key: "magasin",  name: "Magasin",  does: "accueille une animation porteuse de sens",  gets: "Une animation humaine et une initiative à valoriser." },
-        { key: "yaka",     name: "YAKA",     does: "fait connaître le café et la cause",        gets: "Les moyens de continuer, et de soutenir davantage." },
-      ],
-      loop: "… et le cercle recommence.",
-    },
-
     proof: {
       nav: "Le terrain",
       label: "Le terrain",
-      title: "La vente humaine sur stand,\nnous savons la faire.",
-      claim: "YAKA n’est pas une idée construite derrière un ordinateur.",
+      title: "La vente sur stand,\nnous savons la faire.",
+      claim: "Des chiffres observés face à de vrais clients.",
     },
 
     meeting: {
-      nav: "La rencontre",
-      label: "La rencontre",
+      nav: "Le stand",
+      label: "Le stand",
       lines: ["Le produit attire.", "L’histoire touche.", "Le client décide."],
-      body: "Pas de vendeur qui interpelle. Un étudiant qui présente le café et raconte pourquoi YAKA existe.",
-      qualities: ["Léger", "Élégant", "Simple à installer", "Peu encombrant", "Sans infrastructure lourde", "Aucune charge pour vos équipes"],
+      body: "Pas de vendeur qui interpelle. Un étudiant qui présente le café et explique où va l’euro reversé.",
+      qualities: ["Léger", "Élégant", "Simple à installer", "Peu encombrant", "Sans infrastructure lourde"],
       caption: "Illustration de principe — stand en cours de conception.",
     },
 
-    store: {
-      nav: "Le magasin",
-      label: "Le magasin partenaire",
-      title: "Un partenariat,\npas une location.",
-      yaka: { head: "YAKA", sub: "apporte le concept", items: ["Le produit", "Le stand", "La cause", "L’étudiant", "L’animation", "L’organisation"] },
-      store: { head: "Le magasin", sub: "lui donne un terrain", items: ["Un petit espace", "Son flux", "Son accueil"] },
-      result: { head: "Une rencontre", sub: "qui a du sens", items: ["Pour vos clients", "Pour les étudiants", "Pour la cause"] },
-      line: "Vous nous donnez l’espace.\nNous lui donnons du sens.",
-      light: "Un modèle volontairement léger : moins de frais d’installation, plus de moyens pour les étudiants et pour la cause.",
-    },
-
-    benefits: {
-      nav: "Pour le magasin",
-      label: "Pour le magasin",
-      title: "Ce qu’un samedi YAKA\napporte à votre magasin.",
-      items: [
-        ["Une cause concrète", "Associer le magasin à un engagement envers les personnes sourdes et malentendantes."],
-        ["Animation", "Une présence humaine supplémentaire dans les allées."],
-        ["Expérience client", "Une découverte accompagnée plutôt qu’un produit simplement posé en rayon."],
-        ["Jeunesse", "Des étudiants qui acquièrent une vraie expérience professionnelle."],
-        ["Jeunes entrepreneurs", "Soutenir un projet français porté par des jeunes."],
-        ["Zéro contrainte", "Nous installons, animons et rangeons. Vos équipes n’ont rien à gérer."],
-        ["Et ensuite ?", "Si l’expérience plaît à vos clients, nous imaginerons la suite ensemble."],
-      ],
-    },
-
     pilot: {
-      nav: "Un premier samedi",
+      nav: "Notre proposition",
       label: "Notre proposition",
-      titleGeneric: "Et si l’histoire continuait\ndans votre magasin ?",
-      titlePartner: "Et si l’histoire continuait\nà {city} ?",
-      formula: [["1", "magasin"], ["1", "samedi"], ["1", "étudiant"], ["1", "stand"], ["1", "café solidaire"]],
+      titleGeneric: "Un samedi test,\nsans engagement.",
+      titlePartner: "Un samedi test\nà {city}.",
+      formula: [["1", "magasin"], ["1", "samedi"], ["1", "étudiant"], ["1", "stand"], ["1 €", "par paquet"]],
       askTitle: "Ce que nous vous demandons",
-      asks: ["Un petit espace dans vos allées", "Un samedi", "Votre accueil", "Une mise à disposition gracieuse ou à tarif solidaire"],
-      measureTitle: "Ce que nous mesurerons",
-      measures: ["Ventes et transactions", "Retours clients", "Retour des équipes magasin", "Montant reversé à la cause"],
+      asks: ["Un emplacement dans une allée passante", "Un samedi", "Une mise à disposition gracieuse ou à tarif solidaire"],
+      askWhy: "Un emplacement gracieux ou solidaire nous permet de consacrer nos moyens au projet et à l’association.",
+      measureTitle: "Ce que vous recevez après",
+      measures: ["Ventes et transactions", "Retours clients", "Retour de vos équipes", "Montant reversé grâce à vos clients"],
       line: "Pas besoin de croire à une projection.\nTestons-la sur le terrain.",
-      after: "Puis nous faisons le bilan, ensemble.",
+    },
+
+    founders: {
+      nav: "Qui sommes-nous",
+      label: "Qui sommes-nous",
+      title: "Deux entrepreneurs.\nLe goût du terrain.\nUne cause à servir.",
+      body: "Yanil et Arthur vendent en direct, sur stand, face aux clients. Ils en ont tiré une conviction : quand un produit est bon et qu’on le présente avec sincérité, les gens s’arrêtent, écoutent et achètent.\n\nYAKA réunit ce savoir-faire et une cause qui les touche de près.",
     },
 
     cta: {
       nav: "Commençons",
       title: "Commençons\npar un samedi.",
-      body: "Si l’expérience fonctionne, construisons la suite ensemble.",
-      button: "Accueillir un samedi YAKA",
+      body: "Si l’expérience fonctionne pour votre magasin, construisons la suite ensemble.",
+      button: "Proposer une date",
     },
   },
 };
