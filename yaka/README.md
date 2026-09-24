@@ -31,3 +31,8 @@ node build.mjs --no-pdf # HTML seulement
 
 ## Présenter
 Flèches ← → / ↑ ↓ ou espace pour naviguer · `F` plein écran · `P` export PDF.
+
+## Version téléphone
+- `mobile.html` / `mobile.css` / `mobile.js` : 10 cartes plein écran façon « stories » (tap à droite = suivant, à gauche = précédent, appui long = pause, swipe).
+- Livrables : `dist/YAKA_mobile.html`, `dist/YAKA_mobile.pdf` (format téléphone, 1 carte par page) et `/yaka-mobile.html` à la racine du site.
+- Sur le site, `yaka.html` redirige automatiquement les téléphones vers `yaka-mobile.html` (ajouter `?desktop` pour forcer la version complète).

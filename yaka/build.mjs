@@ -47,6 +47,19 @@ const art = html
 fs.mkdirSync(path.join(dist, "artifact"), { recursive: true });
 fs.writeFileSync(path.join(dist, "artifact", "yaka.html"), art);
 
+// Version téléphone (format stories) : dist/YAKA_mobile.html + racine /yaka-mobile.html
+let mob = fs.readFileSync(path.join(root, "mobile.html"), "utf8")
+  .replace('<link rel="stylesheet" href="mobile.css">', () => `<style>\n${inlineAssets(fs.readFileSync(path.join(root, "mobile.css"), "utf8"))}\n</style>`)
+  .replace('<script src="content.js"></script>', () => `<script>\n${safeScript(content)}\n</script>`)
+  .replace('<script src="mobile.js"></script>', () => `<script>\n${safeScript(fs.readFileSync(path.join(root, "mobile.js"), "utf8"))}\n</script>`);
+const mobOut = path.join(dist, "YAKA_mobile.html");
+fs.writeFileSync(mobOut, mob);
+fs.copyFileSync(mobOut, path.join(root, "..", "yaka-mobile.html"));
+console.log("MOBILE :", path.relative(process.cwd(), mobOut), (fs.statSync(mobOut).size / 1024).toFixed(0) + " Ko");
+// Sur la version en ligne, les téléphones sont redirigés vers la version stories
+fs.writeFileSync(path.join(root, "..", "yaka.html"), html.replace("<head>", `<head>
+<script>if (!/[?&](desktop|print)/.test(location.search) && matchMedia("(max-width: 820px) and (orientation: portrait)").matches) location.replace("yaka-mobile.html" + location.hash);</script>`));
+
 if (!process.argv.includes("--no-pdf")) {
   let chromium;
   try { ({ chromium } = await import("playwright")); }
@@ -58,6 +71,14 @@ if (!process.argv.includes("--no-pdf")) {
   await page.emulateMedia({ media: "print", reducedMotion: "reduce" });
   const pdf = path.join(dist, "YAKA_presentation.pdf");
   await page.pdf({ path: pdf, width: "1600px", height: "900px", printBackground: true, preferCSSPageSize: true });
-  await browser.close();
+  const mb = await browser.newPage({ viewport: { width: 450, height: 800 } });
+  await mb.goto(pathToFileURL(mobOut).href + "?print");
+  await mb.evaluate(() => document.fonts.ready);
+  await mb.waitForTimeout(300);
+  await mb.emulateMedia({ media: "print" });
+  const mpdf = path.join(dist, "YAKA_mobile.pdf");
+  await mb.pdf({ path: mpdf, width: "450px", height: "800px", printBackground: true, preferCSSPageSize: true });
+  console.log("PDF mobile :", path.relative(process.cwd(), mpdf), (fs.statSync(mpdf).size / 1024).toFixed(0) + " Ko");
   console.log("PDF  :", path.relative(process.cwd(), pdf), (fs.statSync(pdf).size / 1024).toFixed(0) + " Ko");
+  await browser.close();
 }
