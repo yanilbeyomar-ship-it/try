@@ -36,7 +36,9 @@ window.YAKA_CONTENT = {
   ctaEmail: "yanil@webonestudio.fr",
 
   images: {
-    packaging: "assets/packaging.jpg",   // paquet YAKA 250 g
+    packaging: "assets/packaging.jpg",   // les deux paquets (fond de l’écran contact)
+    packFront: "assets/paquet-face.jpg", // face du paquet (couverture)
+    packBack: "assets/paquet-dos.jpg",   // dos du paquet (écran café)
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
     student: null,                       // étudiant YAKA en magasin
     ear: "assets/oreille.jpg",           // oreille formée par une foule (écran « Pourquoi cette cause »)
@@ -89,18 +91,18 @@ window.YAKA_CONTENT = {
       promise: "1 paquet vendu = 1 € reversé\naux personnes sourdes et malentendantes.",
     },
 
-    gains: {
-      nav: "Pour votre magasin",
-      label: "Pour votre magasin",
-      title: "Ce que YAKA apporte\nà votre magasin.",
-      items: [
-        ["Une animation, sans effort", "Un étudiant qui présente le café toute la journée. Vos équipes n’ont rien à gérer."],
-        ["Des allées plus vivantes", "Une présence humaine qui arrête les clients et crée l’échange."],
-        ["Une expérience client", "Une découverte accompagnée plutôt qu’un produit simplement posé en rayon."],
-        ["Un engagement à votre nom", "Chaque paquet vendu chez vous reverse 1 € à une association pour les personnes sourdes et malentendantes. Un geste que votre magasin peut mettre en avant."],
-        ["Un bilan chiffré", "Ventes, transactions, retours clients, montant reversé : un bilan clair après chaque journée."],
-        ["Une présence régulière", "Chaque samedi, un rendez-vous que vos clients retrouvent. Et d’autres jours si vous le souhaitez."],
+    model: {
+      nav: "Chacun y gagne",
+      label: "Ce que YAKA apporte",
+      title: "Chacun y gagne,\nà commencer par vous.",
+      hint: "Survolez le cercle",
+      nodes: [
+        { name: "Magasin",     does: "accueille YAKA chaque samedi",        gets: "Une animation humaine, sans effort pour vos équipes, et un engagement à mettre en avant." },
+        { name: "Clients",     does: "découvrent un café premium",           gets: "Un bon café, et un geste utile à chaque paquet." },
+        { name: "Association", does: "reçoit 1 € par paquet vendu",          gets: "Un soutien financier régulier." },
+        { name: "Étudiant",    does: "présente le café et raconte la cause", gets: "Un revenu et une vraie expérience." },
       ],
+      loop: "… et le cercle recommence, chaque samedi.",
     },
 
     turnkey: {
@@ -113,32 +115,17 @@ window.YAKA_CONTENT = {
         "Un étudiant formé au produit et à la cause",
         "L’installation et le rangement",
         "L’encaissement, sur notre propre terminal",
-        "Les visuels, si vous souhaitez annoncer l’animation",
         "Le bilan de la journée",
       ],
       storeTitle: "Votre magasin fournit",
       store: [
         "Un emplacement dans une allée passante",
         "Surface : [[à préciser]]",
-        "Vos samedis (et d’autres jours si vous le souhaitez)",
-        "Un contact sur place",
-        "Une table, si vous pouvez en prêter une (sinon, pas de souci : l’étudiant va à la rencontre des clients)",
+        "Chaque samedi (et le mercredi, si vous le souhaitez)",
+        "Horaires : [[à caler ensemble]]",
+        "Une table si possible (sinon, l’étudiant va vers les clients)",
       ],
       note: "Pas de stock à acheter. Pas de caisse mobilisée. Pas de personnel détaché.",
-    },
-
-    day: {
-      nav: "Une journée",
-      label: "Une journée YAKA",
-      title: "Chaque samedi,\nétape par étape.",
-      steps: [
-        ["Avant", "Nous validons ensemble le calendrier et l’emplacement. Nous vous envoyons des visuels si vous souhaitez annoncer l’animation."],
-        ["Le matin", "Mise en place légère, avant l’affluence. Rien à monter."],
-        ["La journée", "L’étudiant présente le café, raconte la cause, conseille et vend. Encaissement sur notre terminal."],
-        ["Le soir", "Rangement complet. L’emplacement est rendu tel qu’il nous a été confié."],
-        ["Après", "Vous recevez le bilan : ventes, transactions, retours clients et montant reversé à l’association."],
-      ],
-      hours: "Tous les samedis. Le mercredi ou d’autres jours de forte affluence sont possibles. Horaires : [[à caler avec le magasin]]",
     },
 
     cause: {
@@ -161,6 +148,12 @@ window.YAKA_CONTENT = {
       title: "L’un des fondateurs\nde YAKA a un frère sourd.",
       body: "Les barrières du quotidien, les portes qui s’ouvrent moins facilement : ils les connaissent de près. C’est pour cela que YAKA soutient une association dédiée aux personnes sourdes et malentendantes.",
       closing: "Dans votre magasin, vos clients n’achètent pas seulement un café. Ils soutiennent une cause réelle, portée par une histoire vraie.",
+    },
+
+    interlude: {
+      nav: "Concrètement",
+      label: "Concrètement",
+      title: "Et sur place,\ncomment ça se passe ?",
     },
 
     product: {

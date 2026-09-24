@@ -48,7 +48,7 @@
   next();
   add("cover", "black", S.cover.nav, `
     <section class="slide s-cover" data-theme="black">
-      <div class="photo r-fade">${photo(C.images.packaging, "Le paquet YAKA", "Paquet de café YAKA 250 g")}</div>
+      <div class="photo r-fade">${photo(C.images.packFront, "Le paquet YAKA", "Paquet de café YAKA 250 g")}</div>
       <div class="tag">
         <div class="label r"><span>${C.meta.edition}</span></div>
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
@@ -59,15 +59,57 @@
       <div class="scroll-cue" aria-hidden="true"></div>
     </section>`);
 
-  // Ce que ça apporte au magasin
-  add("gains", "ivory", S.gains.nav, `
-    <section class="slide s-benefits ivory">
+  // Chacun y gagne (cercle interactif)
+  const M = S.model, nodes = M.nodes;
+  const R = 210, CX = 300, CY = 300, step = 360 / nodes.length;
+  const pos = (deg, r = R) => [CX + r * Math.cos(deg * Math.PI / 180), CY + r * Math.sin(deg * Math.PI / 180)];
+  const ringPath = `M ${CX} ${CY - R} A ${R} ${R} 0 1 1 ${CX} ${CY + R} A ${R} ${R} 0 1 1 ${CX} ${CY - R}`;
+  const cycleSvg = `
+    <svg viewBox="0 0 600 600" role="img" aria-label="Le cercle YAKA : ${nodes.map((nd) => nd.name).join(", ")}">
+      <circle class="inner" cx="${CX}" cy="${CY}" r="${R - 58}"/>
+      <path class="ring" d="${ringPath}"/>
+      <path class="ring-draw" d="${ringPath}"/>
+      ${nodes.map((_, i) => {
+        const a = -90 + i * step + step / 2; const [x, y] = pos(a);
+        return `<path class="chev" d="M -4 -5 L 3 0 L -4 5" transform="translate(${x} ${y}) rotate(${a + 90})"/>`;
+      }).join("")}
+      ${nodes.map((nd, i) => {
+        const a = -90 + i * step; const [x, y] = pos(a); const [lx, ly] = pos(a, R + 30);
+        const [tx1, ty1] = pos(a, R - 10); const [tx2, ty2] = pos(a, R - 22);
+        const cs = Math.cos(a * Math.PI / 180), sn = Math.sin(a * Math.PI / 180);
+        const anchor = Math.abs(cs) < .2 ? "middle" : (cs > 0 ? "start" : "end");
+        const dy = sn < -.9 ? -6 : (sn > .5 ? 14 : 4);
+        return `<g class="node" data-i="${i}" tabindex="0" role="button" aria-label="${nd.name}">
+          <circle class="hit" cx="${x}" cy="${y}" r="34"/>
+          <line class="tick" x1="${tx1}" y1="${ty1}" x2="${tx2}" y2="${ty2}"/>
+          <circle class="dot" cx="${x}" cy="${y}" r="5"/>
+          <text x="${lx}" y="${ly + dy}" text-anchor="${anchor}">${nd.name}</text>
+        </g>`;
+      }).join("")}
+      <circle class="runner" r="2.6"><animateMotion dur="14s" repeatCount="indefinite" path="${ringPath}"/></circle>
+    </svg>`;
+  add("model", "ivory", M.nav, `
+    <section class="slide s-model ivory">
       <div class="grid">
-        <div>
-          ${label(next(), S.gains.label)}
-          ${lines(S.gains.title, "title sans-title")}
+        <div class="left">
+          <div class="head">
+            ${label(next(), M.label)}
+            ${lines(M.title, "title serif")}
+            <p class="upper muted r" style="--d:3;margin-top:1.6em">${M.hint}</p>
+          </div>
+          <ul class="legend r" style="--d:4">
+            ${nodes.map((nd, i) => `<li data-i="${i}"><b>${nd.name}</b><span>${nd.does}. <em class="serif italic">${nd.gets}</em></span></li>`).join("")}
+          </ul>
+          <p class="loop serif italic muted r" style="--d:5">${M.loop}</p>
         </div>
-        <ol>${S.gains.items.map(([h, t], i) => `<li class="r" style="--d:${1 + i}"><em>0${i + 1}</em><b>${h}</b><span>${fmt(t)}</span></li>`).join("")}</ol>
+        <div class="cycle r-fade" style="--d:1">
+          ${cycleSvg}
+          <div class="core">
+            <div class="brand">${C.meta.brand}</div>
+            <div class="who upper muted">${nodes[0].name} · reçoit</div>
+            <div class="gets">${nodes[0].gets}</div>
+          </div>
+        </div>
       </div>
     </section>`);
 
@@ -122,6 +164,14 @@
       <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M 0 60.0 L 5 72.0 L 10 82.1 L 15 86.5 L 20 82.8 L 25 71.3 L 30 55.1 L 35 39.1 L 40 28.7 L 45 27.5 L 50 36.2 L 55 52.2 L 60 70.5 L 65 85.3 L 70 92.1 L 75 89.1 L 80 77.8 L 85 62.2 L 90 47.4 L 95 37.9 L 100 35.9 L 105 41.1 L 110 50.8 L 115 61.5 L 120 69.8 L 125 73.5 L 130 72.6 L 135 68.4 L 140 62.9 L 145 58.1 L 150 55.3 L 155 54.7 L 160 55.7 L 165 57.6 L 170 59.5 L 175 61.1 L 180 62.1 L 185 62.6 L 190 62.5 L 195 61.6 L 200 60.0 L 205 57.7 L 210 55.3 L 215 53.9 L 220 54.3 L 225 56.9 L 230 61.6 L 235 66.9 L 240 71.1 L 245 72.3 L 250 69.6 L 255 63.3 L 260 55.0 L 265 47.4 L 270 43.1 L 275 43.8 L 280 49.6 L 285 58.8 L 290 68.6 L 295 75.9 L 300 78.3 L 305 75.2 L 310 67.8 L 315 58.4 L 320 50.2 L 325 45.5 L 330 45.4 L 335 49.6 L 340 56.2 L 345 62.9 L 350 67.8 L 355 69.5 L 360 68.3 L 365 64.9 L 370 60.9 L 375 57.7 L 380 56.0 L 385 55.9 L 390 57.0 L 395 58.6 L 400 60.0 L 405 61.0 L 410 61.4 L 415 61.3 L 420 61.0 L 425 60.4 L 430 59.8 L 435 59.1 L 440 58.5 L 445 58.2 L 450 58.5 L 455 59.4 L 460 61.0 L 465 62.6 L 470 63.8 L 475 63.9 L 480 62.7 L 485 60.3 L 490 57.4 L 495 54.9 L 500 53.8 L 505 54.5 L 510 57.1 L 515 60.7 L 520 64.2 L 525 66.5 L 530 66.9 L 535 65.2 L 540 61.9 L 545 58.3 L 550 55.4 L 555 54.0 L 560 54.5 L 565 56.6 L 570 59.3 L 575 61.9 L 580 63.6 L 585 63.9 L 590 63.1 L 595 61.6 L 600 59.9 L 605 58.7 L 610 58.1 L 615 58.3 L 620 58.8 L 625 59.6 L 630 60.2 L 635 60.5 L 640 60.6 L 645 60.5 L 650 60.3 L 655 60.1 L 660 59.9 L 665 59.8 L 670 59.7 L 675 59.7 L 680 59.8 L 685 60.0 L 690 60.2 L 695 60.4 L 700 60.5 L 705 60.4 L 710 60.2 L 715 59.9 L 720 59.6 L 725 59.4 L 730 59.3 L 735 59.5 L 740 59.8 L 745 60.2 L 750 60.4 L 755 60.6 L 760 60.5 L 765 60.3 L 770 60.1 L 775 59.9 L 780 59.8 L 785 59.8 L 790 59.8 L 795 59.9 L 800 60.0 L 805 60.0 L 810 60.0 L 815 60.0 L 820 60.0 L 825 60.0 L 830 60.0 L 835 60.0 L 840 60.0 L 845 60.0 L 850 60.0 L 855 60.0 L 860 60.0 L 865 60.0 L 870 60.0 L 875 60.0 L 880 60.0 L 885 60.0 L 890 60.0 L 895 60.0 L 900 60.0 L 905 60.0 L 910 60.0 L 915 60.0 L 920 60.0 L 925 60.0 L 930 60.0 L 935 60.0 L 940 60.0 L 945 60.0 L 950 60.0 L 955 60.0 L 960 60.0 L 965 60.0 L 970 60.0 L 975 60.0 L 980 60.0 L 985 60.0 L 990 60.0 L 995 60.0 L 1000 60.0 L 1005 60.0 L 1010 60.0 L 1015 60.0 L 1020 60.0 L 1025 60.0 L 1030 60.0 L 1035 60.0 L 1040 60.0 L 1045 60.0 L 1050 60.0 L 1055 60.0 L 1060 60.0 L 1065 60.0 L 1070 60.0 L 1075 60.0 L 1080 60.0 L 1085 60.0 L 1090 60.0 L 1095 60.0 L 1100 60.0 L 1105 60.0 L 1110 60.0 L 1115 60.0 L 1120 60.0 L 1125 60.0 L 1130 60.0 L 1135 60.0 L 1140 60.0 L 1145 60.0 L 1150 60.0 L 1155 60.0 L 1160 60.0 L 1165 60.0 L 1170 60.0 L 1175 60.0 L 1180 60.0 L 1185 60.0 L 1190 60.0 L 1195 60.0 L 1200 60.0"/></svg>
     </section>`);
 
+  // Concrètement (respiration photo)
+  add("interlude", "black", S.interlude.nav, `
+    <section class="slide s-interlude">
+      ${label(next(), S.interlude.label)}
+      ${lines(S.interlude.title, "title serif", 1)}
+      <div class="band r-fade" style="--d:2">${photo(C.images.beans, "Grains torréfiés", "Grains de café YAKA torréfiés")}</div>
+    </section>`);
+
   // Clé en main
   const K = S.turnkey;
   add("turnkey", "sand", K.nav, `
@@ -141,24 +191,11 @@
       </div>
     </section>`);
 
-  // Le jour J
-  const D = S.day;
-  add("day", "kaki", D.nav, `
-    <section class="slide s-day kaki">
-      ${label(next(), D.label)}
-      ${lines(D.title, "title serif")}
-      <ol class="timeline">
-        <li class="track" aria-hidden="true"><i></i></li>
-        ${D.steps.map(([h, t], i) => `<li class="step r" style="--d:${2 + i}"><span class="dot"></span><em>0${i + 1}</em><b>${h}</b><p>${fmt(t)}</p></li>`).join("")}
-      </ol>
-      <p class="hours muted r" style="--d:8">${fmt(D.hours)}</p>
-    </section>`);
-
   // Le café
   const cf = C.coffee;
   add("product", "black", S.product.nav, `
     <section class="slide s-product">
-      <div class="photo">${photo(C.images.packaging, "Packshot du café YAKA", "Paquet YAKA")}</div>
+      <div class="photo">${photo(C.images.packBack, "Dos du paquet YAKA", "Dos du paquet YAKA : torréfaction, profil et origines")}</div>
       <div class="info">
         ${label(next(), S.product.label)}
         ${lines(S.product.title, "title serif")}
@@ -171,7 +208,6 @@
             <dt>Torréfaction</dt><dd>${cf.roast}</dd>
             <dt>Format</dt><dd>${cf.form} · ${cf.weight} · ${cf.price}</dd>
             <dt>Usage</dt><dd>${cf.usage}</dd>
-            <dt>Reversé</dt><dd>${CA.perPack}&#8239;€ par paquet à l’association</dd>
           </dl>
         </div>
       </div>
@@ -285,7 +321,7 @@
     <section class="slide s-cta kaki">
       <div class="bg">${C.images.packaging ? `<img src="${C.images.packaging}" alt="">` : ""}</div>
       <div class="label r"><span class="num">${String(next()).padStart(2, "0")}</span><span class="rule"></span><span>${partnerLabel}</span></div>
-      <div class="sign r" style="--d:2"><div class="serif" style="font-size:calc(var(--u)*1.6);letter-spacing:.4em">${C.meta.brand}</div><div class="upper muted" style="margin-top:.6em">${fmt(S.cover.promise.replace("\n", " "))}</div></div>
+      <div class="sign r" style="--d:2"><div class="serif" style="font-size:calc(var(--u)*1.6);letter-spacing:.4em">${C.meta.brand}</div><div class="upper muted" style="margin-top:.6em">${fmt(S.cover.tagline.replace("\n", " "))}</div></div>
       ${lines(S.cta.title, "title serif", 1)}
       <p class="body r" style="--d:4">${fmt(S.cta.body)}</p>
       <div class="actions">
@@ -416,6 +452,7 @@
     if (el.classList.contains("in")) return;
     el.classList.add("in");
     el.querySelectorAll(".count").forEach(countUp);
+    if (el.id === "model") startCycle();
   }
 
   /* ---------- Compteurs -------------------------------------------------- */
@@ -449,6 +486,40 @@
   }
   range.addEventListener("input", renderSim);
   renderSim();
+
+  /* ---------- Cercle interactif ------------------------------------------ */
+  const model = document.getElementById("model");
+  const gNodes = [...model.querySelectorAll(".node")];
+  const legend = [...model.querySelectorAll(".legend li")];
+  const who = model.querySelector(".core .who");
+  const gets = model.querySelector(".core .gets");
+  let cycleTimer = null, hovering = false, active = -1;
+  function focusNode(i) {
+    if (i === active) return;
+    active = i;
+    gNodes.forEach((g, k) => g.classList.toggle("on", k === i));
+    legend.forEach((l, k) => l.classList.toggle("on", k === i));
+    gets.classList.add("fade");
+    setTimeout(() => {
+      who.textContent = nodes[i].name + " · reçoit";
+      gets.textContent = nodes[i].gets;
+      gets.classList.remove("fade");
+    }, 220);
+  }
+  function startCycle() {
+    if (cycleTimer) return;
+    focusNode(0);
+    cycleTimer = setInterval(() => { if (!hovering) focusNode((active + 1) % nodes.length); }, 3600);
+  }
+  [...gNodes, ...legend].forEach((el) => {
+    const i = +el.dataset.i;
+    el.addEventListener("mouseenter", () => { hovering = true; focusNode(i); });
+    el.addEventListener("mouseleave", () => { hovering = false; });
+    el.addEventListener("focus", () => focusNode(i));
+    el.addEventListener("click", () => { hovering = false; focusNode(i); });
+    el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); focusNode(i); } });
+  });
+  gNodes[0].classList.add("on"); legend[0].classList.add("on"); active = 0;
 
   /* ---------- Navigation ------------------------------------------------- */
   const isField = (t) => /INPUT|TEXTAREA|SELECT/.test(t.tagName);
