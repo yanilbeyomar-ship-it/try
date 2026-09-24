@@ -1078,6 +1078,7 @@ window.YAKA_CONTENT = {
           </ol>
           <div class="status r" style="--d:9">
             <div class="row"><span class="upper muted">Partenaire associatif</span><span>${ca.partnerName ? ca.partnerName : todo(ca.partnerStatus)}</span></div>
+            <div class="row"><span class="upper muted">Part reversée</span><span>${ca.share ? ca.share : todo("À définir")}</span></div>
             <div class="row"><span class="upper muted">Montants reversés</span><span>${ca.amountDonated ? ca.amountDonated : todo("Communiqués dès le lancement")}</span></div>
           </div>
           <p class="honesty r" style="--d:10">${fmt(S.impact.honesty)}</p>
