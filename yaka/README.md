@@ -1,7 +1,7 @@
 # YAKA — Présentation partenaires
 
 Présentation interactive (13 écrans) + export PDF 16:9, version générique pour tous les magasins.
-Ordre : bénéfices magasin → clé en main → jour J → association (1 paquet = 1 €, simulateur) → café → étudiants → terrain → sur place (avec ou sans table) → proposition → fondateurs → contact.
+Ordre : bénéfices magasin → association (1 paquet = 1 €, simulateur) → pourquoi cette cause → clé en main → une journée → café → étudiants → terrain → sur place (avec ou sans table) → proposition → fondateurs → contact.
 
 ## Livrables
 - `dist/YAKA_presentation.html` : fichier unique et autonome (images et polices incluses), fonctionne hors ligne.
