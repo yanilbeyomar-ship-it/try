@@ -314,7 +314,7 @@
       <div class="chrome-tools">
         <span class="counter"><span class="cur">01</span> <span class="total">/ ${pad(total)}</span></span>
         <button class="t-full" type="button" data-act="full" title="Plein écran (F)">Plein écran</button>
-        <button type="button" data-act="print" title="Exporter en PDF (P)">PDF</button>
+        ${window.YAKA_NO_PRINT ? "" : `<button type="button" data-act="print" title="Exporter en PDF (P)">PDF</button>`}
       </div>
     </div>
     <nav class="progress" aria-label="Écrans">${slides.map((s, i) => `<button type="button" data-go="${i}" aria-label="${s.nav}"><span>${s.nav}</span><i></i></button>`).join("")}</nav>`;
@@ -331,7 +331,7 @@
     ticks.forEach((t, k) => t.classList.toggle("on", k === i));
     bar.style.transform = `scaleX(${(i + 1) / total})`;
     document.body.dataset.theme = slides[i].theme;
-    if (history.replaceState) history.replaceState(null, "", "#" + slides[i].id);
+    try { history.replaceState(null, "", "#" + slides[i].id); } catch (e) { /* cadre restreint */ }
   }
 
   /* ---------- Défilement fluide ------------------------------------------
@@ -459,7 +459,7 @@
     else if (k === "Home") { e.preventDefault(); go(0); }
     else if (k === "End") { e.preventDefault(); go(total - 1); }
     else if (k === "f" || k === "F") toggleFull();
-    else if (k === "p" || k === "P") printDeck();
+    else if ((k === "p" || k === "P") && !window.YAKA_NO_PRINT) printDeck();
   });
 
   chrome.addEventListener("click", (e) => {

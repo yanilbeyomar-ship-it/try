@@ -32,6 +32,19 @@ const out = path.join(dist, "YAKA_presentation.html");
 fs.writeFileSync(out, html);
 console.log("HTML :", path.relative(process.cwd(), out), (fs.statSync(out).size / 1024).toFixed(0) + " Ko");
 
+// Version « artifact » (lien claude.ai à ouvrir sur téléphone) : sans squelette
+// <html>/<head>/<body> (ajouté à la publication) et sans bouton PDF (impression bloquée).
+const art = html
+  .replace(/<!DOCTYPE html>\s*/i, "")
+  .replace(/<html[^>]*>\s*|<\/html>\s*/gi, "")
+  .replace(/<head>\s*|<\/head>\s*/gi, "")
+  .replace(/<meta[^>]*>\s*/gi, "")
+  .replace(/<body[^>]*>/i, '<script>window.YAKA_NO_PRINT = true;</script>')
+  .replace(/<\/body>\s*/i, "")
+  .replace(/<title>[^<]*<\/title>/, "<title>Présentation YAKA</title>");
+fs.mkdirSync(path.join(dist, "artifact"), { recursive: true });
+fs.writeFileSync(path.join(dist, "artifact", "yaka.html"), art);
+
 if (!process.argv.includes("--no-pdf")) {
   let chromium;
   try { ({ chromium } = await import("playwright")); }

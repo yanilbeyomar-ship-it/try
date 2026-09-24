@@ -7,6 +7,7 @@
 @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/cormorant-italic.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: swap; }
 
 :root {
+  color-scheme: dark;
   /* Palette */
   --black: #050505;
   --kaki: #1C2418;
@@ -119,7 +120,7 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
 .chrome-top {
   position: absolute; top: 0; left: 0; right: 0;
   display: flex; align-items: center; justify-content: space-between;
-  padding: calc(var(--u) * 2.2) var(--pad-x);
+  padding: calc(var(--u) * 2.2 + env(safe-area-inset-top, 0px)) var(--pad-x) calc(var(--u) * 2.2);
 }
 .brandmark { font-family: var(--serif); font-weight: 400; letter-spacing: .42em; font-size: calc(var(--u) * 1.25); text-decoration: none; }
 .chrome-tools { display: flex; align-items: center; gap: calc(var(--u) * 2.2); font-size: var(--fs-label); letter-spacing: .28em; text-transform: uppercase; font-weight: 500; }
@@ -576,7 +577,7 @@ body[data-theme="ivory"] .chrome { color: var(--ink); }
   .slide { height: auto; min-height: 100svh; padding: 92px var(--pad-x) 64px; scroll-snap-stop: normal; }
   .progress { display: none; }
   .bar { display: block; }
-  .chrome-top { padding: 18px var(--pad-x); background: linear-gradient(180deg, rgba(5,5,5,.75), rgba(5,5,5,0)); transition: background .6s; }
+  .chrome-top { padding: calc(18px + env(safe-area-inset-top, 0px)) var(--pad-x) 18px; background: linear-gradient(180deg, rgba(5,5,5,.75), rgba(5,5,5,0)); transition: background .6s; }
   body[data-theme="ivory"] .chrome-top { background: linear-gradient(180deg, rgba(242,240,232,.85), rgba(242,240,232,0)); }
   .brandmark { font-size: 15px; }
   .chrome-tools { gap: 18px; }
