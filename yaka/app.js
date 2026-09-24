@@ -48,7 +48,7 @@
   next();
   add("cover", "black", S.cover.nav, `
     <section class="slide s-cover" data-theme="black">
-      <div class="photo r-fade">${photo(C.images.packFront, "Le paquet YAKA", "Paquet de café YAKA 250 g")}</div>
+      <div class="photo hero">${photo(C.images.hero, "Visuel YAKA", "YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café")}</div>
       <div class="tag">
         <div class="label r"><span>${C.meta.edition}</span></div>
         <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
