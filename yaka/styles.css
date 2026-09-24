@@ -211,7 +211,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 .s-cover { padding: 0; }
 .s-cover .photo { position: absolute; top: 0; right: 0; bottom: 0; width: 58%; }
 .s-cover .photo { display: flex; align-items: center; justify-content: center; }
-.s-cover .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.s-cover .photo img { width: 100%; height: 100%; object-fit: contain; object-position: 100% 50%; -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 42%); mask-image: linear-gradient(90deg, transparent 18%, #000 42%); }
 .s-cover .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, rgba(16,15,12,.55) 22%, rgba(16,15,12,0) 55%), linear-gradient(0deg, var(--bg) 0%, rgba(16,15,12,0) 38%); }
 .s-cover .tag { position: absolute; left: var(--pad-x); top: 30%; }
 .s-cover .tag .h-l { margin-top: calc(var(--u) * 2.2); }
@@ -612,6 +612,7 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 
   .s-cover { min-height: 100svh; padding: 0; }
   .s-cover .photo { width: 100%; height: 72%; bottom: auto; }
+  .s-cover .photo img { -webkit-mask-image: none; mask-image: none; object-position: 50% 50%; }
   .s-cover .photo::after { background: linear-gradient(0deg, var(--bg) 2%, rgba(16,15,12,.2) 45%, rgba(16,15,12,.35) 100%); }
   .s-cover .tag { top: auto; bottom: 30%; left: var(--pad-x); right: var(--pad-x); }
   .s-cover .tag .h-l { font-size: 30px; }
