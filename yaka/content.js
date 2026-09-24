@@ -37,7 +37,8 @@ window.YAKA_CONTENT = {
 
   images: {
     packaging: "assets/paquet-face.jpg", // fond de l’écran contact
-    hero: "assets/hero.jpg",             // visuel de couverture (logo + paquet)
+    hero: "assets/hero.jpg",             // visuel de couverture (paquet sur rochers)
+    logoGold: "assets/logo-or.png",      // logo YAKA doré (couverture)
     packFront: "assets/paquet-face.jpg", // face du paquet (couverture)
     packBack: "assets/paquet-dos.jpg",   // dos du paquet (écran café)
     beans: "assets/grains-macro.jpg",    // macro grains torréfiés
