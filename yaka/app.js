@@ -49,14 +49,13 @@
   add("cover", "black", S.cover.nav, `
     <section class="slide s-cover" data-theme="black">
       <div class="photo hero"><picture><source media="(max-width: 900px), (max-aspect-ratio: 4/5)" srcset="${C.images.packFront}"><img src="${C.images.hero}" alt="YAKA, 100 % Arabica : le paquet posé sur des rochers et des grains de café"></picture></div>
-      <div class="hero-logo"><img src="${C.images.logoGold}" alt="YAKA"></div>
-      <div class="tag">
-        <div class="label r"><span>${C.meta.edition}</span></div>
-        <div class="serif italic h-l r" style="--d:2">${fmt(S.cover.tagline)}</div>
-        <p class="promise r" style="--d:4">${fmt(S.cover.promise)}</p>
+      <div class="hero-copy">
+        <p class="eyebrow r" style="--d:6">${fmt(S.cover.eyebrow)}</p>
+        ${lines(S.cover.headline, "headline serif", 7)}
+        <p class="lead r" style="--d:11">${fmt(S.cover.lead)}</p>
       </div>
-      <h1 class="mega" aria-label="${C.meta.brand}"><span class="logo gold" aria-hidden="true"></span></h1>
-      <div class="meta r" style="--d:6"><div class="upper muted">${PT ? "Présentation à l’attention de" : "Présentation"}</div><div class="serif h-m" style="margin-top:.35em">${PT ? partnerLabel : C.meta.audience}</div></div>
+      <ul class="facts">${S.cover.facts.map(([v, k], i) => `<li class="r" style="--d:${12 + i}"><b>${v}</b><span>${k}</span></li>`).join("")}</ul>
+      <div class="meta r" style="--d:15"><div class="upper muted">${PT ? "À l’attention de" : "Présentation"}</div><div class="serif h-m" style="margin-top:.35em">${PT ? partnerLabel : C.meta.audience}</div></div>
       <div class="scroll-cue" aria-hidden="true"></div>
     </section>`);
 
@@ -392,6 +391,7 @@
   function setCurrent(i) {
     if (i === current) return;
     current = i;
+    document.body.dataset.slide = slides[i].id;
     curEl.textContent = pad(i + 1);
     ticks.forEach((t, k) => t.classList.toggle("on", k === i));
     bar.style.transform = `scaleX(${(i + 1) / total})`;

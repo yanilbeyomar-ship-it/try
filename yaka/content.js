@@ -91,6 +91,14 @@ window.YAKA_CONTENT = {
       nav: "YAKA",
       tagline: "L’animation café solidaire,\nclé en main.",
       promise: "1 paquet vendu = 1 € reversé\naux personnes sourdes et malentendantes.",
+      eyebrow: "Animation café solidaire · Présentation magasins",
+      headline: "Un grand café.\nUn geste qui compte.",
+      lead: "Chaque samedi, un étudiant fait découvrir YAKA dans vos allées. Chaque paquet vendu soutient les personnes sourdes et malentendantes.",
+      facts: [
+        ["1 €", "reversé par paquet vendu"],
+        ["100 %", "Arabica, torréfaction medium-dark"],
+        ["0", "contrainte pour vos équipes"],
+      ],
     },
 
     model: {
