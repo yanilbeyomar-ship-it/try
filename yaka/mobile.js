@@ -107,6 +107,7 @@
       <div ${a(4)}><div class="btns">
         ${C.founders[0].phone ? `<a class="btn gold" href="tel:${tel(C.founders[0].phone)}">Appeler Yanil <small>${C.founders[0].phone}</small></a>` : ""}
         ${C.founders.map((p) => `<a class="btn" href="mailto:${p.email}">Écrire à ${p.name.split(" ")[0]} <small>${p.email}</small></a>`).join("")}
+        ${C.website ? `<a class="btn" href="https://${C.website}" target="_blank" rel="noopener">Notre site <small>${C.website}</small></a>` : ""}
       </div></div>`],
   ];
 
