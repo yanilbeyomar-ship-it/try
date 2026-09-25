@@ -125,7 +125,6 @@
           <p class="body r" style="--d:4">${fmt(CS.body)}</p>
           <div class="status r" style="--d:6">
             <div class="row"><span class="upper muted">Association</span><span>${CA.partnerName ? CA.partnerName : todo(CA.partnerStatus)}</span></div>
-            <div class="row"><span class="upper muted">Transparence</span><span>${fmt(CS.transparency)}</span></div>
           </div>
           <p class="honesty r" style="--d:7">${fmt(CS.honesty)}</p>
         </div>
