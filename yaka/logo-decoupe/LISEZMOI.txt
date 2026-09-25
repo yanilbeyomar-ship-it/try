@@ -1,0 +1,9 @@
+Découpe du visuel Maison YAKA (étiquette du paquet)
+
+maison-yaka-complet.svg  → tout le visuel vectorisé (1 fichier, redimensionnable sans perte)
+elements/ + elements-svg/ → 19 éléments séparés (MAISON, YAKA, filets, 100% ARABICA, icônes, lignes de texte, QR code, 250g…)
+lettres/  + lettres-svg/  → chaque lettre / chiffre / signe séparé, numérotés par ligne (ex. 04-05 = 5e caractère de la ligne 04)
+
+Couleur : #FDD98E
+Note : dans « YAKA », les lettres A-K-A se touchent dans l'image d'origine ; elles sont livrées en un bloc (02-02) + le Y seul (02-01).
+Pour les séparer parfaitement, il faut le fichier source vectoriel (AI / SVG / police utilisée).
