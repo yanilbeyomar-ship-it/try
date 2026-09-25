@@ -61,7 +61,7 @@
     // 6 · Le café
     ["dark", "coffee", `
       <p ${a(1)}><span class="eyebrow">Le café</span></p>
-      <div class="pack a" style="--d:2"><img src="${I.packBack}" alt="Dos du paquet YAKA"></div>
+      <div class="pack a" style="--d:2"><img src="${I.packBack}" alt="Paquet Maison YAKA 250 g"></div>
       <div class="stack">
         <h2 ${a(3)}><span class="h" style="font-size:34px">100&#8239;% Arabica,<br><em>doux et chocolaté.</em></span></h2>
         <div ${a(4)}><div class="tags"><span>Brésil</span><span>Pérou</span><span>Colombie</span><span>Éthiopie</span></div></div>
