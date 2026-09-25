@@ -29,7 +29,7 @@
       <p ${a(4)} style="margin-top:14px"><span class="p">Pour une association qui accompagne les personnes sourdes et malentendantes.</span></p>
       <div class="grow"></div>
       <div ${a(6)}><div class="eq"><div><b>1&#8239;000</b><span>paquets vendus</span></div><div class="op">=</div><div><b style="color:var(--gold)">1&#8239;000&#8239;€</b><span>reversés</span></div></div></div>
-      <p ${a(7)} style="margin-top:18px"><span class="small">Association en cours de sélection. Montants publiés en toute transparence.</span></p>`],
+      <p ${a(7)} style="margin-top:18px"><span class="small">Association en cours de sélection.</span></p>`],
 
     // 3 · Pourquoi cette cause
     ["ivory", "deaf", `

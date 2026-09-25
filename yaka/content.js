@@ -147,7 +147,6 @@ window.YAKA_CONTENT = {
       exampleResult: "reversés à l’association",
       simLabel: "Faites glisser pour simuler",
       simNote: "Simulation illustrative : 1 € par paquet vendu.",
-      transparency: "Montants publiés en toute transparence. Chaque magasin reçoit le montant reversé grâce à ses clients.",
       honesty: "Le choix de l’association est en cours. Aucun partenariat n’est encore signé : il sera annoncé publiquement.",
     },
 
@@ -223,13 +222,13 @@ window.YAKA_CONTENT = {
       nav: "Qui sommes-nous",
       label: "Qui sommes-nous",
       title: "Deux entrepreneurs.\nLe goût du terrain.\nUne cause à servir.",
-      body: "Yanil et Arthur vendent en direct, face aux clients. Ils en ont tiré une conviction : quand un produit est bon et qu’on le présente avec sincérité, les gens s’arrêtent, écoutent et achètent.\n\nYAKA réunit ce savoir-faire et une cause qui les touche de près.",
+      body: "Yanil et Arthur ont créé YAKA. En magasin, ce sont des étudiants qui présentent le café et racontent la cause à vos clients : Yanil et Arthur les recrutent, les forment et les accompagnent.\n\nYAKA réunit un bon produit, une vente humaine et une cause qui touche les fondateurs de près.",
     },
 
     cta: {
       nav: "Contact",
       title: "Faisons de vos samedis\ndes samedis YAKA.",
-      body: "Parlons de votre emplacement et de votre calendrier.",
+      body: "Un rendez-vous fixe, chaque samedi, dans votre magasin.",
       button: "Nous écrire",
     },
   },
