@@ -151,6 +151,7 @@ Barre fixe fine : logo YAKA (image fournie, doré) à gauche, à droite liens d'
 - Contacts :
   - **Yanil Bey-Omar** — Cofondateur — 06 17 99 14 80 — yanil@webonestudio.fr
   - **Arthur Mignon** — Cofondateur — arthur@webonestudio.fr
+  - Site : maison-yaka.fr (lien)
 - Sur mobile : gros boutons pleine largeur « Appeler Yanil » (tel:), « Écrire à Yanil », « Écrire à Arthur ».
 
 ## Footer
