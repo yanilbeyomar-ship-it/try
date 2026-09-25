@@ -480,8 +480,8 @@ body[data-theme="ivory"] .chrome, body[data-theme="sand"] .chrome { color: var(-
 
 /* ---------- 14 · CTA ---------------------------------------------------- */
 .s-cta { display: flex; flex-direction: column; }
-.s-cta .bg { position: absolute; inset: 0 0 0 45%; opacity: .22; }
-.s-cta .bg img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; filter: grayscale(.2); }
+.s-cta .bg { position: absolute; inset: 0 0 0 45%; opacity: .14; }
+.s-cta .bg img { width: 100%; height: 100%; object-fit: cover; object-position: 75% 50%; filter: grayscale(.2); }
 .s-cta .bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(90% 90% at 70% 40%, transparent, var(--bg) 75%); }
 .s-cta > *:not(.bg) { position: relative; }
 .s-cta .title { font-size: calc(var(--u) * 7.4); line-height: .98; margin-top: auto; }

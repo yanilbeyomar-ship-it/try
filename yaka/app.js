@@ -194,7 +194,7 @@
   const cf = C.coffee;
   add("product", "black", S.product.nav, `
     <section class="slide s-product">
-      <div class="photo pack"><img src="${C.images.packBack}" alt="Dos du paquet YAKA : 100 % Arabica, origines Brésil, Pérou, Colombie, Éthiopie, torréfaction medium-dark, profil chocolaté, doux, gourmand"></div>
+      <div class="photo pack"><img src="${C.images.packBack}" alt="Paquet Maison YAKA 250 g : 100 % Arabica, Brésil, Pérou, Colombie, Éthiopie, torréfaction medium-dark, chocolaté, doux, gourmand"></div>
       <div class="info">
         ${label(next(), S.product.label)}
         ${lines(S.product.title, "title serif")}
@@ -318,7 +318,7 @@
   const mail = C.ctaEmail ? `mailto:${C.ctaEmail}?subject=${encodeURIComponent("Un samedi YAKA" + (PT ? " — " + partnerLabel : ""))}` : "#contacts";
   add("cta", "kaki", S.cta.nav, `
     <section class="slide s-cta kaki">
-      <div class="bg">${C.images.packaging ? `<img src="${C.images.packaging}" alt="">` : ""}</div>
+      <div class="bg">${C.images.hero ? `<img src="${C.images.hero}" alt="">` : ""}</div>
       <div class="label r"><span class="num">${String(next()).padStart(2, "0")}</span><span class="rule"></span><span>${partnerLabel}</span></div>
       <div class="sign r" style="--d:2"><span class="logo gold" role="img" aria-label="YAKA" style="height:calc(var(--u)*2.4)"></span><div class="upper muted" style="margin-top:.6em">${fmt(S.cover.tagline.replace("\n", " "))}</div></div>
       ${lines(S.cta.title, "title serif", 1)}
