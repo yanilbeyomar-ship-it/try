@@ -15,7 +15,7 @@
   --gx: 24px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; background: #000; overflow: hidden; overscroll-behavior: none; }
+html, body { height: 100%; background: #000; overflow: hidden; overscroll-behavior: none; touch-action: none; }
 body { font-family: var(--sans); font-weight: 300; -webkit-font-smoothing: antialiased; color: var(--ivory);
   -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; font-feature-settings: "lnum" 1; }
 img { display: block; max-width: 100%; }
@@ -23,7 +23,7 @@ a { color: inherit; }
 
 /* Cadre : plein écran sur téléphone, format 9:16 centré sur ordinateur */
 .stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; }
-.deck { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ink); }
+.deck { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; touch-action: none; }
 @media (min-aspect-ratio: 3/4) { .deck { width: auto; aspect-ratio: 9 / 16; height: min(100%, 940px); border-radius: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.6); } }
 
 /* Barre de progression façon stories */
@@ -43,14 +43,18 @@ a { color: inherit; }
 
 /* Cartes */
 .card { position: absolute; inset: 0; display: flex; flex-direction: column; padding: calc(64px + env(safe-area-inset-top, 0px)) var(--gx) calc(30px + env(safe-area-inset-bottom, 0px));
-  visibility: hidden; opacity: 0; transform: scale(1.04); transition: opacity .55s ease, transform .9s var(--ease), visibility 0s .55s; }
-.card.on { visibility: visible; opacity: 1; transform: none; transition: opacity .55s ease, transform .9s var(--ease); }
+  transform: translate3d(110%,0,0); transform-origin: 50% 50%; will-change: transform; backface-visibility: hidden;
+  transition: transform .55s cubic-bezier(.2, .8, .2, 1); }
+.deck.dragging .card { transition: none; }
+.card::after { content: ""; position: absolute; inset: 0; background: #000; opacity: calc(var(--shade, 0) * .55); pointer-events: none; }
 .card.dark { background: var(--ink); } .card.kaki { background: var(--kaki); }
 .card.ivory { background: var(--ivory); color: var(--moss); } .card.sand { background: var(--sand); color: var(--moss); }
 
 /* Apparition du texte */
 .card .a { opacity: 0; transform: translateY(14px); transition: opacity .8s ease, transform 1s var(--ease); transition-delay: calc(var(--d, 0) * 90ms + 150ms); }
 .card.on .a { opacity: 1; transform: none; }
+.card .a { will-change: opacity, transform; }
+.card.peek .a { opacity: .55; transform: none; transition-delay: 0s; }
 
 /* Typo */
 .eyebrow { font-size: 10px; letter-spacing: .3em; text-transform: uppercase; font-weight: 500; color: var(--gold); }
@@ -140,20 +144,17 @@ a { color: inherit; }
 .people figure img { aspect-ratio: 3/4; object-fit: cover; width: 100%; border-radius: 4px; filter: grayscale(1) contrast(1.05); }
 .people figcaption { margin-top: 8px; font-family: var(--serif); font-size: 18px; line-height: 1.1; }
 .btns { display: grid; gap: 10px; }
-.btn { position: relative; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 15px 18px; border-radius: 40px; text-decoration: none;
+.btn { position: relative; z-index: 30; touch-action: manipulation; display: flex; justify-content: space-between; align-items: center; padding: 15px 18px; border-radius: 40px; text-decoration: none;
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; border: 1px solid rgba(242,240,232,.3); }
 .btn.gold { background: var(--gold); color: var(--ink); border-color: var(--gold); }
 .btn small { font-size: 11px; letter-spacing: .04em; text-transform: none; opacity: .75; }
 
-/* Zones de tap */
-.tap { position: absolute; z-index: 10; top: 0; bottom: 0; }
-.tap.prev { left: 0; width: 30%; } .tap.next { right: 0; width: 70%; }
 
 @media (max-height: 700px) {
   .h { font-size: 36px; } .c-cover .h { font-size: 38px; } .c-euro .big { font-size: 150px; } .c-proof .big { font-size: 120px; }
   .p { font-size: 14px; } .gain { padding: 10px 0; } .gain span { font-size: 17px; } .box li { font-size: 13px; padding: 3px 0; }
 }
-@media (prefers-reduced-motion: reduce) { .card, .card .a, .c-cover .bg img { transition: none !important; } .bars i.on::after { animation: none; transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .card .a, .c-cover .bg img { transition: none !important; } .bars i.on::after { animation: none; transform: scaleX(1); } }
 
 /* PDF fixe : une carte par page, format téléphone */
 @page { size: 450px 800px; margin: 0; }
@@ -162,6 +163,7 @@ a { color: inherit; }
   .stage { position: static; display: block; }
   .deck { width: 450px; height: auto; aspect-ratio: auto; border-radius: 0; box-shadow: none; overflow: visible; }
   .bars, .top, .tap, .hint { display: none !important; }
+  .card::after { display: none; }
   .card { position: relative; width: 450px; height: 800px; visibility: visible !important; opacity: 1 !important; transform: none !important; transition: none !important; break-after: page; page-break-after: always; }
   .card .a { opacity: 1 !important; transform: none !important; transition: none !important; }
   .c-cover .bg img { transform: none !important; filter: none !important; transition: none !important; }

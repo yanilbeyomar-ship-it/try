@@ -115,56 +115,99 @@
   deck.innerHTML = `
     <div class="bars">${cards.map(() => "<i></i>").join("")}</div>
     <div class="top"><span class="mark" aria-label="YAKA"></span><span class="count"></span></div>
-    ${cards.map(([theme, id, html]) => `<section class="card ${theme} c-${id}" id="${id}">${html}</section>`).join("")}
-    <button class="tap prev" aria-label="Précédent"></button><button class="tap next" aria-label="Suivant"></button>`;
-  deck.querySelectorAll(".tap").forEach((b) => { b.style.background = "none"; b.style.border = "0"; });
+    ${cards.map(([theme, id, html]) => `<section class="card ${theme} c-${id}" id="${id}">${html}</section>`).join("")}`;
   const els = [...deck.querySelectorAll(".card")], bars = [...deck.querySelectorAll(".bars i")], count = deck.querySelector(".count");
   const DUR = [6, 8, 9, 9, 9, 8, 9, 9, 9, 0];
 
   if (/[?&]print\b/.test(location.search)) { els.forEach((e) => e.classList.add("on")); return; }
 
-  let cur = -1, timer = 0, paused = false;
-  function show(i) {
-    i = Math.max(0, Math.min(els.length - 1, i));
-    if (i === cur) return;
+  /* ---------- Carrousel suivant le doigt ---------- */
+  let cur = -1, timer = 0, paused = false, left = 0, t0 = 0;
+  const N = els.length, W = () => deck.clientWidth;
+
+  // Place chaque carte selon sa distance à la carte courante (+ décalage du doigt)
+  function place(offset, animate) {
+    deck.classList.toggle("dragging", !animate);
+    const w = W();
+    els.forEach((e, k) => {
+      const rel = (k - cur) + offset / w;                 // -1 … 0 … 1
+      if (Math.abs(rel) > 1.2) { e.style.visibility = "hidden"; e.style.transform = `translate3d(${Math.sign(rel) * 110}%,0,0)`; return; }
+      e.style.visibility = "visible";
+      const x = rel * 100, sc = 1 - Math.min(1, Math.abs(rel)) * .08;
+      e.style.transform = `translate3d(${x}%,0,0) scale(${sc})`;
+      e.style.setProperty("--shade", Math.min(1, Math.abs(rel)).toFixed(3));
+      e.style.zIndex = rel <= 0 ? 2 : 1;
+    });
+  }
+
+  function show(i, instant) {
+    i = Math.max(0, Math.min(N - 1, i));
+    const changed = i !== cur;
     cur = i;
-    els.forEach((e, k) => e.classList.toggle("on", k === i));
+    place(0, !instant);
+    if (!changed) return;
+    els.forEach((e, k) => { e.classList.toggle("on", k === i); e.classList.toggle("peek", Math.abs(k - i) === 1); });
     bars.forEach((b, k) => { b.classList.toggle("done", k < i); b.classList.remove("on"); });
     void bars[i].offsetWidth;
-    const light = /ivory|sand/.test(els[i].className);
-    deck.classList.toggle("light", light);
+    deck.classList.toggle("light", /ivory|sand/.test(els[i].className));
     deck.classList.toggle("cover-on", i === 0);
-    count.textContent = `${String(i + 1).padStart(2, "0")} / ${els.length}`;
+    count.textContent = `${String(i + 1).padStart(2, "0")} / ${N}`;
     try { history.replaceState(null, "", "#" + els[i].id); } catch (e) {}
-    clearTimeout(timer);
+    clearTimeout(timer); paused = false; deck.classList.remove("paused");
+    if (navigator.vibrate) try { navigator.vibrate(4); } catch (e) {}
     if (DUR[i]) { deck.style.setProperty("--dur", DUR[i] + "s"); bars[i].classList.add("on"); schedule(DUR[i] * 1000); }
     else bars[i].classList.add("done");
   }
-  let left = 0, t0 = 0;
   function schedule(ms) { left = ms; t0 = Date.now(); timer = setTimeout(() => show(cur + 1), ms); }
   function pause() { if (paused || !DUR[cur]) return; paused = true; deck.classList.add("paused"); clearTimeout(timer); left -= Date.now() - t0; }
-  function resume() { if (!paused) return; paused = false; deck.classList.remove("paused"); schedule(Math.max(300, left)); }
+  function resume() { if (!paused) return; paused = false; deck.classList.remove("paused"); schedule(Math.max(400, left)); }
 
-  // Tap court = avancer / reculer ; appui long = pause ; swipe horizontal
-  let sx = 0, sy = 0, st = 0, holdT = 0;
-  deck.addEventListener("pointerdown", (e) => { if (e.target.closest("a")) return; sx = e.clientX; sy = e.clientY; st = Date.now(); holdT = setTimeout(pause, 220); });
-  deck.addEventListener("pointerup", (e) => {
-    if (e.target.closest("a")) return;
-    clearTimeout(holdT);
-    const dx = e.clientX - sx, dy = e.clientY - sy, long = Date.now() - st > 220;
-    if (paused) { resume(); if (long) return; }
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) return show(cur + (dx < 0 ? 1 : -1));
-    if (Math.abs(dy) > 60) return show(cur + (dy < 0 ? 1 : -1));
+  // Geste : glisser = suivre le doigt ; tap = avancer / reculer ; appui long = pause
+  let sx = 0, sy = 0, st = 0, lx = 0, lt = 0, v = 0, mode = "", holdT = 0, pid = null;
+  deck.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("a") || pid !== null) return;
+    pid = e.pointerId; sx = lx = e.clientX; sy = e.clientY; st = lt = performance.now(); v = 0; mode = "";
+    holdT = setTimeout(() => { if (!mode) { mode = "hold"; pause(); } }, 260);
+  });
+  deck.addEventListener("pointermove", (e) => {
+    if (e.pointerId !== pid) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy, now = performance.now();
+    if (!mode && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) { mode = "drag"; clearTimeout(holdT); pause(); try { deck.setPointerCapture(pid); } catch (er) {} }
+    if (mode !== "drag") return;
+    v = (e.clientX - lx) / Math.max(1, now - lt); lx = e.clientX; lt = now;
+    let off = dx;
+    if ((cur === 0 && dx > 0) || (cur === N - 1 && dx < 0)) off = dx * .28;   // résistance aux extrémités
+    place(off, false);
+  });
+  function end(e) {
+    if (e.pointerId !== pid) return;
+    pid = null; clearTimeout(holdT);
+    const dx = e.clientX - sx;
+    if (mode === "drag") {
+      const go = (Math.abs(dx) > W() * .18 || (Math.abs(dx) > 30 && Math.abs(v) > .45)) ? (dx < 0 ? 1 : -1) : 0;
+      const target = Math.max(0, Math.min(N - 1, cur + go));
+      if (target === cur) { place(0, true); resume(); } else show(target);
+      return;
+    }
+    if (mode === "hold") { resume(); return; }
+    if (e.type === "pointercancel") return;
     const r = deck.getBoundingClientRect();
     show(cur + (e.clientX - r.left < r.width * .3 ? -1 : 1));
-  });
-  deck.addEventListener("pointercancel", () => { clearTimeout(holdT); resume(); });
+  }
+  deck.addEventListener("pointerup", end);
+  deck.addEventListener("pointercancel", end);
+  deck.addEventListener("contextmenu", (e) => e.preventDefault());
   document.addEventListener("keydown", (e) => {
     if (["ArrowRight", "ArrowDown", " ", "PageDown"].includes(e.key)) { e.preventDefault(); show(cur + 1); }
     if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); show(cur - 1); }
   });
   document.addEventListener("visibilitychange", () => (document.hidden ? pause() : resume()));
+  window.addEventListener("resize", () => place(0, false));
+
+  // Précharge toutes les images pour des transitions sans accroc
+  deck.querySelectorAll("img").forEach((im) => { im.decoding = "async"; if (im.decode) im.decode().catch(() => {}); });
 
   const start = els.findIndex((e) => "#" + e.id === location.hash);
-  show(Math.max(0, start));
+  show(Math.max(0, start), true);
+  requestAnimationFrame(() => deck.classList.remove("dragging"));
 })();
